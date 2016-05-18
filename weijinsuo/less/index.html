@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <!--怎么引用less文件-->
+    <!--不能用css的方式来引用less文件-->
+    <!--<link rel="stylesheet" type="text/css" href="less.less"/>-->
+    <link rel="stylesheet" type="text/less" href="less.less"/>
+    <!--
+        怎么样获取到less文件内容
+        js 利用异步加载  把less文件先加载过来  让后按照一定的规范解析
+        动态加载在html head style 当中
+    -->
+    <!--解析less文件的js-->
+    <script src="js/less.min.js"></script>
+    <!--
+    不推荐使用  资源引用过多   测试使用
+    -->
+</head>
+<body>
+        不能以file://形式打开
+        我们是一个异步的请求  在这中形式下是  无法加载的
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>媒体查询</title>
+    <style>
+        body,html{
+            padding: 0;
+            margin: 0;
+        }
+        .container{
+            width: 100%;
+            background: red;
+            margin: 0 auto;
+            height: 1000px;
+        }
+        /*
+        媒体查询
+        指定他是查询屏幕的
+        现在已经指定了屏幕区间
+
+        max-width  最大宽度不超过 指定的值  要小于指定的值 才满足条件
+        min-width  宽度不能小于 最小宽度 或者  大于这个最小的宽度  才满足条件
+        */
+        @media screen and (min-width: 768px){
+            /*指定区间之后我们是不是可以定义在这个区间内的样式*/
+            .container{
+                background: green;
+            }
+
+        }
+
+        @media screen and (min-width: 992px){
+            /*指定区间之后我们是不是可以定义在这个区间内的样式*/
+            .container{
+                background: blue;
+
+            }
+
+        }
+
+        @media screen and (min-width: 1200px){
+            /*指定区间之后我们是不是可以定义在这个区间内的样式*/
+            .container{
+                background: pink;
+            }
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+</body>
+</html>

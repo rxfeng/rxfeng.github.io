@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html style="font-size: 100px">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title></title>
+    <script>
+        /*
+        * 运行到这个标签的时候
+        * 1，获取屏幕的宽度
+        * 2.计算当前屏幕宽度和  640  的关系  比例
+        * 3.计算出font-size的大小
+        * 4.改变html的font-size
+        * */
+        var html = document.getElementsByTagName('html')[0];
+        console.log(html);
+        if(html){
+            var w = window.innerWidth;
+            var fontSize = (w>640?640:w)/640*100;
+            html.style.fontSize = fontSize + 'px';
+            /*已经适配来当前的设备*/
+        }
+        /*响应*/
+        window.onload = function(){
+            window.onresize = function(){
+                var w = window.innerWidth;
+                var fontSize = (w>640?640:w)/640*100;
+                html.style.fontSize = fontSize + 'px';
+            }
+        }
+
+
+
+
+
+
+
+
+        /*var html = document.getElementsByTagName('html')[0];
+        if(html){
+            var w = window.innerWidth;
+            var fontSize = (w>640?640:w)/640 * 100;
+            html.style.fontSize = fontSize + 'px';
+        }
+        window.onload = function(){
+            window.onresize = function(){
+                var w = window.innerWidth;
+                console.log(w);
+                var fontSize = (w>640?640:w)/640 * 100;
+                html.style.fontSize = fontSize + 'px';
+            }
+        }*/
+    </script>
+    <style>
+        body,html{
+            margin: 0;
+            padding : 0;
+        }
+        div{
+            max-width: 640px;
+            min-width: 300px;
+            background: yellow;
+            margin: 0 auto;
+            height: 1000px;
+        }
+        a{
+            width: 3.2rem;
+            height: 3.2rem;
+            display: block;
+            background: red;
+            font-size: 0.48rem;
+            background: url("../images/slide_01_640x340.jpg") no-repeat;
+            background-size: 3.2rem 3.2rem;
+        }
+        /*
+        所有的rem做单位的元素都可以适配
+        背景尺寸
+
+        */
+    </style>
+</head>
+<body>
+    <div>
+        <a href="#">AAAAA
+        </a>
+    </div>
+</body>
+</html>
