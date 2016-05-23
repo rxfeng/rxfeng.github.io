@@ -1,0 +1,85 @@
+{
+  "亚洲":
+  {
+    "A": {
+      "阿富汗": "Afghanistan",
+      "阿联酋": "United Arab Emirates",
+      "阿曼": "Sultanate of Oman",
+      "阿塞拜疆": "Azerbaijan"
+    },
+    "B":{
+      "巴基斯坦": "Pakistan",
+      "巴勒斯坦": "Palestine",
+      "巴林": "Bahrain",
+      "不丹": "Bhutan"
+    },
+    "C":{
+      "东帝汶": "East Timor"
+    },
+    "F":{
+      "菲律宾": "Philippines"
+    },
+    "G":{
+      "格鲁吉亚": "Georgia"
+    },
+    "H":{
+      "哈萨克斯坦": "The Republic of Kazakhstan",
+      "韩国": "Korea"
+    },
+    "J":{
+      "吉尔吉斯斯坦": "Kyrgyzstan",
+      "柬埔寨": "Cambodia"
+    },
+    "K":{
+      "卡塔尔": "The State of Qatar",
+      "科威特": "The State of Kuwait"
+    },
+    "L":{
+      "老挝": "Laos",
+      "黎巴嫩": "Lebanon"
+    },
+    "M":{
+      "马尔代夫": "Maldives",
+      "马来西亚": "Malaysia",
+      "蒙古": "Mongolia",
+      "孟加拉国": "Bangladesh",
+      "缅甸": "Myanmar"
+    },
+    "N":{
+      "尼泊尔": "Nepal"
+    },
+    "R":{
+      "日本": "Japan"
+    },
+    "S":{
+      "沙特阿拉伯": "Saudi Arabia",
+      "斯里兰卡": "Sri Lanka"
+    },
+    "T":{
+      "塔吉克斯坦": "Tajikistan",
+      "泰国": "Thailand",
+      "土库曼斯坦": "Turkmenistan"
+    },
+    "W":{
+      "文莱": "Brunei Darussalam",
+      "乌兹别克斯坦": "The Republic of Uzbekistan"
+    },
+    "Y":{
+      "亚美尼亚": "The Republic of Armenia",
+      "叙利亚": "The Syrian Arab Republic",
+      "以色列": "Israel",
+      "也门": "The Republic of Yemen",
+      "伊拉克": "Iraq",
+      "伊朗": "Iran",
+      "以色列": "Israel",
+      "印度": "India",
+      "印度尼西亚": "Indonesia",
+      "约旦": "Jordan"
+    },
+    "Z":{
+    "中国": "China"
+  }
+  }
+
+
+}
