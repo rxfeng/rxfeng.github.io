@@ -1,0 +1,247 @@
+{
+  "亚洲":
+  {
+    "A": {
+      "阿富汗": "Afghanistan",
+      "阿联酋": "United Arab Emirates",
+      "阿曼": "Sultanate of Oman",
+      "阿塞拜疆": "Azerbaijan"
+    },
+    "B":{
+      "巴基斯坦": "Pakistan",
+      "巴勒斯坦": "Palestine",
+      "巴林": "Bahrain",
+      "不丹": "Bhutan"
+    },
+    "C":{
+      "东帝汶": "East Timor"
+    },
+    "F":{
+      "菲律宾": "Philippines"
+    },
+    "G":{
+      "格鲁吉亚": "Georgia"
+    },
+    "H":{
+      "哈萨克斯坦": "The Republic of Kazakhstan",
+      "韩国": "Korea"
+    },
+    "J":{
+      "吉尔吉斯斯坦": "Kyrgyzstan",
+      "柬埔寨": "Cambodia"
+    },
+    "K":{
+      "卡塔尔": "The State of Qatar",
+      "科威特": "The State of Kuwait"
+    },
+    "L":{
+      "老挝": "Laos",
+      "黎巴嫩": "Lebanon"
+    },
+    "M":{
+      "马尔代夫": "Maldives",
+      "马来西亚": "Malaysia",
+      "蒙古": "Mongolia",
+      "孟加拉国": "Bangladesh",
+      "缅甸": "Myanmar"
+    },
+    "N":{
+      "尼泊尔": "Nepal"
+    },
+    "R":{
+      "日本": "Japan"
+    },
+    "S":{
+      "沙特阿拉伯": "Saudi Arabia",
+      "斯里兰卡": "Sri Lanka"
+    },
+    "T":{
+      "塔吉克斯坦": "Tajikistan",
+      "泰国": "Thailand",
+      "土库曼斯坦": "Turkmenistan"
+    },
+    "W":{
+      "文莱": "Brunei Darussalam",
+      "乌兹别克斯坦": "The Republic of Uzbekistan"
+    },
+    "Y":{
+      "亚美尼亚": "The Republic of Armenia",
+      "叙利亚": "The Syrian Arab Republic",
+      "以色列": "Israel",
+      "也门": "The Republic of Yemen",
+      "伊拉克": "Iraq",
+      "伊朗": "Iran",
+      "以色列": "Israel",
+      "印度": "India",
+      "印度尼西亚": "Indonesia",
+      "约旦": "Jordan"
+    },
+    "Z":{
+    "中国": "China"
+  }
+  },
+  "北美洲":
+  {
+    "A": {
+      "安提瓜和巴布达": "Antigua and Barbuda"
+    },
+    "B":{
+      "巴巴多斯": "Barbados",
+      "巴哈马": "Palestine",
+      "巴拿马": "Panama",
+      "伯利兹": "Belize"
+    },
+    "D":{
+      "多米尼加": "Dominican Republic",
+      "多米尼克": "Dominica"
+    },
+    "G":{
+      "哥斯达黎加": "Costa Rica",
+      "格林纳达": "Grenada",
+      "古巴": "Guba"
+    },
+    "H":{
+      "海地": "Haiti",
+      "洪都拉斯": "Republic of Honduras"
+    },
+    "J":{
+      "加拿大": "Canada"
+    },
+    "M":{
+      "美国": "United States of America",
+      "墨西哥": "The United Mexican States"
+    },
+    "N":{
+      "尼加拉瓜": "Nicaragua"
+    },
+    "S":{
+      "萨尔瓦多": "El Salvador",
+      "圣基茨和尼维斯": "Saint Kitts and Nevis",
+      "圣卢西亚": "Saint Lucia",
+      "圣文森特和格林纳丁斯": "Saint Vincent and the Grenadines"
+    },
+    "T":{
+      "特立尼达和多巴哥": "Trinidad and Tobago"
+    },
+    "W":{
+      "危地马拉": "Guatemala"
+    },
+    "Y":{
+      "牙买加": "Jamaica"
+    }
+  },
+  "南美洲":
+  {
+    "A": {
+      "阿根廷": "Argentina"
+    },
+    "B":{
+      "巴拉圭": "Paraguay",
+      "巴西": "Brazil",
+      "秘鲁": "The Republic of Peru",
+      "玻利维亚": "Bolivia"
+    },
+    "E":{
+      "厄瓜多尔": "Ecuador"
+    },
+    "G":{
+      "哥伦比亚": "Colombia",
+      "圭亚那": "Guyana"
+    },
+    "S":{
+      "苏里南": "The Republic of Suriname"
+    },
+    "W":{
+      "委内瑞拉": "Bolivarian Republic of Venezuela",
+      "乌拉圭": "The Oriental Republic of Uruguay"
+    },
+    "Z":{
+      "智利": "Republic of Chile"
+    }
+  },
+  "非洲":
+  {
+    "A": {
+      "阿尔巴尼亚": "The Republic of Albania",
+      "爱尔兰": "Ireland",
+      "爱沙尼亚": "The Republic of Estonia",
+      "安道尔": "Andorra",
+      "奥地利": "Austria"
+    },
+    "B":{
+      "白俄罗斯": "Belarus",
+      "保加利亚": "The Republic of Bulgaria",
+      "比利时": "Belgium",
+      "冰岛": "Iceland",
+      "波黑": "Bosnia and Herzegovina",
+      "波兰": "Poland"
+    },
+    "D":{
+      "丹麦": "Denmark",
+      "德国": "Germany"
+    },
+    "E":{
+      "俄罗斯": "Russia"
+    },
+    "F":{
+      "法国": "France",
+      "梵蒂冈": "Vatican City State",
+      "芬兰": "Finland"
+    },
+    "H":{
+      "荷兰": "Holland",
+      "黑山": "Montenegro"
+    },
+    "J":{
+      "捷克": "Czech"
+    },
+    "K":{
+      "科索沃": "The Republic of Kosovo",
+      "克罗地亚": "Croatia"
+    },
+    "L":{
+      "拉脱维亚": "Latvia",
+      "立陶宛": "Lithuania",
+      "列支敦士登": "Liechtenstein",
+      "卢森堡": "The Grand Duchy of Luxembourg",
+      "罗马尼亚": "Romania"
+    },
+    "M":{
+      "马耳他": "Malta",
+      "马其顿": "Macedonia",
+      "摩尔多瓦": "The Republicof Moldova",
+      "摩纳哥": "The Principality of Monaco"
+    },
+    "N":{
+      "挪威": "Norway",
+      "葡萄牙": "Portugal"
+    },
+    "R":{
+      "瑞典": "The Kingdom of Sweden",
+      "瑞士": "Switzerland"
+    },
+    "S":{
+      "塞尔维亚": " The Republic of Serbia",
+      "塞浦路斯": "Cyprus",
+      "圣马力诺": "The Republic of San Marino",
+      "斯洛伐克": "Slovakia",
+      "斯洛文尼亚": "The Republic of Slovenia"
+    },
+    "T":{
+      "土耳其": "Turkey"
+    },
+    "W":{
+      "乌克兰": "Ukraine"
+    },
+    "X":{
+      "西班牙": "Spain",
+      "希腊": "Greece",
+      "匈牙利": "Hungary"
+    },
+    "Y":{
+      "意大利": "Italy",
+      "英国": "United Kingdom"
+    }
+  }
+
+}

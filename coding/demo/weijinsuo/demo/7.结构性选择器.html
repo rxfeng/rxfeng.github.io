@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        /*我要把所有的字变成红色*/
+        /*
+        +  他是结构性选择器      选择当目标元素的下一个相邻的元素
+        ~  他也是结构性选择器    选择当前元素的后面的所有同级元素
+        */
+        /*p + p{
+            color: red;
+        }*/
+        /*p + p{
+            color: red;
+        }*/
+
+        .one ~ p{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p class="one">4</p>
+        <p>5</p>
+        <p>6</p>
+        <p>7</p>
+</body>
+</html>

@@ -1,0 +1,17 @@
+ {
+    "A": {
+      "阿富汗": "Afghanistan",
+      "阿联酋": "United Arab Emirates",
+      "阿曼": "Sultanate of Oman",
+      "阿塞拜疆": "Azerbaijan"
+    },
+    "B":{
+      "巴基斯坦": "Pakistan",
+      "巴勒斯坦": "Palestine",
+      "巴林": "Bahrain",
+      "不丹": "Bhutan"
+    },
+    "C":{
+      "朝鲜": "North Korea"
+    }
+  }

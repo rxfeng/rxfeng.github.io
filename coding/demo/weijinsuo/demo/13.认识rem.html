@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html style="font-size: 30px">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        /*
+            根据父盒子的字体大小来设置的
+        */
+        div{
+            font-size: 30px;
+        }
+        span:first-child{
+            font-size: 2em;
+        }
+        span:last-child{
+            font-size: 2rem;
+        }
+        a{
+            display: block;
+            width: 2rem;
+            height: 2rem;
+            background: red;
+        }
+        /*
+        rem  默认的字体大小是16px
+        在html标签当中的font-size  根目录
+        可以在移动开发当中适配设备的宽度
+        */
+    </style>
+</head>
+<body>
+        <div><span >我爱你</span> <span>我也很爱你</span></div>
+        <a href="#"></a>
+</body>
+</html>
