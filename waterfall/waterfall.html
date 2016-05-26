@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> </title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #F7F7F7;
+      font-family: '微软雅黑';
+    }
+
+    .wrapper {
+      padding: 50px;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 300px;
+    }
+
+    .items {
+      position: relative;
+    }
+
+    .item {
+      width: 228px;
+      position: absolute;
+    }
+
+    .tips {
+      width: 280px;
+      height: 40px;
+      margin: 30px auto 0;
+      text-align: center;
+      line-height: 40px;
+      background-color: #CCC;
+      border-radius: 6px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .tips.loading {
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="items"></div>
+    <p class="tips loading">正在加载...</p>
+  </div>
+</body>
+</html>
+  <script src="js/jquery.min.js"></script>
+  <!-- 引入模板插件 -->
+  <script src="js/template-native.js"></script>
+  <!-- 引入瀑布流插件 -->
+  <script src="js/jquery.waterFall.js"></script>
+<script>
+  function getData(page){
+    $.ajax({
+      url:"data.php",
+      type:'post',
+      data:{page:page},
+      // 请求完成前执行函数
+      beforeSend:function(){
+        $("p.tips").text('正在加载....').addClass('loading');
+      },
+      // 请求成功后，回调函数
+      // data是服务器返回的数据吗？
+      success:function(data){
+        console.log(data);
+        // console.log(1);
+
+        // data传进来是什么，data是什么
+        var html = template('tpl',data);
+        // html是名为item的div
+        // console.log(html);
+        // 把item追加到items里面
+        $('.items').append(html);
+        // 让items中的内容以瀑布流的形式展示
+        $('.items').waterFall();
+        // if语句是什么意思，注释后的效果和注释前的效果一样
+        // if(data.items.length==0){
+        //   $('p.tips').hide();
+        // }
+        // attr设置一个属性值
+        $('p.tips').attr('data-page',data.page);
+      },
+      // complete请求完成后，执行的函数
+      complete:function(){
+        // console.log(2);
+        $('p.tips').text('点击加载更多').removeClass('loading');
+      }
+    });
+  }
+
+  // 调用getData函数，传入第一页
+  // 首次调用
+  getData(1);
+  $('p.tips').on('click',function(){
+    // 防止多次调用 为什么要return
+    // return 空 指的是停止一个函数的执行
+    if($(this).hasClass('loading')) return;
+    // 取得第一个匹配元素的属性值
+    // page是页数
+    // attr设置就代表设置一个属性，不设置就代表读取一个属性值
+    var page = $(this).attr('data-page');
+    // $(this).data-page
+    // console.log(page);
+    getData(page);
+  });
+</script>
+<script type="text/template" id="tpl">
+  <% for(var i=0;i<items.length;i++) { %>
+    <div class="item">
+    <!-- 为什么是items[i] -->
+      <img src="<%= items[i].path %>" alt="">
+      <p><%= items[i].text %></p>
+    </div>
+  <% } %>
+</script>
