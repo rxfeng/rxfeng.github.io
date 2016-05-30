@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html style="font-size: 100px">
 <head lang="en">
     <meta charset="UTF-8">
+    <!--指定当前的IE浏览器用它最新的渲染引擎 来渲染我们的网页-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--只会在移动端识别  视口  当前的宽度等于设备的宽度，默认的缩放比1.0，不予许用户自行缩放-->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
     <title>旋转木马</title>
     <link rel="stylesheet" href="css/css.css"/>
     <script src="js/jquery-1.11.1.min.js"></script>
@@ -10,8 +16,8 @@
 </head>
 <body>
 <nav>
-    <div class="fl">Welcome</div>
-    <div class="fr">
+    <div class="fl one-line">Welcome</div>
+    <div class="fr two-line">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="coding.html">Works</a></li>
@@ -21,15 +27,15 @@
 </nav>
 <div class="wrap" id="wrap">
     <div class="slide" id="slide">
-        <ul>
+        <ul id="codingUl">
             <li><a href="demo/mafengwo/index.html"><img src="images/mafengwo.png" alt=""/>
-                <p>蜂窝网</p>
+                <p>蚂蜂窝</p>
             </a></li>
             <li><a href="demo/weijinsuo/index.html"><img src="images/weijinsuo.png" alt=""/>
                 <p>Bootstrap</p>
             </a></li>
             <li><a href="demo/360/index.html"><img src="images/360.png" alt=""/>
-                <p>CSS3</p></a></li>
+                <p>HTML5<br/>CSS3</p></a></li>
             <li><a href="demo/case1/index.html"><img src="images/Legend.png" alt=""/>
                 <p>移动Web</p>
             </a></li>

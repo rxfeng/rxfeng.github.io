@@ -7,6 +7,7 @@ window.onload = function () {
     var arrLeft = document.getElementById("arrLeft");
 
     var arrow = document.getElementById("arrow");
+    var $codingUl = $('#codingUl');
     var config = [//config 配置
         {
             width: 400,
@@ -53,9 +54,7 @@ window.onload = function () {
     //wrap.onmouseout = function () {
     //    animate(arrow, {"opacity": 0.7});
     //}
-
     //2.根据配置单 对每一个li的位置进行分配
-    var aa = 0;
     function assign() {
         for (var i = 0; i < lis.length; i++) {
             //让图片渐渐地到达指定位置
@@ -63,7 +62,6 @@ window.onload = function () {
             animate(lis[i], config[i], function () {
                 //执行回调函数的时候说明动画已经执行完了
                 flag = true;//打开节流阀
-                aa= i;
             });
         }
     }
@@ -91,7 +89,20 @@ window.onload = function () {
     //4.添加节流阀
     var flag = true;//flag为true的时候表示节流阀打开 箭头可以点击
 
-
+    $codingUl.on('mouseenter',"li",function(){
+        var imgIndex = $(this).index();
+        $('#codingUl p').eq(imgIndex).stop().show().animate({
+            "font-size": "50px",
+            "opacity": 0.8
+        });
+    })
+    $codingUl.on('mouseleave',"li",function(){
+        var imgIndex = $(this).index();
+        $('#codingUl p').eq(imgIndex).stop().animate({
+            "font-size": "20px",
+            "opacity": 0.3
+        });
+    })
 
 
 }
