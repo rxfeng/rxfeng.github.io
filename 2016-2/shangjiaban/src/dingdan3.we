@@ -1,0 +1,665 @@
+<template>
+    <xx-navpage navtitle="订单"
+                navlefturl="fuwudd.js" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;" append="node">
+
+            <list class="flow" style="margin-bottom: {{bottom}}">
+                <cell class="dingdaninfo" style="background-color: #FFFAF4;" onclick="goxiangqing">
+                    <container>
+                        <container class="info">
+                            <text class="info-txt1">订单类型：
+                            </text>
+                            <text class="info-txt2">{{leixing}}</text>
+                        </container>
+                        <container class="info">
+                            <text class="info-txt1">车辆型号：</text>
+                            <text class="info-txt2" style="width: 500px;lines: 1;text-overflow: ellipsis;">
+                                {{orderInfo.carFullTypeName}}
+                            </text>
+                        </container>
+                        <container class="info">
+                            <text class="info-txt1">车牌号码：</text>
+                            <text class="info-txt2">{{orderInfo.carLicence}}</text>
+                        </container>
+                        <container
+                                class="info">
+                            <text class="info-txt1">客户姓名：</text>
+                            <text class="info-txt2">{{orderInfo.senderName}}
+                            </text>
+                        </container>
+                        <container
+                                class="info">
+                            <text class="info-txt1">客户手机：</text>
+                            <text
+                                    class="info-txt2">{{orderInfo.senderCell}}
+                            </text>
+                        </container>
+                        <container
+                                class="info">
+                            <text class="info-txt1">订单号：</text>
+                            <text
+                                    class="info-txt2">{{orderInfo.orderNumber}}
+                            </text>
+                        </container>
+                        <image class="jiantou-right" src="{{dir}}images/right-jiao.fw.png"></image>
+                        <image
+                                class="img duanxin" src="{{dir}}images/duanxin.png" onClick="sendmsg"></image>
+                        <image class="img dianhua" src="{{dir}}images/dianhua.png"
+                               onClick="callphone"></image>
+                    </container>
+                </cell>
+                <refresh style="align-items: center;" display="{{refresh_display}}" onrefresh="datarefresh">
+                    <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+                </refresh>
+                <cell style="padding-left: 50px;padding-top: 20px;">
+                    <div class="flowtop"></div>
+                    <div class="cont" repeat={{progressList}} onclick="itemClick" item="{{$index}}">
+                        <div if="{{$index!=progressList.length-1&&$index>0&&progress>=$index}}"
+                             class="flow-line flow-linexia"></div>
+                        <div if="{{progress<$index}}"
+                             class="flow-line flow-line2 flow-linexia"></div>
+                        <div class="time">
+                            <text class="time-txt1" if="{{progress!=$index}}">{{ftime(ctime)}}</text>
+                            <text class="time-txt1" style="color:#E95412" if="{{progress==$index}}">{{ftime(ctime)}}
+                            </text>
+                            <text class="time-txt2" if="{{progress!=$index}}">{{fday(ctime)}}</text>
+                            <text class="time-txt2" style="color:#E95412" if="{{progress==$index}}">{{fday(ctime)}}
+                            </text>
+                        </div>
+                        <div class="line">
+                            <image if="{{$index==0}}" class="flow1" src="{{dir}}images/flow1.png"></image>
+                            <image if="{{!$index==0&&progress<$index}}" class="flow1"
+                                   src="{{dir}}images/flow4.png"></image>
+                            <image if="{{!$index==0&&progress==$index}}" class="flow1"
+                                   src="{{dir}}images/flow3.png"></image>
+                            <image if="{{!$index==0&&progress>$index}}" class="flow1"
+                                   src="{{dir}}images/flow2.png"></image>
+                            <div if="{{$index!=progressList.length-1&&progress>$index}}"
+                                 class="flow-line"></div>
+                            <div if="{{$index!=progressList.length-1&&progress<=$index}}"
+                                 class="flow-line flow-line2"></div>
+                        </div>
+                        <div class="font">
+                            <!--<text class="time-txt1">{{title}}</text>-->
+                            <text class="time-txt1" style="color:#a0a0a0;" if="{{progress<$index}}">{{title}}</text>
+                            <text class="time-txt1" if="{{progress>$index}}">{{title}}</text>
+                            <text class="time-txt1" style="color:#E95412" if="{{progress==$index}}">{{title}}</text>
+                            <text class="time-txt2" if="{{progress!=$index}}">{{subTitle}}</text>
+                            <text class="time-txt1" style="color:#E95412" if="{{progress==$index}}">{{subTitle}}
+                            </text>
+                        </div>
+                        <image if="{{isInfo&&ctime}}" class="jiantou jiantou2"
+                               src="{{dir}}images/right-jiao.fw.png"></image>
+                        <div if={{isButton&&ctime}} class="btn">
+                            <text class="btn-txt">{{wenben}}</text>
+                        </div>
+                        <div if="{{$index!=progressList.length-1&&progress>$index}}"
+                             class="flow-line flow-lineshang"></div>
+                        <div if="{{$index!=progressList.length-1&&progress<=$index}}"
+                             class="flow-line flow-line2 flow-lineshang"></div>
+                    </div>
+                    <div style="width: 5px;height: 30px;background-color: #FFFAF4;margin-left: 100px;margin-top: -91px;"></div>
+                    <div repeat={{progressList}}>
+                        <div style="flex-direction: row;justify-content: center;margin-bottom: 10px;">
+                            <div if={{title=='完成'&&ctime}} class="botLine"></div>
+                            <image if={{title=='完成'&&ctime}} class="bottompic"
+                                   src="{{dir}}images/bottompic.png"></image>
+                        </div>
+                        <text if={{title=='完成'&&ctime}} class="jieshu">本次任务已完成</text>
+                    </div>
+                </cell>
+            </list>
+        </scroller>
+        <dd3 title1="赠送红包" title2="{{title2}}" class="dd" if={{wanjie}} txtcolor={{txtcolor}}
+             boxcolor={{boxcolor}}></dd3>
+    </xx-navpage>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var count;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            boxcolor: "",
+            txtcolor: "",
+            refresh_display: "hide",
+            orderInfo: {},
+            progress: 5,
+            progressList: [],
+            cont2: [],
+            orderId: "",
+            wenben: "确 认",
+            xiangqing: "",
+            leixing: "",
+            title2: "拍照接车",
+            refresh_display: "hide",
+            wanjie: true,
+            bottom: 100,
+        },
+        created: function (e) {
+            var _this = this;
+            _this.orderId = api.getData(_this).id;
+            api.call("factory/queryOrderOne", {id: _this.orderId}, function (ret) {
+                _this.orderInfo = ret.data.orderInfo;
+                if (ret.data.orderInfo.orderType == 1) {
+                    _this.leixing = "维修保养";
+                } else if (ret.data.orderInfo.orderType == 3) {
+                    _this.leixing = "现场救援";
+                }
+            });
+//            请求
+            _this.qingqiu();
+            _this.$on('dianji', function (e) {
+                if (_this.title2 == "拍照接车") {
+                    var a = 0;
+                    for (var i = 0; i < _this.progressList.length; i++) {
+                        if (_this.progressList[i].title == "车辆正在前往目的地") {
+                            a = 1;
+                            if (_this.progressList[i].ctime) {
+                                a = 2;
+                            }
+                        }
+                    }
+                    if (a == 0 || a == 2) {
+//                        _this.boxcolor="";
+//                        _this.txtcolor="";
+                        api.push("paizhaojieche2.js", {orderId: _this.orderId}, function (e) {
+                            api.refresh();
+                        });
+                    } else {
+//                        _this.boxcolor="boxcolor";
+//                        _this.txtcolor="txtcolor";
+                        api.tost("请等待车辆到达目的地");
+                    }
+                } else if (_this.title2 == "添加项目") {
+                    api.push("addxiangmu.js", {orderId: _this.orderId}, function (e) {
+                        api.refresh();
+                    })
+                } else if (_this.title2 == "旧件拍照") {
+//                    判断是否确定了，如果确定就可以点击，如果是待确定就不能点击
+//                    for (var i = 0; i < _this.progressList.length; i++) {
+//                        if (_this.progressList[i].wenben == "待确认" && _this.progressList[i].title == "项目确认") {
+//                            api.tost("请等待用户确认");
+//                        } else {
+//                            api.push("paizhaojieche2.js",{orderId:_this.orderId},function (e) {
+//                                api.refresh();
+//                            });
+//                            break;
+//                        }
+//                    }
+                    var isgo = 0;
+                    for (var i = 0; i < _this.progressList.length; i++) {
+                        if (_this.progressList[i].wenben == "查 看" && _this.progressList[i].title == "二次项目确认") {
+                            isgo = 1;
+                            api.push("paizhaojieche3.js", {orderId: _this.orderId}, function (e) {
+                                api.refresh();
+                            });
+                            break;
+                        } else if (_this.progressList[i].title == "维修中" && _this.progressList[i + 1].title == "车辆维修完毕") {
+                            isgo = 1;
+                            api.push("paizhaojieche3.js", {orderId: _this.orderId}, function (e) {
+                                api.refresh();
+                            });
+                            break;
+                        }
+                    }
+                    if (isgo == 0) {
+                        api.tost("请等待用户确认");
+                    }
+                } else if (_this.title2 == "安排送车") {
+                    var songche = 0;
+                    for (var i = 0; i < _this.progressList.length; i++) {
+                        if (_this.progressList[i].wenben == "已支付" && _this.progressList[i].title == "订单支付") {
+                            songche = 1;
+                            break;
+                        }
+                    }
+                    if (songche == 1) {
+                        api.tost("订单已支付，无法再安排送车");
+                    } else {
+                        if (count == 0) {
+                            api.push("songcheshangmen.js", {orderId: _this.orderId}, function (e) {
+                                api.refresh();
+                            });
+                        } else if (count == 1) {
+                            api.tost("已安排过送车");
+                        }
+                    }
+                }
+            });
+            _this.$on('dianji2', function (e) {
+                api.log("id:" + this.orderId);
+                api.push("hbzs.js", {orderId: _this.orderId});
+            });
+        },
+        methods: {
+            sendmsg: function (e) {
+                require('@weex-module/utils').sendSMS(this.orderInfo.senderCell,"");    //短信
+//                api.push("paizhaojieche3.js");
+//                api.push("addxiangmu.js", {orderId: this.orderId});
+//                api.push("cheliangxingshiluxian.js", {orderId: this.orderId});
+
+//                api.hxchat({
+//                    username: "YX_" + 22,
+//                    nick: "haha",
+//                    icon: "http://www.yixiucar.com/app/user/images/sya.png"
+//                });
+            },
+            onseclled: function (e) {
+                var sx = e.data.rangeHeight - e.data.height - e.data.offsetY;
+                if (sx < 50) {
+                    this.loadMore();
+                }
+            },
+            datarefresh: function (e) {
+                this.refresh_display = "show";
+                this.page = 1;
+                this.loaddata();
+            },
+            loadMore: function (e) {
+                api.log(this.page);
+                var _this = this;
+                this.page++;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                this.qingqiu();
+                this.refresh_display = "hide";
+            },
+            ftime: function (e) {
+                if (e) {
+                    return e.split(" ")[1].substring(0, 5);
+                }
+                return "";
+            },
+            fday: function (e) {
+                if (e) {
+                    return e.split(" ")[0].substring(5);
+                }
+                return "";
+            },
+            itemClick: function (e) {
+                var _this = this;
+                var index = e.target.attr.item;
+                var p = this.progressList[index];
+                if (p.isInfo) {
+                    if (p.subTitle == "查看 预约项目" && p.ctime) {
+                        api.push("yuyuexiangmu.js", {id: _this.orderId});
+                    } else if (p.subTitle == "查看 服务顾问信息" && p.ctime) {
+                        api.call("factory/queryDriver", {id: _this.orderId}, function (ret) {
+                            require('@weex-module/driverdialog').getDriver(ret.data);
+                        });
+                    } else if (p.subTitle == "查看 代驾人员信息" && p.type == 0 && p.ctime) {
+                        api.call("factory/queryDriver", {id: _this.orderId}, function (ret) {
+                            api.dialog(_this.dir + "zi-daijiaxinxi.js", {info: ret.data.driverInfo});
+                        });
+                    } else if (p.subTitle == "查看 代驾人员位置" && p.ctime) {
+                        if (_this.progressList[index + 1].title == "取车完成" && this.progressList[index + 1].ctime) {
+                            api.tost("代驾人员已取车完成")
+                        } else {
+                            api.push("daijiaweizhi.js", {orderId: _this.orderId});
+                        }
+                    } else if (p.subTitle == "查看 车辆当前行驶轨迹" && p.type == 0 && p.ctime) {
+//                        if (_this.progressList[index + 1].title == "车辆到达目的地" && this.progressList[index + 1].ctime) {
+//                            api.tost("车辆已经到达目的地");
+//                        } else {
+//                            api.push("cheliangxingshiluxian.js", {orderId: _this.orderId, type: 1});
+//                        }
+                        api.push("cheliangxingshiluxian.js", {orderId: _this.orderId, type: 1});
+                    } else if (p.subTitle == "拍照接车" && p.ctime) {
+                        api.push("shipin2.js", {orderId: _this.orderId, fanhuiurl: "dingdan3.js"}, function (e) {
+//                            api.refresh();
+                        });
+                    } else if (p.subTitle == "查看 当前车辆的维修视频" && p.ctime) {
+                        api.push("shipin3.js", {orderId: _this.orderId, fanhuiurl: "dingdan3.js"}, function (e) {
+//                            api.refresh();
+                        });
+                    } else if (p.subTitle == "查看 旧件照片" && p.ctime) {
+                        api.get("token", function (e) {
+                            api.push("shipin4.js", {orderId: _this.orderId, fanhuiurl: "dingdan3.js"}, function (e) {
+//                                api.refresh();
+                            });
+                        });
+                    } else if (p.subTitle == "查看 代驾人员信息" && p.type == 2 && p.ctime) {
+                        api.call("factory/sendCarDriver", {id: _this.orderId}, function (ret) {
+                            api.dialog(_this.dir + "zi-daijiaxinxi.js", {info: ret.data.driverInfo});
+                        });
+                    } else if (p.subTitle == "查看 车辆当前行驶轨迹" && p.type == 2 && p.ctime) {
+//                        if (_this.progressList[index + 1].title == "用户确认接收车辆" && this.progressList[index + 1].ctime) {
+//                            api.tost("车辆已经到达目的地");
+//                        } else {
+//                            api.push("cheliangxingshiluxian.js", {orderId: _this.orderId, type: 2});
+//                        }
+                        api.push("cheliangxingshiluxian.js", {orderId: _this.orderId, type: 2});
+                    } else {
+                        api.log("其他");
+                    }
+                }
+                if (p.isButton) {
+                    if (p.title == "二次项目确认" && p.ctime) {
+                        if (_this.wenben == "查 看") {
+                            api.push("yuyuexiangmu2.js", {id: _this.orderId});
+                            api.log("查看");
+                        } else {
+                            if (p.wenben == "待确认") {
+//                                api.push("yuyuexiangmu.js", {id: _this.orderId});
+                                api.push("yuyuexiangmu3.js", {id: _this.orderId});
+//                                api.tost("请等待用户确认");
+                            } else if (p.wenben == "确 认") {
+                                api.push("addxiangmu.js", {orderId: _this.orderId})
+                            }
+                        }
+                    }
+                }
+            },
+            goxiangqing: function (e) {
+                var _this = this;
+                api.push("dingdanxinxi.js", {id: _this.orderId});
+            },
+            callphone: function (e) {
+                require('@weex-module/utils').callPhone(this.orderInfo.senderCell);
+            },
+            qingqiu: function (e) {
+                var _this = this;
+                var aa = 0;
+                api.call("factory/queryOrderProgress", {orderId: _this.orderId}, function (ret) {
+//                    api.log(ret.data);
+                    count = ret.data.count;
+                    api.log("count:" + ret.data.count);
+                    _this.progressList = [];
+
+                    for (var i = 0; i < ret.data.opInfo.length; i++) {
+                        _this.progressList.push({
+                            index: i,
+                            ctime: ret.data.opInfo[i].createTime,
+                            title: ret.data.opInfo[i].title,
+                            subTitle: ret.data.opInfo[i].subTitle == "查看 服务顾问的信息" ? "拍照接车" : ret.data.opInfo[i].subTitle,
+                            isInfo: ret.data.opInfo[i].tetails,
+                            isButton: ret.data.opInfo[i].button,
+                            num: ret.data.opInfo[i].num,
+                            type: ret.data.opInfo[i].type,
+                            wenben: ret.data.opInfo[i].title == "订单支付" ? "待支付" : "待确认",
+                        });
+                        if (_this.progressList[i].ctime) {
+                            _this.progress = i;
+                        }
+                        if (_this.progressList[i].title == "车辆正在前往目的地") {
+                            aa = 1;
+                            if (_this.progressList[i].ctime) {
+                                aa = 2;
+                            }
+                        }
+                        if (_this.progressList[i].title == "订单支付" && _this.progressList[i].ctime) {
+                            if (_this.progressList[i].wenben == "待确认") {
+                                aa = 1;
+                            } else if (_this.progressList[i].wenben == "支 付") {
+                                aa = 2;
+                            } else if (_this.progressList[i].wenben == "已支付") {
+                                aa = 1;
+                            }
+
+                        }else if (_this.progressList[i].title == "二次项目确认" && _this.progressList[i].ctime) {
+                            if (_this.progressList[i].wenben == "待确认") {
+                                aa = 1;
+                            } else if(_this.progressList[i].wenben=="查 看"){
+                                aa = 2;
+                            }
+                        }
+                        if (count == 1) {
+                            aa = 1;
+                        }
+                        if (aa == 0 || aa == 2) {
+                            _this.boxcolor = "";
+                            _this.txtcolor = "";
+                        } else {
+                            _this.boxcolor = "boxcolor";
+                            _this.txtcolor = "txtcolor";
+                        }
+                    }
+
+                    for (var j = 0; j < _this.progressList.length; j++) {
+                        var p = _this.progressList[j];
+
+                        if (p.title == "预约成功" && p.ctime) {
+                            _this.title2 = "拍照接车";
+                        } else if (p.title == "车辆接收检查中" && p.ctime) {
+                            _this.title2 = "添加项目";
+                        } else if (p.title == "二次项目确认" && p.ctime) {
+                            _this.title2 = "旧件拍照";
+                        } else if (p.title == "维修中" && p.ctime && _this.progressList[j + 1].title == "车辆维修完毕") {
+                            _this.title2 = "旧件拍照";
+                        } else if (p.title == "车辆维修完毕" && p.ctime) {
+                            _this.title2 = "安排送车";
+                        } else if (p.title == "完成" && p.ctime) {
+                            _this.wanjie = false;
+                            _this.bottom = 0;
+                        }
+                        if (_this.progressList[j].title == "二次项目确认" && _this.progressList[j].ctime && _this.progressList[j].num == 1) {
+                            _this.progressList[j].wenben = "查 看";
+                            if(count==1){
+                                aa=1;
+                            }else{
+                                aa = 2;
+                            }
+                        }
+                        if (_this.progressList[j].title == "订单支付" && _this.progressList[j].ctime && _this.progressList[j].num == 2) {
+                            _this.progressList[j].wenben = "已支付";
+                            aa = 1;
+                        }
+                        if (_this.progressList[j].title == "用户确认接收车辆" && _this.progressList[j].ctime && _this.progressList[j].num == 3) {
+                            _this.progressList[j].wenben = "已确认";
+                        }
+                    }
+                    if (aa == 0 || aa == 2) {
+                        _this.boxcolor = "";
+                        _this.txtcolor = "";
+                    } else {
+                        _this.boxcolor = "boxcolor";
+                        _this.txtcolor = "txtcolor";
+                    }
+                });
+            }
+        }
+    }
+</script>
+<style>
+    .refresh-view {
+        padding: 30px;
+        align-items: center;
+    }
+
+    .tupian {
+        width: 150px;
+        height: 150px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+
+    .jiantou-right {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 150px;
+        right: 20px;
+    }
+
+    .jiantou2 {
+        top: 30px;
+    }
+
+    .cont {
+        flex-direction: row;
+    }
+
+    .time {
+        width: 80px;
+        /*backgroundColor:red;*/
+    }
+
+    .time-txt1 {
+        font-size: 28px;
+        text-align: center;
+        color: #373634;
+    }
+
+    .time-txt2 {
+        font-size: 24px;
+        color: #a0a0a0;
+        text-align: center;
+    }
+
+    .line {
+        height: 130px;
+        /*backgroundColor: yellow;*/
+        margin-top: 10px;
+    }
+
+    .flow {
+        backgroundColor: #FFFAF4;
+        /*padding-top: 20px;*/
+        /*padding-left: 50px;*/
+        borderWidth: 1px;
+        borderColor: #e6e6e6;
+    }
+
+    .flow1 {
+        width: 47px;
+        height: 47px;
+    }
+
+    .flow-line {
+        width: 5px;
+        height: 80px;
+        /*backgroundColor: #545655;*/
+        backgroundColor: #E95412;
+        position: absolute;
+        top: 38px;
+        left: 20px;
+    }
+
+    .flow-line2 {
+        backgroundColor: #ABA9AA;
+    }
+
+    .flow-lineshang {
+        top: 62px;
+        left: 100px;
+    }
+
+    .flow-linexia {
+        top: 0px;
+        left: 100px;
+    }
+
+    .font {
+        /*backgroundColor:red;*/
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .btn {
+        width: 120px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        backgroundColor: #E95412;
+        border-radius: 10px;
+        position: absolute;
+        top: 10px;
+        right: 30px;
+    }
+
+    .btn-txt {
+        font-size: 30px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .dd {
+        position: absolute;
+        bottom: 0;
+    }
+
+    .bottompic {
+        width: 428px;
+        height: 192px;
+    }
+
+    .jieshu {
+        background: #FFFAF4;
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+        padding-bottom: 50px;
+        padding-top: 20px;
+    }
+
+    .botLine {
+        width: 5px;
+        height: 30px;
+        background-color: #E95412;
+        margin-top: -150px;
+    }
+
+    .img {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 120px;
+        right: 0px;
+    }
+
+    .duanxin {
+        right: 120px;
+    }
+
+    .dianhua {
+        right: 15px;
+    }
+
+    .flowtop {
+        width: 5px;
+        height: 200px;
+        background-color: #E95412;
+        position: absolute;
+        top: 0px;
+        left: 150px;
+    }
+</style>

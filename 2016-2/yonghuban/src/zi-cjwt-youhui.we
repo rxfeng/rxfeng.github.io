@@ -1,0 +1,24 @@
+<template>
+    <div class="wt">
+
+    </div>
+</template>
+<style>
+    .wt{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .title{
+        font-size: 30px;
+        font-weight: bold;
+    }
+    .txt{
+        font-size: 29px;
+        color: #a0a0a0;
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+    .ol{
+        margin-left: 25px;
+    }
+</style>

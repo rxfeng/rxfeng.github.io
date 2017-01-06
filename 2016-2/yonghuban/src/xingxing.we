@@ -1,0 +1,128 @@
+<template>
+    <div class="xxdiv">
+        <image class="xxpic xx1" src="{{dir}}images/xx1.png"></image>
+        <image class="xxpic xx2" src="{{dir}}images/xx1.png"></image>
+        <image class="xxpic xx3" src="{{dir}}images/xx1.png"></image>
+        <image class="xxpic xx4" src="{{dir}}images/xx1.png"></image>
+        <image class="xxpic xx5" src="{{dir}}images/xx1.png"></image>
+        <image if={{xx1}} class="xxpic xx1" src="{{dir}}images/xx2.png"></image>
+        <image if={{xx11}} class="xxpic xxpic3 xx1" src="{{dir}}images/xx3.png"></image>
+        <image if={{xx2}} class="xxpic xx2" src="{{dir}}images/xx2.png"></image>
+        <image if={{xx22}} class="xxpic xxpic3 xx2" src="{{dir}}images/xx3.png"></image>
+        <image if={{xx3}} class="xxpic xx3" src="{{dir}}images/xx2.png"></image>
+        <image if={{xx33}} class="xxpic xxpic3 xx3" src="{{dir}}images/xx3.png"></image>
+        <image if={{xx4}} class="xxpic xx4" src="{{dir}}images/xx2.png"></image>
+        <image if={{xx44}} class="xxpic xxpic3 xx4" src="{{dir}}images/xx3.png"></image>
+        <image if={{xx5}} class="xxpic xx5" src="{{dir}}images/xx2.png"></image>
+        <image if={{xx55}} class="xxpic xxpic3 xx5" src="{{dir}}images/xx3.png"></image>
+    </div>
+</template>
+<style>
+    .xxdiv {
+        position: relative;
+        width: 200px;
+        height: 40px;
+        margin-top: 5px;
+    }
+    .xxpic {
+        width: 33px;
+        height: 33px;
+        position: absolute;
+        overflow: hidden;
+    }
+    .xxpic3{
+        width: 19px;
+    }
+    .xx1 {
+        left: 10px;
+    }
+
+    .xx2 {
+        left: 43px;
+    }
+
+    .xx3 {
+        left: 76px;
+    }
+
+    .xx4 {
+        left: 109px;
+    }
+
+    .xx5 {
+        left: 143px;
+    }
+    .xx33{
+
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            xx1: false,
+            xx2: false,
+            xx3: false,
+            xx4: false,
+            xx5: false,
+            xx11:false,
+            xx22:false,
+            xx33:false,
+            xx44:false,
+            xx55:false,
+            star: "",
+        },
+        created: function () {
+            if(this.star>5){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+                this.xx4 = true;
+                this.xx5 = true;
+            } else if ( this.star>4.5 && this.star <= 5) {
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+                this.xx4 = true;
+                this.xx5 = true;
+            }else if(this.star>4 && this.star <=4.5){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+                this.xx4 = true;
+                this.xx55 = true;
+            }else if(this.star>3.5 && this.star <=4){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+                this.xx4 = true;
+            }else if(this.star>3 && this.star <=3.5){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+                this.xx44 = true;
+            }else if(this.star>2.5 && this.star <=3){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx3 = true;
+            }else if(this.star>2 && this.star <=2.5){
+                this.xx1 = true;
+                this.xx2 = true;
+                this.xx33 = true;
+            }else if(this.star>1.5 && this.star <=2){
+                this.xx1 = true;
+                this.xx2 = true;
+            }else if(this.star>1 && this.star <=1.5){
+                this.xx1 = true;
+                this.xx22 = true;
+            }else if(this.star>0.5 && this.star <=1){
+                this.xx1 = true;
+            }else if(this.star>0 && this.star <=0.5){
+                this.xx11 = true;
+            }
+        }
+    }
+</script>

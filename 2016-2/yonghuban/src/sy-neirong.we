@@ -1,0 +1,238 @@
+<template>
+    <container>
+        <div class="cont" onclick="shangjiaxiangqing">
+            <div class="cont-left" hhhhhhh={{factoryId}}>
+                <image src="{{facIcon}}" class="cont-left-img"></image>
+            </div>
+            <div class="cont-right">
+                <div class="cont-right-one">
+                    <text class="bcj">{{factoryName}}</text>
+                    <text class="yuyue-txt">{{repair.repairType}}</text>
+                </div>
+                <div class="cont-right-two">
+                    <xingxing star="{{totalscore}}" style="width: 200px;margin-left: -10px;margin-top: 10px"></xingxing>
+                    <div class="yuyue">
+                        <text class="yuyue-txt2">已预约:{{saleCount}} | 车均消费:￥{{average}}</text>
+                    </div>
+                </div>
+                <div class="cont-right-three">
+                    <div class="cont-right-three1">
+                        <div class="tb">
+                            <image if={{control}} src="{{dir}}images/danxuan2.png"
+                                   class="sel"></image>
+                            <image if={{!control}}
+                                   src="{{dir}}images/danxuan3.png"
+                                   class="sel"></image>
+                        </div>
+                        <text class="yuyue-txt">修车全程监控</text>
+                    </div>
+                    <div class="cont-right-three2">
+                        <div class="tb">
+                            <image if={{isDrive}}
+                                   src="{{dir}}images/danxuan2.png"
+                                   class="sel"></image>
+                            <image if={{!isDrive}}
+                                   src="{{dir}}images/danxuan3.png"
+                                   class="sel"></image>
+                        </div>
+                        <text class="yuyue-txt">免费上门取送车</text>
+                    </div>
+                    <div class="cont-right-three3">
+                        <div class="tb">
+                            <image src="{{dir}}images/dw.png" class="sel" style="margin-left: -5px;margin-right: -5px"></image>
+                        </div>
+                        <text class="yuyue-txt">{{distance}}Km</text>
+                    </div>
+                </div>
+                <div style="flex-direction: row;flex-wrap: wrap;">
+                    <div style="flex-direction: row;margin-top: -5px" repeat="{{eventList}}">
+                        <div if={{sign}} style="margin-bottom: 10px;margin-left: 10px;flex-direction: row;">
+                            <image class="zhe" resize=stretch src="{{dir}}images/zhe.png"></image>
+                            <!--<image class="zhe2" resize=stretch src="{{dir}}images/zhe2-left.png"></image>-->
+                            <!--<text class="zhe2-txt">{{content}}</text>-->
+                            <!--<image class="zhe2" resize=stretch src="{{dir}}images/zhe2-right.png"></image>-->
+                        </div>
+                        <div if={{!sign}} style="margin-bottom: 10px;margin-left: 10px;flex-direction: row;margin-top: 5px">
+                            <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-left.png"></image>
+                            <div class="zhe2box">
+                                <text class="zhe2-txt">{{content}}</text>
+                            </div>
+                            <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-right.png"></image>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <text class="xuanze" if={{xuanze}} onclick="xuanzeclick">选 择</text>
+            <div class="dianpu" if={{isyuyue}}>
+                <text class="dianpu-txt">上次预约店</text>
+            </div>
+        </div>
+    </container>
+</template>
+<style>
+    /*上次预约店*/
+    .dianpu {
+        width: 170px;
+        background-color: rgba(255, 255, 255, 0.4);
+        position: absolute;
+        top: 165px;
+        left: 30px;
+    }
+
+    .dianpu-txt {
+        color: #E95412;
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .cont {
+        flex-direction: row;
+        margin-bottom: 10px;
+        padding: 30px;
+        padding-bottom: 10px;
+        backgroundColor: #fff;
+
+    }
+
+    .cont-left {
+        margin-right: 10px;
+
+    }
+
+    .cont-right {
+        width: 500px;
+        position: relative;
+        margin-top: -5px;
+    }
+
+    .cont-left-img {
+        width: 170px;
+        height: 163px;
+        flex-direction: row;
+    }
+
+    .cont-right-one {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .bcj {
+        font-size: 33px;
+        color: #373634;
+    }
+
+    .cont-right-two {
+        height: 50px;
+        flex-direction: row;
+    }
+
+    .yuyue {
+        margin-left: 0px;
+        margin-top: 12px;
+    }
+
+    .yuyue-txt {
+        font-size: 24px;
+        color: #a0a0a0;
+        margin-top: 5px;
+    }
+
+    .yuyue-txt2 {
+        font-size: 24px;
+        color: #a0a0a0;
+    }
+
+    .cont-right-three {
+        flex-direction: row;
+        flex-wrap: nowrap;    /*不换行*/
+        margin-bottom: 10px;
+    }
+    .tb{
+        margin-left: -5px;
+    }
+    .cont-right-three1 {
+        flex-direction: row;
+        margin-right: 0px;
+    }
+
+    .cont-right-three2 {
+        flex-direction: row;
+        margin-right: 5px;
+    }
+
+    .cont-right-three3 {
+        flex-direction: row;
+        margin-left: 5px;
+    }
+
+    .sel {
+        width: 37px;
+        height: 37px;
+    }
+
+    .zhe {
+        width: 72px;
+        height: 35px;
+        margin-top: 5px;
+    }
+
+    .zhe2 {
+        width: 25px;
+        height: 35px;
+    }
+
+    .zhe2box {
+        height: 35px;
+        background-color: #E95412;
+    }
+
+    .zhe2-txt {
+        height: 35px;
+        /*line-height: 35px;*/
+        font-size: 28px;
+        color: #fff;
+        text-align: center;
+        /*padding: 0;*/
+        /*margin: 0;*/
+        margin-top:-1px
+    }
+
+    .xuanze {
+        padding-bottom: 2px;
+        padding-top: 2px;
+        padding-right: 20px;
+        padding-left: 20px;
+        font-size: 28px;
+        color: #fff;
+        backgroundColor: #E95412;
+        position: absolute;
+        bottom: 10px;
+        right: 20;
+    }
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            sjurl:"",
+            eventList:[],
+            xuanze:false,
+//            factoryId:"",
+        },
+        methods: {
+            shangjiaxiangqing: function (e) {
+//                api.log("factoryId:"+ this.factoryId);
+                api.push(this.sjurl, {factoryId:this.factoryId});
+            },
+            xuanzeclick: function (e) {
+                api.push("xiangmuqueren.js", {});
+            }
+        },
+        ready: function () {
+
+        }
+    }
+</script>

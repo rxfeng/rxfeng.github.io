@@ -1,0 +1,140 @@
+<template>
+    <xx-navpage navtitle="客户详情" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="kehudangan.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="dingdaninfo">
+                <div>
+                    <div class="info">
+                        <text class="info-txt1">姓名：</text>
+                        <text class="info-txt2">{{name}}</text>
+                    </div>
+                    <div class="info" onclick="bohao">
+                        <text class="info-txt1">手机号：</text>
+                        <text class="info-txt2">{{phone}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">性别：</text>
+                        <text class="info-txt2">{{sex}}</text>
+                    </div>
+                    <image class="img duanxin"
+                           src="{{dir}}images/duanxin.png"></image>
+                    <image class="img dianhua" onclick="bodadianhua"
+                           src="{{dir}}images/dianhua.png"></image>
+                </div>
+            </div>
+            <kehuxiangqing-info if={{isXianshi}} kefu={{kefu}}></kehuxiangqing-info>
+        </scroller>
+    </xx-navpage>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            name: "",
+            phone: "****",
+            sex: "",
+            isXianshi:false,
+            kefu:[
+                {
+                    id:"",
+                    chepaihao: "",
+                    car: "",
+                    bxdq1: "",
+                    bxdq2:"",
+                    bxdq3:"",
+                    carId:"",
+                },
+            ]
+        },
+        created: function (e) {
+            var _this = this;
+            var id = api.getData(_this).id;
+//            -----------------------客户详情-----------------------------------
+            api.call("factory/ClientDetail", {id: id}, function (ret) {
+                _this.name = ret.data.realName;
+                _this.phone = ret.data.cellphone;
+                _this.sex = ret.data.gender;
+                api.log(ret.data);
+                if(ret.data.carInfo.length>0){
+                    _this.isXianshi = true;
+                    for (var i = 0; i < ret.data.carInfo.length; i++) {
+                        if(ret.data.carInfo[i].insuranceEndDate){
+                            ret.data.carInfo[i].insuranceEndDate = ret.data.carInfo[i].insuranceEndDate.slice(0,10)
+                        }
+                        if(ret.data.carInfo[i].checkEndDate){
+                            ret.data.carInfo[i].checkEndDate = ret.data.carInfo[i].checkEndDate.slice(0,10)
+                        }
+                        _this.kefu.$set(i,
+                                {
+                                    id:ret.data.carInfo[i].id,
+                                    carId:ret.data.carInfo[i].carId,
+                                    chepaihao:ret.data.carInfo[i].carLicence,
+                                    car:ret.data.carInfo[i].carFullTypeName,
+                                    bxdq1: ret.data.carInfo[i].insuranceEndDate,
+                                    bxdq2: ret.data.carInfo[i].checkEndDate,
+                                    bxdq3: ret.data.carInfo[i].carNextDate,
+                                })
+                    }
+                }else{
+                    _this.isXianshi = false;
+                }
+            });
+//            -----------------------客户详情-----------------------------------
+        },
+        methods:{
+            bodadianhua: function (e) {
+                require('@weex-module/dialanumber').boHao(this.phone);
+            },
+        }
+    }
+</script>
+
+<style>
+    .backcolor{
+        backgroundColor: #F5F3F8;
+    }
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        margin-bottom: 20px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+
+    }
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+
+    .img {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        top: 30px;
+    }
+
+    .duanxin {
+        right: 130px;
+    }
+
+    .dianhua {
+        right: 10px;
+    }
+
+</style>

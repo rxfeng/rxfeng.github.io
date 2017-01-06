@@ -1,0 +1,61 @@
+<template>
+    <wxc-navpage data-role="none" background-color="#E95412" title-color="white" right-item-color="white"  left-item-color="white"
+                 height={{navBarHeight}} title={{navtitle}} right-item-title={{navrighttitle}} left-item-title={{navlefttitle}}
+                 right-item-src={{navrightsrc}} leftdata={{leftdata}} left-item-src={{navleftsrc}} style="backgroundColor: {{bg}}">
+        <content></content>
+    </wxc-navpage>
+</template>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            navBarHeight:88,
+            navtitle:"",
+            navrighttitle:"",
+            navlefttitle:"",
+            navrightsrc:"",
+            navleftsrc:"",
+            navlefturl:"",
+            navrighturl:"",
+            bg:"",
+            leftdata:"",
+        },
+        created: function() {
+            this.$getConfig(function (config) {
+                var env = config.env;
+                if(env.platform == 'iOS'){
+                    var scale = env.scale;
+                    var deviceWidth = env.deviceWidth / scale;
+                    this.navBarHeight = 64.0 * 750.0 / deviceWidth;
+                }
+            }.bind(this));
+
+            this.$on('naviBar.rightItem.click',function(e){
+                var vm = this;
+                if(!vm.navrighturl)return;
+                var params = {
+                    'url':api.dir+this.navrighturl,
+                    'data':JSON.stringify(vm.leftdata),
+                    'animated': 'true',
+                }
+//                vm.$dispatch('navpage');
+                //data.isFirst = first || 0;
+                api.push(vm.navrighturl,vm.leftdata);
+                //vm.$call('navigator', 'push', params, function () {});
+
+            });
+
+            this.$on('naviBar.leftItem.click',function(e){
+                var vm = this;
+                if(!vm.navlefturl)return;
+                var params = {
+                    'url':api.dir +vm.navlefturl,
+                    'animated': 'true',
+                }
+                vm.$call('navigator', 'pop', params, function () {});
+            });
+        },
+    }
+</script>

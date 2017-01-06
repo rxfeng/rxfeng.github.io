@@ -1,0 +1,189 @@
+<template>
+    <xx-navpage navtitle="保养手册" navrighttitle="" navlefturl="" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png">
+        <div class="title">
+            <image class="pic" src="{{dir}}images/dazhong.png"></image>
+            <div style="margin-left: 20px;">
+                <text class="title-txt1">奥迪 A6L 2014款 35 FSI 舒适型</text>
+                <text class="title-txt2">实际里程 23000km</text>
+            </div>
+        </div>
+        <div class="biaoti" style="borderWidth:0;">
+            <text class="title-txt2">随保养赠送厂家免费检测</text>
+            <image class="tishi" src="{{dir}}images/zhuyi.png"></image>
+        </div>
+        <div class="box">
+            <div class="gongli">
+                <div class="xiangmu-box">
+                    <text class="gongli-txt">保养项目</text>
+                </div>
+                <div style="flex-direction: row;flex: 1;">
+                    <div class="gongli-box">
+                        <text class="center gongli-txt">40000</text>
+                        <text class="center gongli-txt">km</text>
+                    </div>
+                    <div class="gongli-box">
+                        <text class="center gongli-txt">50000</text>
+                        <text class="center gongli-txt">km</text>
+                    </div>
+                    <div class="gongli-box">
+                        <text class="center gongli-txt">60000</text>
+                        <text class="center gongli-txt">km</text>
+                    </div>
+                    <div class="gongli-box">
+                        <text class="center gongli-txt">70000</text>
+                        <text class="center gongli-txt">km</text>
+                    </div>
+                </div>
+            </div>
+            <div class="gongli">
+                <div class="xiangmu-box">
+                    <text class="gongli-txt">机油</text>
+                </div>
+                <div style="flex-direction: row;flex: 1;">
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                </div>
+            </div>
+            <div class="gongli">
+                <div class="xiangmu-box">
+                    <text class="gongli-txt">机油滤清器</text>
+                </div>
+                <div style="flex-direction: row;flex: 1;">
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                </div>
+            </div>
+            <div class="gongli">
+                <div class="xiangmu-box">
+                    <text class="gongli-txt">花粉滤清器</text>
+                </div>
+                <div style="flex-direction: row;flex: 1;">
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                </div>
+            </div>
+            <div class="gongli">
+                <div class="xiangmu-box">
+                    <text class="gongli-txt">空调滤清器</text>
+                </div>
+                <div style="flex-direction: row;flex: 1;">
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                    <div class="gongli-box1">
+                        <image class="xiangmu-pic" src="{{dir}}images/zhuan1.png"></image>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .title{
+        flex-direction: row;
+        padding: 20px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+    .title-txt1{
+        font-size: 32px;
+        color: #373634;
+    }
+    .title-txt2{
+        font-size: 28px;
+        color: #737373;
+    }
+    .pic{
+        width: 60px;
+        height: 60px;
+    }
+    .biaoti{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        background-color: #F5F3F8;
+        flex-direction: row;
+    }
+    .tishi{
+        width: 37px;
+        height: 37px;
+        margin-left: 10px;
+    }
+    .xiangmu-box{
+        justify-content: center;
+        width: 150px;
+    }
+    .gongli{
+        flex-direction: row;
+        padding: 10px;
+        padding-left: 20px;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+    .gongli-box{
+        flex: 1;
+    }
+    .gongli-box1{
+        flex: 1;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .center{
+        text-align: center;
+    }
+    .gongli-txt{
+        font-size: 30px;
+        color: #373634;
+    }
+    .xiangmu-pic{
+        width: 100px;
+        height: 100px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

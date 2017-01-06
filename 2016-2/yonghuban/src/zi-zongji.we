@@ -1,0 +1,109 @@
+<template>
+    <div class="bottom">
+        <text class="yuanjia jine-yuanjia">￥{{huiqian}}</text>
+        <div style="flex-direction: row">
+            <div style="margin-right: 10px;">
+                <div style="flex-direction: row">
+                    <text class="zongji-txt">总计:</text>
+                    <text class="zongjijine-txt red">￥{{redqian}}</text>
+                </div>
+                <text class="youhuijine-txt">（已优惠￥{{chajia}}）</text>
+            </div>
+            <div class="quedingbtn" onclick="yuyuequeren">
+                <text class="queding-txt">{{title}}</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .yuanjia {
+        font-size: 30px;
+        color: #a0a0a0;
+        text-decoration: line-through;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 750px;
+        height: 100px;
+        padding-left: 20px;
+        backgroundColor: #fff;
+        borderTopWidth: 1px;
+        borderColor: #e6e6e6;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .jine-yuanjia {
+        margin-top: 20px;
+
+    }
+
+    .zongji-txt {
+        font-size: 34px;
+        color: #373634;
+        margin-top: 10px;
+    }
+
+    .zongjijine-txt {
+        font-size: 34px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .youhuijine-txt {
+        font-size: 26px;
+        color: #a0a0a0;
+        margin-top: 5px;
+    }
+
+    .quedingbtn {
+        width: 180px;
+        backgroundColor: #E95412;
+        justify-content: center;
+    }
+
+    .queding-txt {
+        text-align: center;
+        color: #fff;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            redqian: 0,
+            huiqian: 0,
+            chajia: 0,
+            dir: api.dir,
+            title: "下一步",
+            url: "",
+            nextinfo: "",
+            washId:"",
+            dd:"",
+            itemdata:[],
+        },
+        methods: {
+            yuyuequeren: function (e) {
+
+                var _this = this;
+                api.call("driver/createWashOrder", {
+                    factoryId: _this.nextinfo.factoryId,
+                    iList:_this.itemdata
+                }, function (ret) {
+
+//                    api.log("订单id："+ret.data.crWaOrEn.orderId);
+                    api.push(_this.url,{id:ret.data.orderId});
+                }, function (ret) {});
+            },
+        },
+        ready: function () {
+//            require('@weex-module/alipay').alipay("订单支付");
+        }
+    }
+</script>

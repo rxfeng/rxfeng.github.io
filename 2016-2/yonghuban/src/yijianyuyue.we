@@ -1,0 +1,540 @@
+<template>
+    <xx-navpage navtitle="一键预约" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="index.js"
+                navleftsrc="{{dir}}images/fanhui.png">
+        <scroller style="flex:1;">
+            <div style="position: relative;">
+                <slider class="slider" interval="100000000" auto-play="false" onchange="change1"  index1 = {{$index}}>
+                    <div class="row car" repeat="{{car}}">
+                        <image class="img" src="{{tu}}"></image>
+                        <div style="margin-left: 20px">
+                            <text class="chepai-txt">{{cp}}</text>
+                            <text class="txt" style="width: 490px;lines: 1;text-overflow: ellipsis;">{{cx}}</text>
+                            <text class="txt">{{rq}}</text>
+                        </div>
+                    </div>
+                </slider>
+                <div class="jiao" style="width: 100px;height: 100px;justify-content: center;align-content: center"  index1 = {{index1}} onclick="leftclick">
+                    <image class="jiantou "  style="margin-left: 20px" src="{{dir}}images/left-jiao.fw.png" ></image>
+                </div>
+                <div class="jiao" style="width: 100px;height: 100px;justify-content: center;align-content: center;right:-20px" index1 = {{index1}} onclick="rightclick">
+                    <image class="jiantou"  style="margin-left: 20px" src="{{dir}}images/right-jiao.fw.png" ></image>
+                </div>
+            </div>
+            <div class="title" style="border-bottom-width: 0;padding-right: 30px">
+                <text class="lichengtxt">当前行程里程</text>
+                <div style="flex-direction: row;">
+                    <input type="tel" class="inp" oninput="oninput1" value="{{gongli}}" placeholder="请输入" />
+                    <text class="gonglitxt1">公里</text>
+                    <!--<image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>-->
+                </div>
+            </div>
+            <div class="spean"></div>
+            <div class="row" style="height: 100px;">
+                <hlist id="alist" onscrolled="scrolled" style="width: 750px;height: 100px;" if={{!pingguo}}>
+                    <cell class="rowtime" id="hehehehe" repeat={{shijian}}>
+                        <div style="width: 250px;padding-top: 10px" onclick="itemClick" index="{{$index}}">
+                            <text class="txt cen {{color}}">{{day}}</text>
+                            <text class="txt cen {{color}}">{{week}}</text>
+                        </div>
+                    </cell>
+                </hlist>
+                <selectedweek onselectedweek="pgclick" style="width: 750px;height: 100px;background-color: pink" if={{pingguo}}></selectedweek>
+                <image class="jiantou jiao1 left" src="{{dir}}images/left-jiao.fw.png"></image>
+                <image class="jiantou jiao1 right" src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <div class="title" onclick="gaibiantime">
+                <text class="lichengtxt">预约时间</text>
+                <div style="flex-direction: row">
+                    <text class="gonglitxt">{{yuyueTime}}</text>
+                    <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                </div>
+            </div>
+            <div style="height: 50px;"></div>
+            <text class="txt cent">100万车主在使用一修车管家</text>
+            <div class="row"
+                 style="justify-content: space-between;margin-left: 70px;margin-right: 70px;margin-top: -40px;">
+                <image class="fengeline" resize="contain" src="{{dir}}images/lineleft.png"></image>
+                <image class="fengeline" resize="contain" src="{{dir}}images/lineright.png"></image>
+            </div>
+            <div style="height: 40px;"></div>
+            <div class="row box">
+                <div style="flex: 1;">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/1.png"></image>
+                    </div>
+                    <text class="txt cent hei">质量保修无忧</text>
+                </div>
+                <div style="flex: 1">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/2.png"></image>
+                    </div>
+                    <text class="txt cent hei">实时视频监控</text>
+                </div>
+                <div style="flex: 1">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/3.png"></image>
+                    </div>
+                    <text class="txt cent hei">配件真伪验证</text>
+                </div>
+            </div>
+            <div style="height: 10px;"></div>
+            <div class="row box">
+                <div style="flex: 1;">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/4.png"></image>
+                    </div>
+                    <text class="txt cent hei">上门取送车辆</text>
+                </div>
+                <div style="flex: 1">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/5.png"></image>
+                    </div>
+                    <text class="txt cent hei">先维修后支付</text>
+                </div>
+                <div style="flex: 1">
+                    <div style="flex-direction: row;justify-content: center">
+                        <image class="yuyuepic" src="{{dir}}images/6.png"></image>
+                    </div>
+                    <text class="txt cent hei">线上预约红包</text>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <btn title="下一步" onclick="xiayibu"></btn>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .red {
+        color: #E95412;
+    }
+
+    .row {
+        flex-direction: row;
+    }
+
+    .slider {
+        flex-direction: row;
+        height: 180;
+    }
+
+    .slider2 {
+        flex-direction: row;
+        width: 750px;
+        height: 90;
+    }
+
+    .rowtime {
+        width: 250px;
+        height: 90px;
+    }
+
+    .car {
+        width: 750px;
+        padding-top: 30px;
+        height: 210;
+    }
+
+    .spean {
+        height: 20px;
+        background-color: #F5F3F8;
+    }
+
+    .lichengtxt {
+        font-size: 34px;
+        color: #373634;
+    }
+
+    .gonglitxt {
+        font-size: 28px;
+        color: #737373;
+    }
+    .gonglitxt1 {
+        font-size: 30px;
+        color: #737373;
+    }
+    .inp {
+        width: 430px;
+        height: 50px;
+        border-width: 0;
+        text-align: right;
+        margin-top: -5px;
+        font-size: 30px;
+        color: #737373;
+        background-color: #fff;
+        placeholder-color:#737373;
+    }
+
+    .yuyuetxt {
+
+    }
+
+    .line {
+        height: 50px;
+        width: 2px;
+        backgroundColor: #e6e6e6;
+        margin-top: 15px;
+    }
+
+    .cen {
+        text-align: center;
+    }
+
+    .txt {
+        font-size: 28px;
+        color: #737373;
+    }
+
+    .img {
+        width: 120px;
+        height: 120px;
+        margin-left: 50px;
+        margin-right: 20px;
+    }
+
+    .chepai-txt {
+        font-size: 34px;
+        color: #373634;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+    }
+
+    .jiaobiao {
+        margin-top: 5px;
+    }
+
+    .jiao {
+        position: absolute;
+        top: 45px;
+    }
+
+    .jiao1 {
+        position: absolute;
+        top: 30px;
+    }
+
+    .left {
+        left: 20px;
+    }
+
+    .right {
+        right: 20px;
+    }
+
+    .title {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+        borderWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .center {
+        /*flex: 1;*/
+        width: 250px;
+        text-align: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: red;
+    }
+
+    .cent {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .fengeline {
+        /*width: 200px;*/
+        width: 120px;
+        height: 9px;
+    }
+
+    .yuyuepic {
+        width: 90px;
+        height: 90px;
+        justify-content: center;
+    }
+
+    .box {
+        margin-right: 40px;
+        margin-left: 40px;
+    }
+
+    .hei {
+        color: #373634;
+    }
+
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    var ind = 0;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            index1:0,
+            redone: "",
+            redtwo: "red",
+            redthree: "",
+            licheng: "",
+            yuyueTime: "",
+            jintian: "",
+            mingtian: "",
+            houtian: "",
+            shijian: [],
+            appearMin: 1,
+            appearMax: 1,
+            scrollvalue: "11",
+            appearIds: [],
+            cheid: "",
+            chesj: "",
+            car: [],
+            selectIndex: "",
+            selctd: function (e) {
+                return e == selectIndex ? "red" : "";
+            },
+            carMileage: "",
+            dd: "",
+            tu: "",
+            cp: "",
+            cx: "",
+            rq: "",
+            isfuwu: "",
+            gongli: "",
+            pingguo:false,
+        },
+        methods: {
+            pgclick: function (e) {
+                api.log(e.data);
+                this.chesj = e.data;
+            },
+            oninput1: function (event) {
+                this.gongli = event.value;
+            },
+            lichengclick: function (e) {
+                var self = this;
+                api.dialog(self.dir + "zi-input.js",{}, function (e) {
+                    if(e.ok){
+                        var a = e.txt;
+                        if (isNaN(a) || a == "" || a <= 0) {
+                            api.tost('请输入正确的格式')
+                        } else {
+                            self.gongli = a;
+                        }
+                    }
+                });
+            },
+            xiayibu: function (e) {
+                if (this.isfuwu == 0) {
+                    if(isNaN(this.gongli) || this.gongli=="" || this.gongli<=0){
+                        api.tost("请输入正确的里程值");
+                    }else if (Number(this.licheng) > Number(this.gongli)) {
+                        api.tost("当前行驶里程应该不小于"+this.licheng+"公里");
+                    } else if (Number(this.gongli)>500000) {
+                        api.tost("里程值不能超过50万公里");
+                    } else {
+                        var orderinfo = orderinfo || {};
+                        orderinfo.carId = this.cheid;
+                        orderinfo.mileage = this.gongli;
+                        orderinfo.inittime = this.chesj + " " + this.yuyueTime;
+                        api.log(orderinfo);
+                        api.save("orderinfo", orderinfo);
+                        api.push("xichemeirong3.js", {xuanze: true, cheid: this.cheid});
+                    }
+                } else {
+                    api.tost("此车正在服务中.....");
+                }
+
+            },
+            change1: function (e) {
+                this.index1 = e.index;
+                this.huadong(e.index);
+//                api.log("index:" + e.index + ",车牌号:" + this.car[e.index].carLicence + ",公里数:" + this.car[e.index].carMileage + ",id:" + this.car[e.index].id);
+                api.log("index:" + e.index + ",车牌号:" + this.car[e.index].carLicence + ",公里数:" + this.licheng + ",id:" + this.car[e.index].id);
+            },
+            leftclick: function (e) {
+                if(!ind) e.target.attr.index1
+                if(ind==0){
+                    ind = this.car.length-1;
+                }else{
+                    ind--;
+                }
+                this.huadong(ind);
+            },
+            rightclick: function (e) {
+                if(!ind) e.target.attr.index1
+                if(ind==this.car.length-1){
+                    ind = 0;
+                }else{
+                    ind++;
+                }
+                this.huadong(ind);
+//                api.log(ind +','+this.car.length);
+            },
+            huadong: function (ind) {
+                this.tu = this.car[ind].carIcon;
+                this.cp = this.car[ind].carLicence;
+                this.cx = this.car[ind].carFullTypeName;
+                this.rq = this.car[ind].carGotTime.slice(0, 10);
+                this.cheid = this.car[ind].id;
+                this.licheng = this.car[ind].carMileage;
+                this.isfuwu = this.car[ind].inServiceOrderId;
+            },
+            gaibiantime: function (e) {
+                var self = this;
+                require('@weex-module/shijianxuanzeqi').getVCNum("", function (resp) {
+                    api.log(resp);
+                    self.jisuan(Number(resp.h), Number(resp.m));
+                });
+            },
+            jisuan: function (a, b) {
+                var self = this;
+//                    当前的时间
+                var yyth = new Date().toLocaleTimeString().slice(0, 5).slice(0, 2);
+                var yytm = new Date().toLocaleTimeString().slice(0, 5).slice(3, 5);
+//                    当前的日期
+                var m = new Date().getMonth() + 1;
+                var d = new Date().getDate();
+                if (a >= 8 && a < 18) {
+                    if (self.chesj == m + "-" + d) {
+                        if (a == yyth && b >= yytm) {
+                            self.yuyueTime = a + ":" + b;
+                        } else if (a > yyth) {
+                            self.yuyueTime = a + ":" + b;
+                        } else {
+                            api.tost("请输入商家营业内时间")
+                        }
+                    } else {
+                        self.yuyueTime = a + ":" + b;
+                    }
+                } else if (a == 18 && b <= 0) {
+                    if (self.chesj == m + "-" + d) {
+                        if (a == yyth && b >= yytm) {
+                            self.yuyueTime = a + ":" + b;
+                        } else if (a > yyth) {
+                            self.yuyueTime = a + ":" + b;
+                        } else {
+                            api.tost("请输入商家营业内时间")
+                        }
+                    } else {
+                        self.yuyueTime = a + ":" + b;
+                    }
+                } else {
+                    api.tost("请输入商家营业内时间");
+                }
+            },
+            scrolled: function (e) {
+                var c = e.data.width / 3;
+                if (e.data.offsetX % c != 0) {
+                    var d = Math.round(e.data.offsetX / c);
+                    var target = this.$el("alist").pureChildren[d + 1];
+                    var dom = require('@weex-module/dom');
+                    dom.scrollToElement(target, {
+                        offset: -250
+                    });
+                    this.scrollvalue = e.data.offsetX + "," + d;
+                    setSelectCode(d + 1);
+                } else {
+                    this.scrollvalue = "";
+                }
+            },
+            itemClick: function (e) {
+                this.chesj = e.target.children[0].attr.value;
+                this.setSelectCode(e.target.attr.index);
+                this.appearMax = e.target;
+                var dom = require('@weex-module/dom');
+                dom.scrollToElement(e.target, {
+                    offset: -250
+                });
+            },
+            setSelectCode: function (index) {
+                for (var i = 0; i < this.shijian.length; i++) {
+                    if (i == index) {
+                        this.shijian[i].color = "red";
+                    } else {
+                        this.shijian[i].color = "";
+                    }
+                }
+            }
+        },
+        ready: function () {
+            var weekDay = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            var ntime = new Date();
+            var ds = new Array(7);
+            for (var i = 0; i < ds.length; i++) {
+                var m = ntime.getMonth() + 1;
+                var d = ntime.getDate();
+                var week = ntime.getDay();
+                if (i == 0) {
+                    week = "今天";
+                } else if (i == 1) {
+                    week = "明天";
+                } else if (i == 2) {
+                    week = "后天";
+                } else {
+                    week = weekDay[week];
+                }
+                ds[i] = {day: m + "-" + d, week: week, color: ""};
+                ntime.setDate(ntime.getDate() + 1);
+            }
+            this.shijian = ds;
+//            默认的时间样式和数据
+            this.shijian[0].color = "red";
+            this.chesj = this.shijian[0].day;
+            var _this = this;
+            var ss = new Date().toLocaleTimeString().slice(0, 5);
+            var a = ss.slice(0, 2);
+            var b = ss.slice(3, 5);
+            api.log(a + "," + b)
+            if (a >= 8 && a < 18) {
+                _this.yuyueTime = a + ":" + b;
+            } else if (a == 18 && b <= 0) {
+                _this.yuyueTime = a + ":" + b;
+            } else {
+//                判断在8点前还是18点后
+                _this.yuyueTime = "08:00";
+                if (a >= 18) {
+                    api.log("超过");
+                    _this.shijian.shift();
+                    _this.shijian[0].color = "red";
+//                    _this.shijian[1].color = "red";
+                    _this.chesj = _this.shijian[0].day;
+                }
+            }
+        },
+        created: function () {
+            var _this = this;
+            api.call("user/getMyCar", {}, function (ret) {
+                _this.car = ret.data.myCarInfo;
+                for (var i = 0; i < ret.data.myCarInfo.length; i++) {
+                    if (ret.data.myCarInfo[i].id == api.getData(_this).dd) {
+//                        api.log("id:" + ret.data.myCarInfo[ind].id);
+                        _this.cheid = ret.data.myCarInfo[i].id;
+                        _this.licheng = ret.data.myCarInfo[i].carMileage;
+                        _this.tu = ret.data.myCarInfo[i].carIcon;
+                        _this.cp = ret.data.myCarInfo[i].carLicence;
+                        _this.cx = ret.data.myCarInfo[i].carFullTypeName;
+                        _this.rq = ret.data.myCarInfo[i].carGotTime.slice(0, 10);
+                        _this.isfuwu = ret.data.myCarInfo[i].inServiceOrderId;
+                    }
+                }
+                for (var i = 0; i < 4; i++) {
+                    _this.car[i].carGotTime = (_this.car[i].carGotTime).slice(0, 10);
+                }
+            });
+
+
+            _this.$getConfig(function (config) {
+                var env = config.env;
+                if (env.platform == 'iOS') {
+                    _this.pingguo = true;
+                }
+            }.bind(_this));
+        }
+    }
+</script>

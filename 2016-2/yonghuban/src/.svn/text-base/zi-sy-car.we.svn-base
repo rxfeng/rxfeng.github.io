@@ -1,0 +1,440 @@
+<template>
+    <div style="height: 210px;overflow: hidden">
+        <slider if={{carflag}} class="slider" auto-play="false" onchange="aa" interval="1000000000">
+            <div onclick="carinfo" style="position: relative" repeat={{list1}}>
+                <wxc-marquee id="marquee" step="60" count="{{marquee.list.length}}" interval="2000" duration="1500"
+                             style="width: 750px;height: 45px;margin-top: 20px;position: absolute;">
+                    <div repeat={{marquee.list}}
+                         style="width: 750px;height: 60px; padding-top: 15px; padding-bottom: 15px; overflow: hidden;">
+                        <text class="wenzi tishixinxi yellow" style="height: 30px;margin-top: -10px;color: {{colorCode}}">{{remaining}}</text>
+                    </div>
+                </wxc-marquee>
+                <div if={{fuwuzhong}}>
+                    <div class="line"></div>
+                    <div class="khlogo">
+                        <div class="picdiv">
+                            <image class="pic" src="{{carIcon}}"></image>
+                        </div>
+                        <text class="cheph">{{carLicence}}</text>
+                    </div>
+                    <div class="weather-two">
+                        <div class="qingkuang">
+                            <div class="wchuli">
+                                <text class="wchuli-txt1">0</text>
+                                <text class="wchuli-txt2">未处理违章</text>
+                            </div>
+                            <div class="koufen">
+                                <text class="koufen-txt1">￥{{youjia}}</text>
+                                <text class="koufen-txt2">今日油价</text>
+                            </div>
+                            <div class="fakuan">
+                                <text class="fakuan-txt1">{{carMileage}}公里</text>
+                                <text class="fakuan-txt2">下次保养</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div if={{!fuwuzhong}} style="position: relative;" onclick="fuwuzhongclick">
+                    <div class="line"></div>
+                    <div class="khlogo">
+                        <div class="picdiv1">
+                            <image class="pic1" src="{{carIcon}}"></image>
+                        </div>
+                        <text class="cheph">{{carLicence}}</text>
+                    </div>
+                    <div class="weather-two2" style="margin-top: -130px">
+                        <div style="">
+                            <text class="fuwu-txt" style="text-align: center">此车正在服务中...</text>
+                            <text class="fuwu-txt2" style="text-align: center">点击查询详情</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </slider>
+        <div if={{!carflag}} style="position: relative;" onclick="adclick">
+            <div class="line"></div>
+            <div class="khlogo">
+                <div class="picdiv1">
+                    <image class="pic1" src="{{dir}}images/car.png"></image>
+                </div>
+                <text class="cheph"></text>
+            </div>
+            <div class="weather-two2">
+                <div class="qingkuang">
+                    <image class="add" src="{{dir}}images/app.png"></image>
+                    <text class="add-txt">请增加车辆信息</text>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            youjia: "",
+            list1: [],
+            marquee: {
+                list: [
+                    {text: ''},
+                ]
+            },
+            dd: "",
+            inServiceOrderId: "",
+            fuwuzhong: true,
+//            len:0,
+            carflag: false,
+            carMileage: "",
+        },
+        methods: {
+            adclick: function () {
+                api.get("token", function (e) {
+//                    api.log("token:" + e.data);
+                    if (e.data == undefined || e.data == " " || e.data == "" || e.data == "undefined") {
+                        api.push("denglu.js");
+                    } else {
+                        if (this.len == 0) {
+                            api.tost("请先添加车辆")
+                            api.push("denglu.js", {});
+                        } else {
+                            api.push("tianjiacheliang.js");
+                        }
+                    }
+                })
+            },
+            fuwuzhongclick: function (e) {
+                api.push("jindugenzong2.js",{orderId:this.inServiceOrderId});
+            },
+            carinfo: function (e) {
+//                api.log(this.dd)
+                api.push("cheliangxiangqing.js", {id: this.dd,isFirst:1,fanhuiurl:"index.js"});
+            },
+            aa: function (e) {
+                var _this = this;
+//                var index = e.index;
+//            -----------------------用户车辆-----------------------------------
+//                api.call("user/getMyCar", {}, function (ret) {
+//                    _this.$dispatch('notify', {
+//                        a: ret.data.myCarInfo[e.index].id,
+//                        len: ret.data.myCarInfo.length,
+//                        carMileage: ret.data.myCarInfo[e.index].carMileage,
+//                        inServiceOrderId: ret.data.myCarInfo[e.index].inServiceOrderId
+//                    });
+//
+//                    api.save("carInfo", {
+//                        dd: ret.data.myCarInfo[e.index].id,
+//                        carMileage: ret.data.myCarInfo[e.index].carMileage
+//                    });
+//                    _this.dd = ret.data.myCarInfo[e.index].id;
+//                    _this.carMileage = ret.data.myCarInfo[e.index].carMileage;
+//                    _this.youjia = ret.data.myCarInfo[e.index].oilPrice;
+//                    _this.inServiceOrderId = ret.data.myCarInfo[e.index].inServiceOrderId;
+//                    api.log("服务中：" + _this.inServiceOrderId);
+//                    if (_this.inServiceOrderId == 0) {
+////                            显示服务中样式
+//                        _this.fuwuzhong = true;
+//                    } else {
+////                            不显示服务中样式
+//                        _this.fuwuzhong = false;
+//                    }
+//                });
+                _this.$dispatch('notify', {
+                    a: _this.list1[e.index].id,
+                    len: _this.list1.length,
+                    carMileage: _this.list1[e.index].carMileage,
+                    inServiceOrderId: _this.list1[e.index].inServiceOrderId
+                });
+
+                api.save("carInfo", {
+                    dd: _this.list1[e.index].id,
+                    carMileage: _this.list1[e.index].carMileage
+                });
+                _this.dd = _this.list1[e.index].id;
+                _this.carMileage = _this.list1[e.index].carMileage;
+                _this.youjia = _this.list1[e.index].oilPrice;
+//                提醒
+                _this.marquee.list = _this.list1[e.index].advice;
+                _this.inServiceOrderId = _this.list1[e.index].inServiceOrderId;
+                api.log("服务中：" + _this.inServiceOrderId);
+                if (_this.inServiceOrderId == 0) {
+//                            显示服务中样式
+                    _this.fuwuzhong = true;
+                } else {
+//                            不显示服务中样式
+                    _this.fuwuzhong = false;
+                }
+//            -----------------------用户车辆-----------------------------------
+            }
+        },
+        created: function () {
+            var _this = this;
+//            -----------------------用户车辆-----------------------------------
+            api.get("token", function (e) {
+                if (e.data == undefined || e.data == "" || e.data == "undefined") {
+                    _this.carflag = false;
+                } else {
+                    api.call("user/getMyCar", {}, function (ret) {
+                        if (ret.data.myCarInfo == "") {
+                            _this.carflag = false;
+                            return;
+                        }
+                        _this.carflag = true;
+                        api.save("carInfo", {
+                            dd: ret.data.myCarInfo[0].id,
+                            carMileage: ret.data.myCarInfo[0].carMileage,
+                            inServiceOrderId: ret.data.myCarInfo[0].inServiceOrderId
+                        });
+                        _this.list1 = ret.data.myCarInfo;
+                        _this.$dispatch('notify', {
+                            a: ret.data.myCarInfo[0].id,
+                            len: ret.data.myCarInfo.length,
+                            carMileage: ret.data.myCarInfo[0].carMileage
+                        });
+                        _this.dd = ret.data.myCarInfo[0].id;
+                        _this.carMileage = ret.data.myCarInfo[0].carMileage;
+                        _this.youjia = ret.data.myCarInfo[0].oilPrice;
+//                        提醒
+                        api.log(ret.data.myCarInfo[0].advice)
+                        _this.marquee.list = ret.data.myCarInfo[0].advice;
+                        _this.inServiceOrderId = ret.data.myCarInfo[0].inServiceOrderId;
+                        if (_this.inServiceOrderId == 0) {
+//                            显示服务中样式
+                            _this.fuwuzhong = true;
+                        } else {
+//                            不显示服务中样式
+                            _this.fuwuzhong = false;
+                        }
+//                        _this.len = ret.data.myCarInfo.length;
+//                        如果没有车，显示添加车辆的样式
+                        if (ret.data.myCarInfo.length == 0) {
+                            api.log("没有车");
+                            _this.carflag = false;
+                        }
+                    });
+                }
+            });
+        }
+    }
+</script>
+<style>
+    .slider {
+        /*flex-direction: row;*/
+        height: 210;
+    }
+
+    .wchuli {
+        height: 150px;
+        flex: 1;
+    }
+
+    .wchuli-txt1 {
+        font-size: 30px;
+        margin-top: 30px;
+        text-align: center;
+        color: #E95412;
+        borderRightWidth: 2px;
+        borderColor: #ccc;
+    }
+
+    .wchuli-txt2 {
+        text-align: center;
+        borderRightWidth: 2px;
+        borderColor: #ccc;
+        fontSize: 26px;
+        color: #868686;
+        padding-top: 10px;
+    }
+
+    .koufen {
+        height: 150px;
+        flex: 1;
+    }
+
+    .koufen-txt1 {
+        font-size: 30px;
+        margin-top: 30px;
+        text-align: center;
+        color: #E95412;
+        borderRightWidth: 2px;
+        borderColor: #ccc;
+    }
+
+    .koufen-txt2 {
+        text-align: center;
+        borderRightWidth: 2px;
+        borderColor: #ccc;
+        fontSize: 26px;
+        color: #868686;
+        padding-top: 10px;
+    }
+
+    .fakuan {
+        flex: 1;
+        margin-right: 30px;
+    }
+
+    .fakuan-txt1 {
+        font-size: 30px;
+        margin-top: 30px;
+        text-align: center;
+        color: #E95412;
+    }
+
+    .fakuan-txt2 {
+        text-align: center;
+        fontSize: 26px;
+        color: #868686;
+        padding-top: 10px;
+    }
+
+    .line {
+        width: 750px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+        position: absolute;
+        top: 70;
+    }
+
+    .yellow {
+        color: #F39801;
+    }
+
+    .tishixinxi {
+        font-size: 24px;
+        color: #737373;
+        text-decoration: underline;
+    }
+
+    .picdiv {
+        width: 136px;
+        height: 136px;
+        backgroundColor: #fff;
+        border-radius: 68px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        borderWidth: 2px;
+        borderColor: #ccc;
+        overflow: hidden;
+    }
+
+    .pic {
+        width: 80px;
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .weather-two {
+        height: 150px;
+        position: relative;
+        margin-top: -120;
+    }
+
+    .weather-two2 {
+        height: 150px;
+        position: relative;
+        margin-top: -80;
+    }
+
+    .qingkuang {
+        width: 550px;
+        height: 150px;
+        flex-direction: row;
+        position: absolute;
+        right: 0;
+    }
+
+    .khlogo {
+        margin-left: 20px;
+    }
+
+    .cheph {
+        fontSize: 28px;
+        color: #000;
+        margin-top: 10px;
+        margin-left: 14px;;
+
+    }
+
+    .wenzi {
+        position: absolute;
+        left: 180px;
+        top: 20px;
+    }
+
+    .add {
+        width: 50px;
+        height: 50px;
+        margin-left: 50px;
+        margin-top: 50px;
+        margin-right: 20px;
+    }
+
+    .add-txt {
+        font-size: 36px;
+        color: #373634;
+        margin-top: 50px;
+    }
+
+    .pic1 {
+        width: 140px;
+        height: 140px;
+        border-radius: 70px;
+    }
+
+    .picdiv1 {
+        width: 146px;
+        height: 146px;
+        backgroundColor: #fff;
+        border-radius: 73px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        borderWidth: 2px;
+        borderColor: #ccc;
+    }
+
+    .fuwu-txt {
+        font-size: 34px;
+        color: #E95412;
+        margin-top: 30px;
+        margin-left: 80px;
+    }
+
+    .fuwu-txt2 {
+        font-size: 28px;
+        color: #737373;
+        margin-top: 10px;
+        margin-left: 120px;
+    }
+
+    .pic2 {
+        width: 150px;
+        height: 150px;
+        padding: 10px;
+        borderWidth: 2px;
+        borderColor: #ccc;
+        border-radius: 75px;
+        background-color: #fff;
+    }
+
+    .fuwu-khlogo {
+        height: 200px;
+        width: 150px;
+        position: absolute;
+        left: 30px;
+        bottom: 25px;
+    }
+
+    .fuwu-cheph {
+        fontSize: 28px;
+        text-align: center;
+        color: #000;
+        margin-top: 10px;
+
+    }
+</style>

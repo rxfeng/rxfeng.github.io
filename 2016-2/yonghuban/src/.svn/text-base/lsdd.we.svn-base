@@ -1,0 +1,122 @@
+<template>
+    <div>
+        <div class="car" onclick="dingdanxinxi">
+            <div class="info">
+                <image class="carpic" src="{{carIcon}}"></image>
+                <div class="txt">
+                    <text class="car-txt1">{{carLicence}}</text>
+                    <text class="car-txt2">预约日期：{{startTime}}</text>
+                    <text class="car-txt2">行驶里程：{{mileage}}</text>
+                    <text class="car-txt2">服务商家：{{factoryName}}</text>
+                </div>
+                <text if="{{isComment==false && factoryState == 2}}" class="pingjia" onclick="pingjia">待评价</text>
+            </div>
+            <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+        </div>
+        <div class="spean"></div>
+    </div>
+</template>
+<style>
+    .car {
+        flex-direction: row;
+        justify-content: space-between;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        backgroundColor: #fff;
+    }
+
+    .spean {
+        height: 20px;
+        backgroundColor: #F5F3F8;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-top: 100px;
+        /*margin-right: 50px;*/
+        position: absolute;
+        bottom: 100px;
+        right: 50px;
+    }
+
+    .info {
+        flex-direction: row;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .carpic {
+        width: 180px;
+        height: 180px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .txt {
+
+    }
+
+    .car-txt1 {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .car-txt2 {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 10px;
+        width: 500px;
+    }
+    .pingjia{
+        padding-right: 10px;
+        padding-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color: #fff;
+        text-align: center;
+        backgroundColor: #E95412;
+        /*border-radius: 10px;*/
+        font-size: 28px;
+        margin-top: 75px;
+        margin-left: 40px;
+        position: absolute;
+        bottom: 70px;
+        right: 60px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            startTime:"",
+            num:1,
+            orderId:"",
+        },
+        methods:{
+            dingdanxinxi: function (e) {
+                var _this = this;
+//                判断是服务中、待评价、历史订单
+                api.log("状态:"+_this.num+"id:"+_this.id);
+                if(this.num == 1){
+                    api.push("jindugenzong2.js",{orderId:_this.id,fanhui:1});
+                }else if(this.num == 2){
+                    api.push("dingdanxinxi.js",{id:_this.id});
+                }else if(this.num == 3){
+                    api.push("dingdanxinxi.js",{id:_this.id});
+                }
+            },
+            pingjia: function (e) {
+                if(this.orderType == 4){
+                    api.push("shangjiapingjia2.js",{dingdanid:this.id});
+                }else{
+                    api.push("shangjiapingjia.js",{dingdanid:this.id});
+                }
+            }
+        },
+        ready: function () {
+            this.startTime = this.startTime.slice(0, 10)
+        }
+    }
+</script>

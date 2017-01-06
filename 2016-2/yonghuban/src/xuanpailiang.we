@@ -1,0 +1,63 @@
+<template>
+    <xx-navpage navtitle="选择年款配置" navleftsrc="{{dir}}images/fanhui.png" navlefturl="xuanpinpai">
+        <scroller style="flex:1;background-color: #fff">
+            <div repeat={{serialLoc}}>
+                <text class="carname-txt">{{typeName}}款</text>
+                <text class="pinpaiboxtxt" repeat={{typeContent}} carid="{{id}}" onclick="nextclick">{{sellName}}</text>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .carname-txt{
+        font-size: 28px;
+        background-color: #e6e6e6;
+        padding: 10px;
+        padding-left: 20px;
+        color: #737373;
+    }
+    .pinpaiboxtxt {
+        /*width: 400px;*/
+        padding: 20px;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            serialLoc: [
+                {
+                    typeContent:[]
+                }
+            ],
+            nextTxt1:"",
+        },
+        methods: {
+            nextclick: function (e) {
+                api.log(e.target.attr.carid)
+                api.push("tianjiacheliang.js",{
+                    nextTxt1:e.target.attr.carid
+                });
+            }
+        },
+        ready: function () {
+            var _this = this;
+            _this.nextTxt1 =api.getData(_this).nextTxt1;
+            var selectedData = {id:_this.nextTxt1};
+            var info = {lv: 2, cartype: selectedData}
+//            api.log(info);
+//            -----------------------选配置-----------------------------------
+            api.call("car/carTypes", info, function (ret) {
+//                api.log(ret.data);
+                _this.serialLoc = ret.data.teList;
+            }, function (ret) {
+                api.tost("网络错误")
+            });
+//            -----------------------选配置-----------------------------------
+        },
+    }
+</script>

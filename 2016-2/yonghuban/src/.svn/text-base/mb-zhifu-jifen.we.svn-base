@@ -1,0 +1,64 @@
+<template>
+    <div class="quan" onclick="aa">
+        <div class="box">
+            <div class="zhifu">
+                <text class="zhifu-txt">查看需要支付20积分</text>
+            </div>
+            <div style="flex-direction: row">
+                <text class="zhifu-txt btn border red">支付</text>
+                <text class="zhifu-txt btn">关闭</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .quan{
+        flex: 1;
+        backgroundColor: rgba(0,0,0,0.4);
+    }
+    .box{
+        width: 607px;
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 400px;
+    }
+    .zhifu{
+        flex-direction: row;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        borderBottomWidth:2px;
+        borderColor:#ccc;
+    }
+    .zhifu-txt{
+        flex: 1;
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+    .btn{
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .border{
+        borderRightWidth:3px;borderColor:#e6e6e6;
+    }
+    .red{
+        color: #E95412;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    medule.exports={
+        data:{
+
+        },
+        methods:{
+            aa: function () {
+                this.$dispatch('notify', {"pos": "pos1"})
+            }
+        }
+    }
+</script>

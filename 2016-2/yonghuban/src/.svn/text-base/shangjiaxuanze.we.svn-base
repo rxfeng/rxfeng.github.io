@@ -1,0 +1,131 @@
+<template>
+    <xx-navpage navtitle="商家选择" navrighttitle="提交" navlefturl="" navrighturl=""
+                navrightsrc="{{dir}}images/sousuo1.png"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+
+        <div class="top">
+            <input class="inp" type="text" placeholder="搜索商家"/>
+            <image class="sousuo3" src="{{dir}}images/sousuo3.png"></image>
+            <image class="cha" src="{{dir}}images/cha.png"></image>
+            <div class="quxiao">
+                <text class="quxiao-txt">取消</text>
+            </div>
+        </div>
+        <list style="flex: 1;margin-top: 100">
+            <cell style="position: relative" >
+                <sy-neirong class="nr cell" repeat={{car}}></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+        </list>
+    </xx-navpage>
+</template>
+<style>
+    .top{
+        position: fixed;
+        top:100;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .quxiao{
+        margin-left: 30px;
+        margin-top: 15px;
+    }
+    .quxiao-txt{
+        color: #E95412;
+        font-size: 30px;
+    }
+    .inp {
+        width: 590px;
+        margin-left: 40px;
+        height: 70px;
+        borderWidth: 2px;
+        borderColor: #ccc;
+        padding-left: 80px;
+        font-size: 30px;
+        color: #373634;
+        border-radius: 10px;
+    }
+
+    .sousuo3 {
+        width: 47px;
+        height: 47px;
+        position: absolute;
+        left: 60px;
+        top: 15px;
+    }
+    .cha{
+        width: 60px;
+        height:60px;
+        position: absolute;
+        top: 6px;
+        left: 560px;
+    }
+
+    .spane {
+        height: 10px;
+        backgroundColor: #fff;
+    }
+    .xuanze{
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 15px;
+        padding-left: 15px;
+        font-size: 28px;
+        color: #fff;
+        backgroundColor: #E95412;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 35px;
+        right: 30px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    module.exports ={
+        data: {
+            dir:api.dir,
+            car: [
+                {
+                    tit: "苏州宝驰捷中心",
+                    tit2: "大众专修店",
+                    yiyuyue: "9800",
+                    chejunxiaofei: "5000",
+                    xiuche: true,
+                    qusongche: true,
+                    gonglishu: 2.66,
+                    zhe: true,
+                    zhe2txt: "今日线上预约9折",
+                    shangciyuyuedian:true,
+                    xuanze:true,
+                },
+                {
+                    tit: "苏州宝驰捷中心",
+                    tit2: "大众专修店",
+                    yiyuyue: "9800",
+                    chejunxiaofei: "5000",
+                    xiuche: true,
+                    qusongche: true,
+                    gonglishu: 2.66,
+                    zhe: true,
+                    zhe2txt: "今日线上预约9折",
+                    shangciyuyuedian:true,
+                    xuanze:true,
+                },
+                {
+                    tit: "苏州宝驰捷中心",
+                    tit2: "大众专修店",
+                    yiyuyue: "9800",
+                    chejunxiaofei: "5000",
+                    xiuche: true,
+                    qusongche: true,
+                    gonglishu: 2.66,
+                    zhe: true,
+                    zhe2txt: "今日线上预约9折",
+                    shangciyuyuedian:false,
+                    xuanze:true,
+                },
+            ]
+        },
+    }
+</script>

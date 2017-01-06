@@ -1,0 +1,143 @@
+<template>
+    <xx-navpage navtitle="我的订单" navrighttitle="" navlefturl="wode.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="zhuangtai">
+                <div class="zt" onclick="one">
+                    <text class="zt-txt {{onered}}">服务中</text>
+                    <xx title="{{fuwuNum}}" if={{!fuwuNum==0}} class="xx"></xx>
+                </div>
+                <div class="line"></div>
+                <div class="zt" onclick="two">
+                    <text class="zt-txt {{twored}}">待评价</text>
+                    <xx title="{{daipingjiaNum}}" if={{!daipingjiaNum==0}} class="xx"></xx>
+                </div>
+                <div class="line"></div>
+                <div class="zt" onclick="three">
+                    <text class="zt-txt {{threered}}">历史订单</text>
+                </div>
+            </div>
+            <lsdd repeat="{{car}}" num ="{{num}}"  style="position: relative"></lsdd>
+            <!--<div class="spean"></div>-->
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .background{
+        backgroundColor: #fff;
+    }
+    .spean{
+        height: 20px;
+        backgroundColor: #fff;
+        margin-top: -20px;
+    }
+    .zhuangtai{
+        flex-direction: row;
+        borderBottomWidth:2px;
+        borderColor:#e6e6e6;
+        background-color: #fff;
+    }
+    .zt{
+        flex: 1;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        position: relative;
+    }
+    .line{
+        width: 2px;
+        height: 50px;
+        backgroundColor: #e6e6e6;
+        margin-top: 20px;
+    }
+    .zt-txt{
+        font-size: 34px;
+        color: #373634;
+        text-align: center;
+    }
+    .red{
+        color: #E95412;
+    }
+    .xx{
+        position:absolute;
+        left: 160px;
+        top:15px;
+    }
+    .xx1{
+        position:absolute;
+        left: 178px;
+        top:15px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            onered:"red",
+            twored:"",
+            threered:"",
+            car:[],
+            factoryState:1,
+            fuwuNum:0,
+            daipingjiaNum:0,
+            num:1,
+        },
+        methods:{
+            one: function (e) {
+                if(this.onered == ""){
+                    this.onered = "red"
+                    this.twored="";
+                    this.threered="";
+                    this.factoryState = 1;
+                    var _this = this;
+                    _this.car=[];
+                    api.call("order/querylist", {factoryState:this.factoryState}, function (ret) {
+                        _this.car = ret.data.orderList;
+                        _this.num = 1;
+                    }, function (ret) {});
+                }
+            },
+            two: function (e) {
+                if(this.twored == ""){
+                    this.twored = "red"
+                    this.onered="";
+                    this.threered="";
+                    var _this = this;
+                    _this.car=[];
+                    api.call("user/NoCommentOrder", {}, function (ret) {
+                        _this.car = ret.data.listInfo;
+                        _this.num = 2;
+                    }, function (ret) {});
+                }
+            },
+            three: function (e) {
+                if(this.threered == ""){
+                    this.threered = "red"
+                    this.twored="";
+                    this.onered="";
+                    this.factoryState = 2;
+                    var _this = this;
+                    _this.car=[];
+                    api.call("order/querylist", {factoryState:this.factoryState}, function (ret) {
+                        _this.car = ret.data.orderList;
+                        _this.num = 3;
+                    }, function (ret) {});
+                }
+            },
+        },
+        created: function () {
+            var _this = this;
+//            服务中的订单
+            api.call("order/querylist", {factoryState:1}, function (ret) {
+                api.log(ret.data);
+                _this.car = ret.data.orderList;
+                _this.fuwuNum = ret.data.orderList.length;
+            });
+//            待评价订单
+            api.call("user/NoCommentOrder", {}, function (ret) {
+                _this.daipingjiaNum = ret.data.listInfo.length;
+            });
+        }
+    }
+</script>

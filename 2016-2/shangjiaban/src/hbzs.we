@@ -1,0 +1,268 @@
+<template>
+    <xx-navpage navtitle="红包赠送" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="dingdan3.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="main">
+                <input class="inp" type="tel" placeholder="请输入赠送金额" value={{jine}} oninput="oninput1"/>
+                <text class="txt-info">金额只支持50元的倍数</text>
+                <div style="flex-direction: row;justify-content: center;" onclick="zengsongclick">
+                    <div class="btn">
+                        <text class="btn-txt">赠送</text>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 100px;"></div>
+            <div style="width: 750px;flex-wrap: wrap;flex-direction: row;padding-left: 10px;padding-right: 10px" >
+                <div repeat={{hb}}>
+                    <div class="hong1" onclick="hbclick">
+                        <div class="hong2"></div>
+                        <div style="flex-direction: row;justify-content: center;align-content: center">
+                            <text style="font-size: 30px;color: #F4D723;margin-top: 75px;">￥</text>
+                            <text style="font-size: 50px;color: #F4D723;margin-top: 55px;">{{hbval}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 100px;"></div>
+            <text class="cen" onclick="one">红包规则</text>
+            <text class="cen" onclick="two">赠送规则</text>
+            <text class="cen" onclick="three">客户使用规则</text>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+
+    .main {
+        padding: 30px;
+        padding-top: 20px;
+        backgroundColor: #fff;
+    }
+
+    .inp {
+        width: 100%;
+        height: 70px;
+        borderWidth: 1px;
+        borderColor: #e6e6e6;
+        border-radius: 10px;
+        padding-left: 20px;
+        font-size: 30px;
+        color:#000000;
+    }
+
+    .txt-info {
+        padding-left: 20px;
+        margin-top: 10px;
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .btn {
+        width: 170px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 25px;
+        backgroundColor: #E95412;
+        margin-top: 50px;
+    }
+    .cen{
+        text-align: center;
+        color: #a0a0a0;
+        font-size: 33px;
+        margin-bottom: 10px;
+    }
+    .btn-txt {
+        text-align: center;
+        color: #fff;
+        font-size: 32px;
+    }
+
+    .hong1 {
+        width: 220px;
+        height: 150px;
+        background-color: #E95412;
+        overflow: hidden;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 20px;
+    }
+
+    .hong2 {
+        width: 300px;
+        height: 300px;
+        background-color: #EE8518;
+        border-radius: 150px;
+        position: absolute;
+        top: -235px;
+        left: -40px;
+    }
+
+    .hui1 {
+        background-color: #B4B4B4;
+    }
+
+    .hui2 {
+        background-color: #C5C5C5;
+    }
+
+    .jine-txt {
+        font-size: 50px;
+        color: #F4D723;
+        line-height: 180px;
+        text-align: center;
+    }
+
+    .wxhb {
+        margin-left: 40px;
+    }
+
+    .hb-title-txt {
+        font-size: 34px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .hb-txt {
+        font-size: 26px;
+        color: #898989;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-top: -6px;
+    }
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .spean {
+        height: 20px;
+        background-color: #F5F3F8;
+    }
+    .top{
+        margin-top: 20px;
+    }
+    .zhuangtai {
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+
+    }
+
+    .zt {
+        flex: 1;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-right-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #898989;
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .bai {
+        color: #fff;
+    }
+
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 30px;
+        background-color: #fff;
+        border-top-width: 1px;
+        border-color: #e6e6e6;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var time = new Date();
+    module.exports = {
+        data:{
+            dir:api.dir,
+            jine:"",
+            orderId:"",
+            hb:[
+                {
+                    hbval:50,
+                },
+                {
+                    hbval:100,
+                },
+                {
+                    hbval:150,
+                },
+                {
+                    hbval:200,
+                },
+                {
+                    hbval:500,
+                },
+                {
+                    hbval:1000,
+                },
+            ]
+        },
+        created: function () {
+            this.orderId = api.getData(this).orderId;
+            api.log("orderId:"+this.orderId)
+        },
+        methods:{
+            hbclick: function (e) {
+              api.log(this.hbval);
+                this.jine = this.hbval;
+            },
+            one: function (e) {
+                api.push("zi-webpage.js", {
+                    title: "红包规则",
+                    url: this.dir + "html/yx-hbsy.html?v="+time,
+                    fanhui: "hbzs.js"
+                });
+            },
+            two: function (e) {
+                api.push("zi-webpage.js", {
+                    title: "赠送规则",
+                    url: this.dir + "html/yx-hbsy.html?v="+time,
+                    fanhui: "hbzs.js"
+                });
+            },
+            three: function (e) {
+                api.push("zi-webpage.js", {
+                    title: "客户使用规则",
+                    url: this.dir + "html/yx-hbsy.html?v="+time,
+                    fanhui: "hbzs.js"
+                });
+            },
+            oninput1: function (event) {
+                this.jine = event.value;
+            },
+            zengsongclick: function (e) {
+                var _this = this;
+                if(this.jine % 50 ==0 && this.jine>0){
+                    api.call("factory/giveRed", {id: _this.orderId,redValue:_this.jine}, function (ret) {
+                        api.tost("赠送成功");
+                        api.pop({id:_this.orderId});
+                    });
+                }else{
+                    api.tost("请输入50的倍数。");
+                }
+            }
+        }
+    }
+
+</script>

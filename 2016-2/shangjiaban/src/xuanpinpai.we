@@ -1,0 +1,19 @@
+<template>
+    <xx-navpage navtitle="选品牌" navrighttitle="" navlefturl="kuaisubaojia.js" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png">
+        <cartype info="gdaf" onselclick="xuanzeclick" style="width: 750px;flex:1;position:relative"></cartype>
+    </xx-navpage>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+        },
+        methods: {
+            xuanzeclick: function (e) {
+                api.push("xuanpinpai2.js",{nextxt:e.data})
+            },
+        }
+    }
+</script>

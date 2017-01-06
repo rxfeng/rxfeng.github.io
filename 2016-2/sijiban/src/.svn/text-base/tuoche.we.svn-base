@@ -1,0 +1,198 @@
+<template>
+    <div onviewappear="viewappear">
+        <xx-navpage navtitle="拖车服务中" navrighttitle=""
+                    navlefturl="tuochejiedan.js" navrighturl="" navrightsrc=""
+                    navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+            <scroller style="flex:1;position: relative">
+                <!--<tuoche1 mdd="{{end}}"></tuoche1>-->
+                <div class="mdd">
+                    <div class="md">
+                        <text class="md-txt1">目的地</text>
+                        <text class="md-txt2" style="width: 550px;">{{end}}</text>
+                    </div>
+                    <div class="xgmd" onclick="weizhiclick">
+                        <text class="xgmd-txt">修改目的地</text>
+                        <image src="{{dir}}images/right-jiao.fw.png" class="gomdd"></image>
+                    </div>
+                    <div class="mdimg">
+                        <image onclick="daohangclick" src="{{dir}}images/mdd.png" class="mddmig"></image>
+                    </div>
+                </div>
+                <div class="main">
+                    <div class="sscf">
+                        <text class="sscf-txt1">{{jine}}</text>
+                        <text class="sscf-txt2">实时车费（元）</text>
+                    </div>
+                    <div class="xsjl">
+                        <text class="sscf-txt1">{{juli}}</text>
+                        <text class="sscf-txt2">行驶距离（公里）</text>
+                    </div>
+                </div>
+                <div style="width: 400px;height: 100px;position: absolute;bottom: 100px;left: 175px;flex-direction: row;justify-content: center">
+                    <sliding onmove="huadongclick" style="width: 400px;height: 100px;" info="滑动结束服务"></sliding>
+                </div>
+            </scroller>
+        </xx-navpage>
+    </div>
+
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+    .mdd {
+        flex-direction: row;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+
+    .md {
+        margin-left: 50px;
+        borderRightWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .md-txt1 {
+        font-size: 40px;
+        color: #373634;
+    }
+
+    .md-txt2 {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 10px;
+    }
+
+    .xgmd {
+        flex-direction: row;
+        position: absolute;
+        top: 30px;
+        right: 150px;
+        padding-right: 15px;
+    }
+
+    .xgmd-txt {
+        color: #373634;
+        font-size: 30px;
+        margin-top: -5px;
+    }
+
+    .gomdd {
+        width: 37px;
+        height: 37px;
+        margin-top: 3px;
+        margin-top: -5px;
+    }
+
+    .mdimg {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+    }
+
+    .mddmig {
+        width: 80px;
+        height: 80px;
+    }
+    .main {
+        flex-direction: row;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor: #fff;
+        margin-top: 20px;
+        borderTopWidth: 1px;
+        borderBottomWidth:1px;
+        borderColor: #e6e6e6;
+    }
+
+    .sscf {
+        flex: 1;
+        borderRightWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .xsjl {
+        flex: 1;
+    }
+
+    .sscf-txt1 {
+        color: #E95412;
+        font-size: 60px;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .sscf-txt2 {
+        color: #a0a0a0;
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data:{
+          dir:api.dir,
+            orderId:"",
+            end:"",
+            mdd:"",
+            lat: "",
+            lon: "",
+            jine:"",
+            juli:"",
+        },
+        created: function () {
+            var _this = this;
+            _this.orderId = api.getData(_this).orderId;
+            _this.end = api.getData(_this).end;
+            api.log( _this.orderId);
+            _this.jie();
+            setInterval(function (e) {
+                _this.jie();
+            }, 30000);
+        },
+        methods:{
+            jie: function (e) {
+                var _this = this;
+                api.call("driver/trailerRecord", {id:_this.orderId}, function (ret) {
+                    api.log(ret.data)
+                    _this.jine = ret.data.cost;
+                    _this.juli = ret.data.distance;
+                });
+            },
+            huadongclick: function (e) {
+                api.log(e.str);
+                if(e.str=="确定"){
+//                    api.push("tuoche.js", {orderId: this.orderId});
+                }
+            },
+            daohangclick: function (e) {
+                api.get("lnglat", function (e) {
+                    require('@weex-module/navi').Navi(JSON.parse(e.data).lat, JSON.parse(e.data).lon);
+                });
+            },
+            viewappear: function (e) {
+                var _this = this;
+                api.get("info", function (e) {
+                    var info1 = JSON.parse(e.data);
+                    _this.end = info1.address;
+                    _this.lat = info1.lat;
+                    _this.lon = info1.lon;
+                    api.save("info", " ");
+                    api.call("driver/UpdateAdd", {orderId:_this.orderId,address:_this.end}, function (ret) {
+                        api.log(ret.data)
+                        _this.mdd = _this.end;
+                    });
+                });
+            },
+            weizhiclick: function (e) {
+                api.push("weizhi.js");
+            },
+        }
+    }
+</script>

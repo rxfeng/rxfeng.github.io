@@ -1,0 +1,300 @@
+<template>
+    <div>
+        <xx-navpage navtitle="一修车管家" navlefttitle="{{chengshi}}" navlefturl=""
+                    navrighturl="{{xiaoxiurl}}"
+                    navrightsrc="{{dir}}images/xiaoxi.png"
+                    navleftsrc="" bg="#F5F3F8">
+            <div class="xxdiv">
+                <xx title="{{xiaoxitxt}}" if={{xiaoxixianshi}} class="top-xiaoxi"></xx>
+            </div>
+            <list style="">
+                <cell>
+                    <div class="weather">
+                        <image class="sy-img" src="{{dir}}images/sy-img.png"></image>
+                        <div class="weather-one">
+                            <div class="tianqi">
+                                <div style="flex-direction: row">
+                                    <image class="sum"
+                                           src="{{weather.img}}"></image>
+                                    <div style="margin-left: 15px;margin-top: 20px">
+                                        <text class="sum-txt">{{weather.tianqi}}</text>
+                                        <text class="sum-txt">{{weather.du}}℃</text>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 20px;width: 450px;height: 80px;flex-direction: row">
+                                    <div style="flex-direction: row;">
+                                        <text class="xiche-txt">洗车建议：</text>
+                                        <text class="xiche-txt" style="width: 330px;margin-top:-5px;line-height: 40px;">
+                                            {{weather.jianyi}}
+                                        </text>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="jifen" onclick="jifenlclick">
+                                <text class="danshu-txt">{{jifen}}</text>
+                                <text class="jfxc-txt">我的积分</text>
+                            </div>
+                        </div>
+                        <zi-sy-car dd={{dd}} carMileage={{carMileage}} fuwuzhong={{fuwuzhong}}></zi-sy-car>
+                    </div>
+                    <zi-sy-yuyue dd={{dd}} carMileage={{carMileage}} len={{len}}></zi-sy-yuyue>
+                    <div class="wntj-top">
+                        <container style="flex-direction: row;justify-content: space-between">
+                            <div style="flex-direction: row">
+                                <image src="{{dir}}images/tuijian.png"
+                                       style="width: 30px;height: 30px;margin-top: 5px;margin-right: 5px;"></image>
+                                <text class="txt red">为你推荐</text>
+                            </div>
+                            <div style="flex-direction: row;" onclick="gengduo">
+                                <text class="txt">更多</text>
+                                <image src="{{dir}}images/right-jiao.fw.png"
+                                       style="width: 40px;height: 40px;margin-top: 3px;margin-left: 5px;"></image>
+                            </div>
+                        </container>
+                    </div>
+                </cell>
+                <cell style="position: relative">
+                    <sy-neirong2 dd={{dd}} sjurl="shangjiaxiangqing4.js" repeat="{{serverData}}"
+                                 xuanze={{xuanze}}></sy-neirong2>
+                    <!--<div class="spane"></div>-->
+                </cell>
+            </list>
+        </xx-navpage>
+    </div>
+</template>
+<style>
+    .wntj-top {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        backgroundColor: #fff;
+        margin-top: 10px;
+    }
+
+    .txt {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .yellow {
+        color: #F39801;
+    }
+
+    .hong {
+        color: #E7141A;
+    }
+
+    .spane {
+        height: 10px;
+        backgroundColor: #fff;
+    }
+
+    /*天气*/
+    .weather {
+        margin-bottom: 10px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        backgroundColor: #fff;
+
+    }
+
+    .sy-img {
+        width: 750px;
+        height: 289px;
+        position: absolute;
+    }
+
+    .weather-one {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .jifen {
+        width: 150px;
+        height: 150px;
+        borderWidth: 2px;
+        borderColor: #E95412;
+        border-radius: 75px;
+        background-color: #fff;
+        margin-right: 50px;
+        margin-top: 40px;
+    }
+
+    .jfxc-txt {
+        text-align: center;
+        fontSize: 26px;
+        color: #ccc;
+    }
+
+    .danshu-txt {
+        margin-top: 40px;
+        text-align: center;
+        fontSize: 28px;
+        color: #E95412;
+        fontWeight: 700;
+    }
+
+    .tishixinxi {
+        font-size: 24px;
+        color: #737373;
+        text-decoration: underline;
+        position: absolute;
+        bottom: 160px;
+        left: 200px;
+    }
+
+    .sum {
+        width: 117px;
+        height: 117px;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+
+    .sum-txt {
+        font-size: 32px;
+        color: #737373;
+    }
+
+    .xiche-txt {
+        font-size: 26px;
+        color: #a0a0a0;
+    }
+
+    .youhui {
+        margin-left: 130px;
+    }
+
+    .xxdiv {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+    }
+
+    .top-xiaoxi {
+
+    }
+
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var stream = require('@weex-module/stream');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            xuanze: false,
+            serverData: [],
+            jifen: 0,
+            xiaoxitxt: "0",
+            fanhuiurl: "index.js",
+            weather: {
+                img: "",
+                tianqi: "晴",
+                du: "0",
+//                jianyi: "阳光明媚，正是洗车好日子 洗车优惠噢！",
+                jianyi: "",
+            },
+            xuanze: false,
+            dd: "",
+            carMileage: "",
+            len: 0,
+            chengshi: "",
+            xiaoxixianshi: true,
+            xiaoxiurl: "xiaoxi.js",
+            inServiceOrderId:"",
+            fuwuzhong:false,
+        },
+        methods: {
+            gengduo: function (e) {
+                api.push("xichemeirong2.js");
+
+            },
+            jifenlclick: function (e) {
+                api.push("zi-webpage.js", {title:"积分说明", url:this.dir+"html/jfgz.html",fanhui:"index.js"});
+            }
+        },
+        created: function () {
+            var _this = this;
+//            _this.dd =
+            _this.$on('notify', function (e) {
+                _this.dd = e.detail.a;
+                _this.len = e.detail.len;
+                _this.carMileage = e.detail.carMileage;
+                _this.inServiceOrderId = e.detail.inServiceOrderId;
+                if (_this.inServiceOrderId==0) {
+//                            显示服务中样式
+                    _this.fuwuzhong = true;
+                }else{
+//                            不显示服务中样式
+                    _this.fuwuzhong = false;
+                }
+            });
+
+            api.get("token", function (e) {
+                if (e.data == undefined || e.data == " " || e.data == "" || e.data == "undefined") {
+                    _this.xiaoxiurl = ("denglu.js");
+                } else {
+                    _this.xiaoxiurl = "xiaoxi.js";
+                }
+            })
+
+//            api.get("orderinfo", function (e) {
+//                var orderinfo = JSON.parse(e.data);
+//                orderinfo = {}; // 清空订单的存储信息
+//                api.save("orderinfo", orderinfo);
+//            });
+            api.save("orderinfo", {});
+////            -----------------------首页基本信息-----------------------------------
+//            api.call("index/homebase", {}, function (ret) {
+//                _this.jifen = ret.data.userInfo.userScore;
+//            });
+////            -----------------------首页基本信息-----------------------------------
+
+//            -----------------------未读消息-----------------------------------
+            api.call("index/unreadCount", {}, function (ret) {
+                api.log("积分11111111111："+ret.data.jf);
+                _this.xiaoxitxt = ret.data.unreadCount;
+                _this.jifen = ret.data.jf;
+                if (ret.data.unreadCount >= 1) {
+                    _this.xiaoxixianshi = true;
+                    _this.xiaoxitxt = ret.data.unreadCount;
+                } else {
+                    _this.xiaoxixianshi = false;
+                }
+            });
+//            -----------------------未读消息-----------------------------------
+
+//            -----------------------天气-----------------------------------不登录也显示
+            api.call("index/weatherInfo", {}, function (ret) {
+                _this.weather.tianqi = ret.data.weatherInfo.text;
+                _this.weather.du = ret.data.weatherInfo.temperature;
+                _this.weather.jianyi = ret.data.weatherInfo.life;  //洗车建议
+                _this.weather.img = _this.dir + "images/tianqi/" + ret.data.weatherInfo.code + ".png";
+            });
+//            -----------------------天气-----------------------------------
+
+//            -----------------------首页商家列表-----------------------------------
+            var info = {keyword: "", type: 9, sort: 1}
+            api.call("factory/list", info, function (ret) {
+//                api.log(ret.data.datas.length);
+                if (ret.data.requestCode == 109) {
+                    _this.serverData = [];
+                } else {
+                    _this.serverData = ret.data.datas;
+                }
+            });
+//            -----------------------首页商家列表-----------------------------------
+
+            api.get("lnglat", function (e) {
+                _this.chengshi = JSON.parse(e.data).city;
+            });
+
+        }
+    }
+</script>

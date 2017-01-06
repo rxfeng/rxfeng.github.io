@@ -1,0 +1,178 @@
+<template>
+    <container>
+        <div class="main" onclick="dianji1">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList1.png" class="img"></image>
+                <text class="txt">我的红包</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji2">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList2.png" class="img"></image>
+                <text class="txt">我的收藏</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji3">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList4.png" class="img"></image>
+                <text class="txt">我的咨询</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji4">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList5.png" class="img"></image>
+                <text class="txt">联系客服</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji5">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList6.png" class="img"></image>
+                <text class="txt">常见问题</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji6">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList7.png" class="img"></image>
+                <text class="txt">关于一修</text>
+            </div>
+            <div style="flex-direction: row">
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+        <div class="main" onclick="dianji7">
+            <div style="flex-direction: row;">
+                <image src="{{dir}}images/mainList8.8.png" class="img"></image>
+                <text class="txt">邀请好友</text>
+            </div>
+            <div style="flex-direction: row">
+                <text class="txt2">赚取一修500积分</text>
+                <image src="{{dir}}images/right-jiao.fw.png" class="img2"></image>
+            </div>
+        </div>
+        <div class="spane"></div>
+    </container>
+
+</template>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+//            ll: [
+//                {title: "",title2:"", img: "",url0:"",}
+//            ],
+        },
+        methods:{
+            dianji1: function (e) {
+                api.get("token",function(e){
+                    if(e.data == "undefined" || e.data==" "){
+                        api.push("denglu.js", {});
+                    }else{
+                        api.push("wodehongbao.js", {});
+                    }
+                });
+            },
+            dianji2: function (e) {
+                api.get("token",function(e){
+                    if(e.data == "undefined" || e.data==" "){
+                        api.push("denglu.js", {});
+                    }else{
+                        api.push("wodeshoucang.js", {});
+                    }
+                });
+            },
+            dianji3: function (e) {
+                api.get("token",function(e){
+                    if(e.data == "undefined" || e.data==" "){
+                        api.push("denglu.js", {});
+                    }else{
+                        api.push("wodezixun.js", {});
+                    }
+                });
+            },
+            dianji4: function (e) {
+                var _this = this;
+                api.get("token", function (e) {
+                    if(e.data == "undefined" || e.data==" "){
+                        require('@weex-module/dialanumber').boHao("400-6655679");
+                    }else{
+//                        require('@weex-module/lianxikefu').lianxikefu("400-6655679", e.data,"YX_9090","123456","YX_8080");
+//                        api.dialog(_this.dir + "zi-lianxikefu.js",{}, function (e) {
+//
+//                        });
+                        require('@weex-module/dialanumber').boHao("400-6655679");
+                    }
+                });
+            },
+            dianji5: function (e) {
+                api.push("changjianwenti.js", {});
+            },
+            dianji6: function (e) {
+                api.push("guanyuyixiu.js", {});
+            },
+            dianji7: function (e) {
+                api.push("yaoqinghaoyou.js", {});
+            },
+        }
+    }
+</script>
+<style>
+    .main {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        backgroundColor: #fff;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .img {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+    }
+
+    .txt {
+        font-size: 32px;
+        color: #737373;
+        margin-top: 25px;
+    }
+
+    .txt2{
+        font-size: 28px;
+        color: #737373;
+        margin-top: 25px;
+    }
+    .img2 {
+        width: 37px;
+        height: 37px;
+        margin-top: 26px;
+    }
+
+    .spane {
+        height: 2px;
+        backgroundColor: #e6e6e6;
+    }
+</style>

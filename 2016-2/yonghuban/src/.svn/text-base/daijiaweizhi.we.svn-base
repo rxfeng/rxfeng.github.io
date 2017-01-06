@@ -1,0 +1,132 @@
+<template>
+    <xx-navpage navtitle="代驾位置" navrighttitle="" navrightsrc="" navrighturl=""
+                navlefturl="jindugenzong.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="car">
+                <div class="info" repeat={{driverInfo}}>
+                    <image class="carpic" src="{{dir}}images/zhuanjia.jpg"></image>
+                    <div class="txt">
+                        <div style="flex-direction: row">
+                            <text class="car-txt1">{{driverName}}</text>
+                            <xingxing star="{{star}}" style="width: 200px;height: 40px;margin-top: 5px"></xingxing>
+                        </div>
+                        <text class="car-txt2">代驾：{{designatedCount}} 驾龄：{{experienceYear}}</text>
+                        <text class="car-txt2">电话：{{cellphone}}</text>
+                        <text class="car-txt2">身份证：{{numID}}</text>
+                    </div>
+                </div>
+                <div class="jifen" onclick="telclick">
+                    <image class="dianhua" src="{{dir}}images/phone1.png"></image>
+                </div>
+            </div>
+            <text class="juli-txt red">距离您{{distance}}公里，大约需要{{minute}}分钟</text>
+            <div style="flex: 1">
+                <mapdriver info="{{info}}" style="flex:1"></mapdriver>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .car {
+        flex-direction: row;
+        justify-content: space-between;
+        borderWidth: 2px;
+        borderColor: #e6e6e6;
+        backgroundColor: #fff;
+    }
+
+    .spean {
+        /*height: 20px;*/
+        backgroundColor: #F5F3F8;
+    }
+
+    .info {
+        flex-direction: row;
+        padding: 30px;
+        padding-right: 0;
+    }
+
+    .carpic {
+        width: 130px;
+        height: 160px;
+    }
+
+    .txt {
+        margin-left: 20px;
+        width: 530px;
+        flex-wrap: wrap;
+    }
+
+    .car-txt1 {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .car-txt2 {
+        font-size: 28px;
+        color: #a0a0a0;
+        margin-top: 5px;
+
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .jifen {
+        position: absolute;
+        top: 80px;
+        right: 30px;
+    }
+
+    .dianhua {
+        width: 70px;
+        height: 70px;
+    }
+
+    .juli-txt {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        font-size: 30px;
+        backgroundColor: #fff;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            orderId: "",
+            info:"",
+            driverInfo:[],
+            minute:"",
+            distance:"",
+        },
+        created: function () {
+            var _this = this;
+            _this.orderId = api.getData(_this).orderId;
+            _this.qingqiu();
+            setInterval(function (e) {
+               _this.qingqiu();
+            }, 20000);
+        },
+        methods:{
+            telclick: function (e) {
+                require('@weex-module/dialanumber').boHao(this.driverInfo.cellphone);
+            },
+            qingqiu: function (e) {
+                var _this = this;
+                api.call("factory/driverPosition", {id: _this.orderId}, function (ret) {
+                    _this.distance = ret.data.distance/1000;
+                    _this.minute = ret.data.minute;
+                    _this.driverInfo = ret.data.driverInfo;
+                    _this.info = {lng:ret.data.lng,lat:ret.data.lat}
+                }, function (ret) {});
+            }
+        }
+    }
+</script>

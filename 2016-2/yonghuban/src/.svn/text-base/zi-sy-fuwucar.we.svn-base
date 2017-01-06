@@ -1,0 +1,77 @@
+<template>
+
+    <div style="borderTopWidth:2px;borderColor:#e6e6e6;">
+        <div class="khlogo">
+            <image class="pic" src="{{dir}}images/car.png"></image>
+
+            <text class="cheph">冀A5203S</text>
+        </div>
+
+        <div class="weather-two">
+            <div class="qingkuang">
+                <div>
+                    <text class="fuwu-txt">此车正在服务中...</text>
+                    <text class="fuwu-txt2">点击查询详情</text>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .fuwu-txt{
+        font-size: 34px;
+        color: #E95412;
+        margin-top: 30px;
+        margin-left: 80px;
+    }
+    .fuwu-txt2{
+        font-size: 28px;
+        color: #737373;
+        margin-top: 10px;
+        margin-left: 120px;
+    }
+    .pic{
+        width: 150px;
+        height: 150px;
+        padding: 10px;
+        borderWidth:2px;
+        borderColor:#ccc;
+        border-radius: 75px;
+        background-color: #fff;
+    }
+    .weather-two{
+        height: 150px;
+        position: relative;
+    }
+    .qingkuang{
+        width: 550px;
+        height: 150px;
+        flex-direction: row;
+        position: absolute;
+        right: 0;
+    }
+
+    .khlogo{
+        height: 200px;
+        width: 150px;
+        position: absolute;
+        left:30px;
+        bottom:25px;
+    }
+    .cheph{
+        fontSize:28px;
+        text-align: center;
+        color: #000;
+        margin-top: 10px;
+
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

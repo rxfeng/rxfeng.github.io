@@ -1,0 +1,72 @@
+<template>
+    <xx-navpage navtitle="我的" navrighttitle="" navlefturl="" navrighturl=""
+                navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+
+        <zi-kehu-info2></zi-kehu-info2>
+        <div class="spane"></div>
+        <div class="two">
+            <container style="flex:1;borderRightWidth:1px;borderColor: #ccc;">
+                <image src="{{dir}}images/car.png"
+                       class="two-img"></image>
+                <text class="two-txt">我的爱车</text>
+            </container>
+            <container style="flex:1;">
+                <image src="{{dir}}images/mydingdan.png"
+                       class="two-img"></image>
+                <text class="two-txt">我的订单</text>
+            </container>
+        </div>
+        <div class="spane"></div>
+        <zi-mainList repeat={{ll}}></zi-mainList>
+    </xx-navpage>
+</template>
+<style>
+    .spane{
+        height: 20px;
+    }
+
+    .two {
+        backgroundColor: #fff;
+        flex-direction: row;
+        height: 150px;
+        borderTopWidth: 1px;
+        borderBottomWidth:1px;
+        borderColor: #ccc;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .two-img {
+        width: 80px;
+        height: 80px;
+        background-size: cover;
+        margin-left: 40px;
+        border-radius: 50px
+    }
+
+    .two-txt {
+        margin-left: 140px;
+        margin-top: -60px
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports={
+        data:{
+            dir:api.dir,
+            title2:"我的",
+            twotitle1:"",
+            flag:"",
+            ll:[
+                {title: "我的红包",title2:"" ,img: api.dir + "images/mainList1.png"},
+                {title: "我的收藏",title2:"" ,img: api.dir + "images/mainList2.png"},
+                {title: "我的咨询",title2:"" ,img: api.dir + "images/mainList4.png"},
+                {title: "联系客服",title2:"" ,img: api.dir + "images/mainList5.png"},
+                {title: "常见问题",title2:"" ,img: api.dir + "images/mainList6.png"},
+                {title: "关于一修",title2:"" ,img: api.dir + "images/mainList7.png"},
+                {title: "邀请好友",title2:"赚取一修500积分" ,img: api.dir + "images/mainList8.8.png"}
+            ]
+        }
+    }
+</script>

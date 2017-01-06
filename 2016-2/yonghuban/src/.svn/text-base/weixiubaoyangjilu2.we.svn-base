@@ -1,0 +1,253 @@
+<template>
+    <xx-navpage navtitle="维修保养记录" navrighttitle="" navlefturl="weixiubaoyangjilu.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="info">
+                <text class="title-left">保养里程</text>
+                <div style="flex-direction: row;">
+                    <input type="tel" class="inp gonglitxt" oninput="oninput1" value="{{licheng}}"/>
+                    <text class="title-right">公里</text>
+                </div>
+            </div>
+            <div class="info" onclick="buytimeclick">
+                <text class="title-left">保养日期</text>
+                <div style="flex-direction: row;">
+                    <text class="title-right">{{riqi}}</text>
+                    <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                </div>
+            </div>
+            <div class="spean"></div>
+            <div style="borderBottomWidth:2px;borderColor:#e6e6e6;">
+                <div class="info info2">
+                    <text class="title-left small">保养方案</text>
+                </div>
+                <div class="info info2" onclick="aa">
+                    <text class="title-left small2">{{}}项零件已经保养</text>
+                    <image if={{!flag}} class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                    <image if={{flag}} class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+                </div>
+                <div if={{flag}} class="main">
+                    <div class="one" onclick="xuanzeclick">
+                        <div class="left">
+                            <image class="img1" if={{xuanze}} src="{{dir}}images/danxuan2.png"></image>
+                            <image class="img1" if={{!xuanze}} src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px;margin-left: 10px">
+                                <text class="xiangmu-txt">机油8.0L</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <btn title="保存" style='position: relative;top:200px;margin-bottom: 100px'></btn>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .info {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .info2 {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 0px;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+    }
+
+    .gonglitxt {
+        font-size: 28px;
+        color: #737373;
+    }
+
+    .inp {
+        width: 200px;
+        height: 50px;
+        border-width: 0;
+        text-align: right;
+        margin-top: -5px;
+    }
+    .title-left {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .title-right {
+        font-size: 30px;
+        color: #737373;
+    }
+
+    .small {
+        font-size: 32px;
+    }
+
+    .small2 {
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+
+    .spean {
+        height: 20px;
+        backgroundColor: #F5F3F8;
+    }
+
+    .one {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .line {
+        margin-right: 20px;
+        margin-left: 70px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+    }
+
+    .line2 {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .left {
+        flex-direction: row;
+    }
+
+    .right {
+        flex-direction: row;
+        margin-top: 10px;
+    }
+
+    .img1 {
+        width: 50px;
+        height: 50px;
+        margin-top: 7px;
+    }
+
+    .img2 {
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+
+    .xiangmu-txt {
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+
+    .yuanjia {
+        font-size: 30px;
+        color: #a0a0a0;
+        text-decoration: line-through;
+    }
+
+    .tejia {
+        font-size: 30px;
+        margin-left: 20px;
+    }
+
+    .bot {
+        padding-left: 20px;
+        font-size: 30px;
+        margin-top: 20px;
+    }
+
+    .bottom {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .bottom {
+        width: 750px;
+        height: 120px;
+        padding-left: 20px;
+        backgroundColor: #F5F3F8;
+        borderTopWidth: 1px;
+        borderColor: #e6e6e6;
+        position: fixed;
+        bottom: 0;
+    }
+
+    .jine-yuanjia {
+        margin-top: 20px;
+
+    }
+
+    .zongji-txt {
+        font-size: 34px;
+        color: #373634;
+        margin-top: 10px;
+    }
+
+    .zongjijine-txt {
+        font-size: 34px;
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .youhuijine-txt {
+        font-size: 26px;
+        color: #a0a0a0;
+        margin-top: 5px;
+    }
+
+    .quedingbtn {
+        width: 180px;
+        backgroundColor: #E95412;
+    }
+
+    .queding-txt {
+        text-align: center;
+        color: #fff;
+        margin-top: 38px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            flag: true,
+            riqi:"",
+            licheng:"",
+            xuanze:true,
+        },
+        methods: {
+            oninput1: function (event) {
+                this.licheng = event.value;
+            },
+            jianyiadd: function (e) {
+                api.push("jianyixiangmu.js", {});
+            },
+            aa: function (e) {
+                this.flag = !this.flag;
+            },
+            buytimeclick: function (e) {
+                var _this = this;
+                require('@weex-module/riqixuanzeqi').getData("", function (e) {
+                    _this.riqi = e.date;
+                })
+            },
+            xuanzeclick: function (e) {
+                var _this = this;
+                _this.xuanze = !_this.xuanze;
+            }
+        }
+    }
+</script>

@@ -1,0 +1,538 @@
+<template>
+    <div onviewappear="viewappear">
+        <xx-navpage navtitle="添加车辆" navrighttitle="扫描识别" navlefturl="wodezuojia.js"
+                    navleftsrc="{{dir}}images/fanhui.png">
+            <!--<text class="tijiaotxt">扫描识别</text>-->
+            <scroller style="flex:1;">
+                <div class="{{pos}}">
+                    <div class="span"></div>
+                    <div class="box" style="position: relative;margin-bottom: 20px;flex-direction: row;">
+                        <div style="flex-direction: row;justify-content: space-between;">
+                            <text class="box-txt" style="margin-top: 20px;">车牌号</text>
+                            <div onclick="suboxclick" >
+                                <text class="su" style="margin-top:6px">{{sutxt}}</text>
+                            </div>
+                        </div>
+                        <input type="text" class="inp chepaihao" oninput="oninput1" value={{txt1}}>
+                        <!--<text class="kshq">快速获取</text>-->
+                    </div>
+                    <div class="box"
+                         style="position: relative;margin-bottom: 20px;flex-direction: row;justify-content: space-between"
+                         onclick="chexingclick">
+                        <!--<div style="flex-direction: row;margin-top: 10px;justify-content: space-between">-->
+                        <!--<div style="justify-content: center">-->
+                        <!--<text class="box-txt">车    型</text>-->
+                        <!--</div>-->
+                        <!--<div style="justify-content: center;margin-top: -7px">-->
+                        <!--<div style="justify-content: center;margin-top: -7px" if={{chexingflag}} repeat={{serialLoc}}>-->
+                        <!--<text class="chexing-txt">{{carFullTypeName}}</text>-->
+                        <!--</div>-->
+                        <!--<div style="justify-content: center;margin-top: -7px" if={{!chexingflag}}>-->
+                        <!--<text class="chexing-txt">{{cx}}</text>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div style="flex-direction: row;margin-top: 10px;justify-content: space-between">
+                            <div style="justify-content: center">
+                                <text class="box-txt">车 型</text>
+                            </div>
+                            <div style="justify-content: center;margin-top: -7px">
+                                <!--<div if={{chexingflag}} repeat={{serialLoc}}>-->
+                                    <!--<text class="chexing-txt">{{carFullTypeName}}</text>-->
+                                <!--</div>-->
+                                <div if={{chexingflag}} repeat={{serialLoc}}>
+                                    <text class="chexing-txt">{{carFullTypeName}}</text>
+                                </div>
+                                <text if={{!chexingflag}} class="chexing-txt">{{cx}}</text>
+                            </div>
+                        </div>
+                        <image class="youjiao" src="{{dir}}images/right-jiao.fw.png"></image>
+                    </div>
+                    <div class="box"
+                         style="position: relative;margin-bottom: 20px;flex-direction: row;justify-content: space-between"
+                         onclick="buytimeclick">
+                        <div style="justify-content: center">
+                            <text class="box-txt">注册日期</text>
+                        </div>
+                        <text class="inp date">{{txt4}}</text>
+                    </div>
+                    <div class="box" style="position: relative;margin-bottom: 20px;flex-direction: row;">
+                        <div style="justify-content: center">
+                            <text class="box-txt">当前行驶里程</text>
+                        </div>
+                        <input type="tel" class="inp inp2" oninput="oninput2" value={{txt2}} placeholder=""/>
+                    </div>
+                    <div style=" flex-direction: row;justify-content: center;margin-bottom: 20px;">
+                        <div class="line"></div>
+                    </div>
+                    <div class="box"
+                         style="position: relative;margin-bottom: 20px;flex-direction: row;justify-content: space-between">
+                        <div style="justify-content: center">
+                            <text class="box-txt">发动机号</text>
+                        </div>
+                        <input type="tel" class="inp inp2 inp3" oninput="oninput3" value={{txt3}} placeholder="输入后6位"/>
+
+                        <div style="justify-content: center;">
+                            <image class="zyimg" src="{{dir}}images/zhuyi1.png"  onclick="oneclick"></image>
+                        </div>
+                    </div>
+                    <div class="box"
+                         style="position: relative;margin-bottom: 20px;flex-direction: row;justify-content: space-between">
+                        <div style="justify-content: center">
+                            <text class="box-txt">车辆识别代码</text>
+                        </div>
+                        <input type="tel" class="inp inp2 inp3 inp4" oninput="oninput4" value={{txt33}}
+                               placeholder="输入后6位"/>
+
+                        <div style="justify-content: center;">
+                            <image class="zyimg" src="{{dir}}images/zhuyi1.png" onclick="twoclick"></image>
+                        </div>
+                    </div>
+                    <div class="box1">
+                        <text class="red qin">亲~请输入发动机号查询违章</text>
+                    </div>
+                    <div class="btn" onclick="baocunclick">
+                        <btn title="保 存"></btn>
+                    </div>
+                </div>
+                <!--<div class="quan" if={{posflag}} onclick="quanclick">-->
+                    <!--<div class="cpbox" if={{posflag}}>-->
+                        <!--<div repeat={{cptxt}}>-->
+                            <!--<text class="chepaiTxt" onclick="aa">{{txt}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </scroller>
+        </xx-navpage>
+    </div>
+</template>
+<style>
+    .pos {
+        position: absolute;
+    }
+
+    .tijiaotxt {
+        color: #fff;
+        position: fixed;
+        top: 15;
+        right: 30;
+        font-size: 32px;
+    }
+
+    .span {
+        height: 20px;
+    }
+
+    .box {
+        width: 700px;
+        height: 80px;
+        padding-left: 20px;
+        border-width: 1px;
+        border-color: #ccc;
+        border-radius: 10px;
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+
+    .box1 {
+        width: 700px;
+    }
+
+    .box-txt {
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .inp {
+        width: 400px;
+        height: 80px;
+        placeholder-color: #373634;
+        padding-left: 20px;
+        font-size: 32px;
+        color: #a0a0a0;
+    }
+
+    .chepaihao {
+        padding-left: 5;
+    }
+
+    .date {
+        width: 220px;
+        font-size: 32px;
+        color: #a0a0a0;
+        padding-top: 20px;
+    }
+
+    .inp2 {
+        width: 490px;
+        font-size: 32px;
+        color: #a0a0a0;
+        text-align: right;
+        padding-right: 10px;
+    }
+
+    .inp3 {
+        placeholder-color: #a0a0a0;
+        font-size: 32px;
+        width: 480px;
+        color: #a0a0a0;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .inp4 {
+        width: 410px;
+    }
+
+    .chexing-txt {
+        color: #a0a0a0;
+        font-size: 26px;
+        margin-top: 5px;
+        margin-left: 20px;
+        width: 520px;
+        text-align: right;
+        lines: 1;
+        text-overflow: ellipsis;
+    }
+
+    .line {
+        width: 690px;
+        height: 2px;
+        background-color: #e6e6e6;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .qin {
+        font-size: 28px;
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    .zyimg {
+        width: 42px;
+        height: 42px;
+        margin-right: 10px;
+    }
+
+    .kshq {
+        height: 80px;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        background-color: #a0a0a0;
+        font-size: 30px;
+        color: #373634;
+        line-height: 70px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .btn {
+        width: 750px;
+        position: fixed;
+        bottom: 100px;
+    }
+
+    .youjiao {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        right: 20px;
+        top: 28px;
+    }
+
+    .su {
+        font-size: 32px;
+        color: #000000;
+        margin-left: 20px;
+        flex-direction: row;
+        justify-content: center;
+        align-content: center;
+        text-decoration: underline;
+        padding: 10px;
+        padding-right:20px;
+        padding-left:20px;
+        background-color: #ccc;
+    }
+
+    .quan {
+        flex: 1;
+        backgroundColor: rgba(0, 0, 0, 0.4);
+    }
+
+    .cpbox {
+        flex-direction: row;
+        margin-left: 20px;
+        margin-right: 20px;
+        flex-wrap: wrap;
+        margin-top: 200px;
+    }
+
+    .chepaiTxt {
+        padding: 15px;
+        background-color: #ffffff;
+        /*background-color: #E95412;*/
+        color: #373634;
+        margin: 11px;
+        flex-direction: row;
+        justify-content: center;
+        align-content: center;
+        font-size: 32px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    var saom = 0;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            nextTxt1: "",
+            serialLoc: [],
+            txt1: "",
+            txt2: "",
+            txt3: "",
+            txt33: "",
+            txt4: "",
+            h: 100,
+            LevelId: "",
+            sutxt: "苏",
+            chexingflag: true,
+            cptxt: [
+                {
+                    txt: "京"
+                }, {
+                    txt: "津"
+                }, {
+                    txt: "沪"
+                }, {
+                    txt: "渝"
+                }, {
+                    txt: "蒙"
+                }, {
+                    txt: "新"
+                }, {
+                    txt: "藏"
+                }, {
+                    txt: "宁"
+                }, {
+                    txt: "桂"
+                }, {
+                    txt: "港"
+                }, {
+                    txt: "澳"
+                }, {
+                    txt: "黑"
+                }, {
+                    txt: "吉"
+                }, {
+                    txt: "辽"
+                }, {
+                    txt: "晋"
+                }, {
+                    txt: "冀"
+                }, {
+                    txt: "青"
+                }, {
+                    txt: "鲁"
+                }, {
+                    txt: "豫"
+                }, {
+                    txt: "苏"
+                }, {
+                    txt: "皖"
+                }, {
+                    txt: "浙"
+                }, {
+                    txt: "闽"
+                }, {
+                    txt: "赣"
+                }, {
+                    txt: "湘"
+                }, {
+                    txt: "鄂"
+                }, {
+                    txt: "粤"
+                }, {
+                    txt: "琼"
+                }, {
+                    txt: "甘"
+                }, {
+                    txt: "陕"
+                }, {
+                    txt: "黔"
+                }, {
+                    txt: "滇"
+                }, {
+                    txt: "川"
+                },
+            ],
+            pos: "",
+            posflag: false,
+        },
+        methods: {
+            oneclick: function (e) {
+//                api.tost("装在轿车或多用途载客车上的发动机，都按规定标明了发动机专业制造厂、型号及生产编号");
+                api.dialog(this.dir + "zi-dialog.js");
+            },
+            twoclick: function (e) {
+//                api.dialog(this.dir + "zi-dialog.js",{}, function (e) {
+//
+//                })
+                api.dialog(this.dir + "zi-dialog2.js")
+            },
+            chexing: function (e) {
+                var _this = this;
+                api.log("viewappear")
+                _this.nextTxt1 = api.getData(_this).nextTxt1;
+                if (saom == 0) {
+                    api.get("neirong", function (e) {
+                        _this.sutxt = JSON.parse(e.data).sutxt;
+                        _this.txt1 = JSON.parse(e.data).txt1;
+                        _this.txt2 = JSON.parse(e.data).txt2;
+                        _this.txt3 = JSON.parse(e.data).txt3;
+                        _this.txt4 = JSON.parse(e.data).txt4;
+                    });
+                }
+                var selectedData = {id: _this.nextTxt1};
+                var info = {lv: 3, cartype: selectedData}
+//            -----------------------选配置-----------------------------------
+                api.call("car/carTypes", info, function (ret) {
+                    api.log(ret.data.teList[0].typeContent[0].carFullTypeName);
+                    _this.serialLoc = ret.data.teList[0].typeContent;
+                    _this.LevelId = ret.data.teList[0].typeContent[0].LevelId;
+//                    _this.cx = ret.data.teList[0].typeContent[0].carFullTypeName;
+                    _this.cx = _this.carFullTypeName;
+                });
+//            -----------------------选配置-----------------------------------
+                _this.$on('naviBar.leftItem.click',function(e){
+                   api.pop();
+                });
+            },
+            suboxclick: function (e) {
+//                this.posflag = true;
+//                this.pos = "pos";
+                var _this = this;
+                api.dialog(this.dir + "zi-chepaihao.js",{}, function (e) {
+                    api.log(e);
+                    _this.sutxt = e.su;
+                });
+            },
+//            quanclick: function (e) {
+//                this.posflag = false;
+//                this.pos = "";
+//            },
+//            aa: function (e) {
+//                this.sutxt = e.target.attr.value;
+//                this.posflag = false;
+//                this.pos = "";
+//            },
+            oninput1: function (event) {
+                this.txt1 = event.value.replace(/(^\s*)|(\s*$)/g, "");
+            },
+            oninput2: function (event) {
+                this.txt2 = event.value;
+            },
+            oninput3: function (event) {
+                this.txt3 = event.value;
+            },
+            oninput4: function (event) {
+                this.txt33 = event.value;
+            },
+            baocunclick: function (e) {
+                api.log("carFullTypeName:"+this.serialLoc[0].carFullTypeName+",cx："+this.cx);
+
+                var reg = /^[A-Za-z]+$/;
+                var f = reg.test(this.txt1.slice(0, 1));
+                this.txt1  = this.txt1.replace(/(^\s*)|(\s*$)/g, "");
+                if (this.txt1.length != 6 || !f) {
+                    api.tost("请输入正确的车牌号");
+                } else if (this.txt4 == "") {
+                    api.tost("请输入注册日期");
+                } else if (this.txt2 == "" || isNaN(this.txt2) || this.txt2 < 0) {
+                    api.tost("请输入正确的行驶里程");
+                } else {
+                    var shuju = {
+                        carLicence: this.sutxt + this.txt1,
+                        carGotTime: this.txt4,
+                        carMileage: this.txt2,
+                        engineId: this.txt3,
+                        vin: this.txt33,
+                        cartypeId: this.nextTxt1,
+                        carBrand: this.LevelId,
+                        carFullTypeName: this.cx,
+                    }
+//                    api.log(shuju);
+                    var info = {car: shuju}
+                    var _this = this;
+////            -----------------------保存-----------------------------------
+                    api.call("car/addCar", info, function (ret) {
+                        require('@weex-module/finish').finLis();
+                        _this.serialLoc = ret.data.teList[0].typeContent;
+                        api.del("neirong");
+                    });
+////            -----------------------保存-----------------------------------
+                }
+            },
+            chexingclick: function (e) {
+                api.save("neirong", {txt1: this.txt1, txt2: this.txt2, txt3: this.txt3, txt4: this.txt4,sutxt:this.sutxt});
+                api.push("xuanpinpai.js");
+            },
+            buytimeclick: function (e) {
+                var _this = this;
+                require('@weex-module/riqixuanzeqi').getData("", function (e) {
+                    var y = new Date().getFullYear();
+                    var m = new Date().getMonth() + 1;
+                    var d = new Date().getDate();
+                    m = m < 10 ? "0" + m : m;
+                    d = d < 10 ? "0" + d : d;
+                    var sj = y + "-" + m + "-" + d;
+                    if (e.date > sj) {
+                        api.tost("请输入规定的服务时间内");
+                    } else {
+                        _this.txt4 = e.date;
+                    }
+                })
+            },
+        },
+        created: function () {
+            var _this = this;
+            if (api.getData(_this).zhi == "add") {
+                _this.sutxt = "苏"
+                _this.txt1 = "";
+                _this.txt2 = "";
+                _this.txt3 = "";
+                _this.txt33 = "";
+                _this.txt4 = "";
+                _this.cx = "";
+            } else {
+                _this.chexing();
+            }
+            _this.nextTxt1 = api.getData(_this).nextTxt1;
+            _this.$on('naviBar.rightItem.click', function (e) {
+                saom = 1;
+//                api.log("点击扫描识别");
+                require('@weex-module/paizhaocar').open(function (e) {
+                    api.log(e);
+                    if(e==""){
+                        api.loading();
+                    }else{
+                        _this.chexingflag = false;
+                        var xinxi = JSON.parse(e.imgurl).info;
+//                    api.log(xinxi.engine_num+","+xinxi.vin);
+                        _this.sutxt = xinxi.plate_num.slice(0, 1);
+                        _this.txt1 = xinxi.plate_num.slice(1, 7);
+                        _this.cx = JSON.parse(e.imgurl).cars[0].carFullTypeName;
+                        _this.txt4 = xinxi.register_date.slice(0, 4) + "-" + xinxi.register_date.slice(4, 6) + "-" + xinxi.register_date.slice(6, 8);
+//                    _this.txt2="";      //没有行驶里程，需要手动输入
+                        _this.txt3 = xinxi.engine_num;
+                        _this.LevelId = JSON.parse(e.imgurl).cars[0].LevelId;
+                        _this.txt33 = xinxi.vin;
+                    }
+                })
+            });
+        },
+    }
+</script>

@@ -1,0 +1,83 @@
+<template>
+    <div style="width: 750px;flex-direction: row;justify-content: center;align-content: center;backgroundColor:rgba(0,0,0,0)">
+        <div class="box">
+            <div class="zhifu">
+                <text class="zhifu-txt">￥{{jine}}</text>
+                <div style="flex-direction: row;">
+                    <text class="txt">出发地:</text>
+                    <text class="txt">哈哈哈哈</text>
+                </div>
+                <div style="flex-direction: row;margin-bottom: 10px;">
+                    <text class="txt">目的地:</text>
+                    <text class="txt">哈哈哈哈</text>
+                </div>
+            </div>
+            <div  style="flex-direction: row">
+                <text class="btn" onclick="wanchengclick2">确 认</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .box {
+        width: 607px;
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #ffffff;
+        border-radius: 10px;
+    }
+
+    .zhifu {
+        borderBottomWidth: 2px;
+        borderColor: #ccc;
+    }
+
+    .zhifu-txt {
+        font-size: 50px;
+        color: #373634;
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .txt{
+        font-size: 30px;
+        color: #373634;
+        margin-left: 20px;
+    }
+    .btn {
+        flex:1;
+        font-size: 30px;
+        color: #373634;
+        text-align: center;
+        height: 80px;
+        padding-top: 20px;
+    }
+
+    .red {
+        color: #E95412;
+        border-right-width: 1px;
+        border-color:#E95412;
+    }
+    .hui {
+        color: #E95412;
+        border-right-width: 1px;
+        border-color:#ccc;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            jine:60,
+        },
+        methods: {
+            wanchengclick: function (e) {
+                api.hidden({ok:false});
+            },
+            wanchengclick2: function (e) {
+                api.hidden({ok:true});
+            }
+        }
+    }
+</script>

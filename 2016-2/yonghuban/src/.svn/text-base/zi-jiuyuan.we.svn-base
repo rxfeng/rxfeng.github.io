@@ -1,0 +1,88 @@
+<template>
+    <div class="pthb">
+        <div class="title">
+            <div style="flex-direction: row">
+                <text class="title-txt">{{severData.factoryName}}</text>
+                <xingxing star={{totalscore}} style="margin-top: -3px"></xingxing>
+            </div>
+            <text class="title-right-txt">{{severData.repairtype}}</text>
+        </div>
+        <div class="title" style="padding-bottom: 20px;">
+            <div style="flex-direction: row;flex:1;border-right-width: 1px;border-color: #e6e6e6">
+                <image class="left-pic" src="{{dir}}images/yytime.png"></image>
+                <text class="title-right-txt">营业时间:{{severData.startTime}}--{{severData.endTime}}</text>
+            </div>
+            <div style="flex-direction: row;flex:1;justify-content: flex-end" onclick="bodadianhua">
+                <image class="left-pic" src="{{dir}}images/phone.png"></image>
+                <text class="title-right-txt">电话:{{severData.telPhone}}</text>
+            </div>
+        </div>
+        <div style="flex-direction: row;justify-content: space-between;padding-right: 20px;padding-left: 20px;padding-top: 10px">
+            <text class="title-right-txt">{{severData.location}}  </text>
+            <div style="flex-direction: row;margin-top: 7px">
+                <image class="dw" src="{{dir}}images/dw.png"></image>
+                <text class="title-right-txt">{{severData.distance}}Km</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .pthb{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .title{
+        border-bottom-width: 2px;
+        border-color: #e6e6e6;
+        margin-bottom: 10px;
+        padding:10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .title-txt{
+        font-size: 36px;
+        color: #373634;
+        margin-top: -10px;
+    }
+
+    .title-right-txt{
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+    .left-pic{
+        width: 37px;
+        height: 37px;
+        margin-right: 10px;
+    }
+    .ksjy{
+        color: #fff;
+        background: #E95412;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 28px;
+    }
+    .dw{
+        width: 40px;
+        height: 40px;
+    }
+</style>
+<script>
+    var api=require('../../common/api.we');
+    module.exports ={
+        data:{
+            dir:api.dir,
+            severData:{},
+        },
+        methods:{
+            bodadianhua: function (e) {
+                require('@weex-module/dialanumber').boHao(this.telPhone);
+            },
+        }
+    }
+</script>

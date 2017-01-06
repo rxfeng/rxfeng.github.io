@@ -1,0 +1,61 @@
+<template>
+    <div style="position: relative" onclick="wentixiangqing">
+        <div class="box">
+            <text class="txt">{{issueTitle}}</text>
+            <div style="flex-direction: row;justify-content: space-between;margin-top: 20px">
+                <text class="txt2">{{issueTime.slice(0,10)}} {{typeName}}</text>
+                <text class="txt2">阅览次数：{{count}}</text>
+            </div>
+        </div>
+        <image resize="stretch" src="{{dir}}images/jiantou2.png" class="jiao"></image>
+    </div>
+</template>
+<style>
+    .box{
+        margin-right: 40px;
+        margin-left: 40px;
+        justify-content: center;
+        borderWidth:2px;
+        borderColor:#DCDDDD;
+        padding: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-radius: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        margin-top: 40px;
+    }
+    .txt{
+        width: 630px;
+        flex-wrap: wrap;
+        font-size: 30px;
+        color: #373634;
+        margin-bottom: 10px;
+    }
+    .txt2{
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+    .jiao{
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top:-15px;
+        left:80px;
+        transform: rotate(90deg);
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            zjid:"",
+        },
+        methods:{
+            wentixiangqing: function (e) {
+                api.push("wentixiangqing.js",{zjid:this.zjid,issueId:this.id})
+            }
+        }
+    }
+</script>

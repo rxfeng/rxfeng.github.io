@@ -1,0 +1,13 @@
+<template>
+    <xx-navpage navtitle="地图" navrighttitle="" navrighturl="" navleftsrc="{{dir}}images/fanhui.png">
+        <maploc style="flex:1;"></maploc>
+    </xx-navpage>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

@@ -1,0 +1,139 @@
+<template>
+    <div onviewappear="viewappear">
+        <xx-navpage navtitle="送车上门" navrighttitle="" navrighturl="" navrightsrc=""
+                    navlefturl="http://192.168.1.105:63344/2016/dingdan3.js"
+                    navleftsrc="{{dir}}images/fanhui.png" bg="">
+            <scroller style="flex:1;">
+                <div class="span"></div>
+                <input type="text" class="inp" oninput="oninput1" value="{{user}}" placeholder="联系人"/>
+                <input type="tel" class="inp" oninput="oninput2" value="{{tel}}" placeholder="手机号"/>
+                <div class="address" onclick="mapclick">
+                    <text class="inp1 inptxt">{{locval}}</text>
+                    <image class="addressimg" src="{{dir}}images/address.png"></image>
+                </div>
+                <!--<input type="time" class="inp" placeholder="代驾取车时间"/>-->
+                <text class="inp" onclick="shijianclick">{{shijian}}</text>
+                <div class="dddiv">
+                    <zi-dd title1="取消送车" title2="确认送车" class="dd" title1src="dingdan3.js"></zi-dd>
+                </div>
+            </scroller>
+        </xx-navpage>
+    </div>
+</template>
+<style>
+    .span {
+        height: 20px;
+    }
+
+    .inp {
+        height: 70px;
+        padding: 10px;
+        padding-left: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+    .address{
+        width: 730px;
+        height: 90px;
+        position: relative;
+        overflow: hidden;
+    }
+    .inp1 {
+        height: 70px;
+        padding: 10px;
+        padding-left: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+
+    .inptxt {
+        width: 2000px;
+    }
+
+    .addressimg{
+        width: 70px;
+        height: 70px;
+        position: absolute;
+        top:20;
+        right:0px;
+        backgroundColor: #DDDDDD;
+    }
+
+    .dddiv{
+        position: fixed;
+        bottom: 0;
+    }
+</style>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+          dir:api.dir,
+            locval: "送车位置",
+            lat: "",
+            lon: "",
+            shijian:"代驾取车时间",
+            user:"",
+            tel:"",
+        },
+        methods:{
+            oninput1: function (e) {
+                this.user = e.value;
+            },
+            oninput2: function (e) {
+                this.tel = e.value;
+            },
+            mapclick: function (e) {
+                api.push("weizhi.js");
+            },
+            viewappear: function (e) {
+                var _this = this;
+                api.get("info", function (e) {
+                    var info1 = JSON.parse(e.data);
+                    _this.locval = info1.address;
+                    _this.lat = info1.lat;
+                    _this.lon = info1.lon;
+                    api.save("info", " ");
+                });
+            },
+            shijianclick: function (e) {
+                var _this = this;
+                require('@weex-module/datetime').getDatetime("",function(e){
+                    api.log(e.data);
+                    _this.shijian = e.data;
+                });
+            },
+        },
+        created: function () {
+            var _this = this;
+            _this.$on('queren', function (e) {
+                if(_this.user==""){
+                    api.tost("请输入联系人");
+                }else if(_this.tel.length!=11 || isNaN(_this.tel) == true){
+                    api.tost("请输入正确的电话号码");
+                }else if(_this.locval=="送车位置"){
+                    api.tost("请输入送车位置");
+                }else if(_this.shijian=="代驾取车时间"){
+                    api.tost("请输入代驾取车时间");
+                }else{
+                    api.push("dingdan3.js");
+                }
+            })
+        }
+    }
+
+</script>

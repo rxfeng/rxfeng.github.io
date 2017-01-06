@@ -1,0 +1,369 @@
+<template>
+    <xx-navpage navtitle="登录" navrighttitle="" navleftsrc="{{dir}}images/fanhui.png"
+                navlefturl="index.js" navrightsrc="" navrighturl="">
+
+        <div class="{{pos}}">
+            <div style="height: 50px;"></div>
+            <input id="tel" class="inp" type="tel" placeholder="手机号"
+                   oninput="oninput1" value="{{tel}}"/>
+
+            <div style="height: 20px;"></div>
+            <div style="position: relative;">
+                <input id="yangzheng" class="inp" type="tel" placeholder="验证码"
+                       oninput="oninput2" value="{{yanzheng}}"/>
+                <text if={{yzm}} class="yanzhengma" onclick="getclick">获取验证码</text>
+                <text if={{!yzm}} class="yanzhengma">{{date.s}}秒后重试</text>
+            </div>
+            <div style="height: 40px;"></div>
+            <div class="row">
+                <image if={{flag}} onclick="duanxuan" class="xieyi" src="{{dir}}images/danxuan2.png"></image>
+                <image if={{!flag}} onclick="duanxuan" class="xieyi" src="{{dir}}images/danxuan3.png"></image>
+                <text class="txt">我已阅读并同意</text>
+                <text class="txt red" onclick="xieyiclick">《一修车管家用户协议》</text>
+            </div>
+            <div style="height: 40px;"></div>
+            <zi-login-btn title="登录" onclick="login"
+                          style="background-color: #E95412;margin-right: 30px;margin-left: 30px;border-radius: 10px"></zi-login-btn>
+            <div style="height: 150px;"></div>
+            <div class="row center">
+                <div class="line"></div>
+                <text class="txt">其他快捷方式登录</text>
+                <div class="line"></div>
+            </div>
+        </div>
+        <div class="disanfangbox">
+            <image onclick="weixinclick" class="disanfang dl" src="{{dir}}images/weixin1.png"></image>
+            <image onclick="weiboclick" class="disanfang dl" src="{{dir}}images/weibo2.png"></image>
+            <image onclick="qqclick" class="disanfang" src="{{dir}}images/qq3.png"></image>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .quan {
+        flex: 1;
+        backgroundColor: rgba(0, 0, 0, 0.4);
+    }
+
+    .box {
+        width: 607px;
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 400px;
+    }
+
+    .zhifu {
+        flex-direction: row;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        borderBottomWidth: 2px;
+        borderColor: #ccc;
+    }
+
+    .zhifu-txt {
+        flex: 1;
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .btn {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .border {
+        borderRightWidth: 3px;
+        borderColor: #e6e6e6;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .pos {
+        width: 750px;
+        position: absolute;
+    }
+
+    .row {
+        flex-direction: row;
+    }
+
+    .txt {
+        font-size: 28px;
+        color: #737373;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .inp {
+        margin-right: 50px;
+        margin-left: 50px;
+        height: 80px;
+        borderWidth: 2px;
+        borderColor: #e6e6e6;
+        padding-left: 20px;
+        font-size: 34px;
+        color: #373634;
+        border-radius: 10px;
+    }
+
+    .yanzhengma {
+        width: 200px;
+        height: 80px;
+        /*line-height: 80px;*/
+        /*padding-top: 10px;*/
+        /*padding-bottom: 10px;*/
+        padding-top: 20px;
+        text-align: center;
+        position: absolute;
+        top: 0px;
+        right: 50px;
+        backgroundColor: #E95412;
+        color: #fff;
+        font-size: 28px;
+    }
+
+    .xieyi {
+        width: 47px;
+        height: 47px;
+        margin-left: 50px;
+        margin-right: 10px;
+    }
+
+    .center {
+        justify-content: center;
+    }
+
+    .line {
+        width: 150px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+        margin: 20px;
+    }
+
+    .disanfangbox {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .disanfang {
+        width: 100px;
+        height: 100px;
+        margin-top: 50px;
+    }
+
+    .dl {
+        margin-right: 30px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var timer;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            zhifu: false,
+            yzm: true,
+            date: {
+                s: 60,
+            },
+            pos: "",
+            flag: true,
+            tel: "",
+            yanzheng: "",
+            cl: "#cccccc",
+        },
+        created: function (e) {
+
+        },
+        methods: {
+            oninput1: function (event) {
+                this.tel = event.value;
+            },
+            oninput2: function (event) {
+                this.yanzheng = event.value;
+            },
+            xieyiclick: function (e) {
+                var time = new Date();
+                api.push("zi-webpage.js", {title: "用户协议", url: this.dir + "html/yx-xieyi.html?v="+time,fanhui:"denglu.js"});
+            },
+            login: function (e) {
+                var self = this;
+                if (!self.flag) {
+                    api.tost("请同意《一修车管家用户协议》")
+                    return;
+                }
+                var userReq = {
+                    userID: self.tel,
+                    captcha: self.yanzheng
+                };
+                api.call("user/login", userReq, function (ret) {
+                    api.log(ret.data);
+                    api.save("token", ret.data.userInfo.token);
+//                    api.log("真实姓名："+ret.data.userInfo.realName)
+                    api.save("userinfo", {
+                        userSex: ret.data.userInfo.userSex,
+                        userid: ret.data.userInfo.id,
+                        username: ret.data.userInfo.realName,
+                        usertel: ret.data.userInfo.userphone,
+                        isZhuanjia: ret.data.userInfo.isZhuanjia
+                    });
+                    require('@weex-module/finish').finLis();
+                    api.bing("YX_"+ret.data.userInfo.id, function (e) {
+                        api.log(e);
+                    });
+                });
+            },
+            duanxuan: function (e) {
+                var self = this;
+                self.flag = !self.flag;
+            },
+            getclick: function (e) {
+                if (this.tel.length == 11 || isNaN(this.tel) == true) {
+                    this.yzm = false;
+                    this.djsfunc();
+//            -----------------------获取验证码-----------------------------------
+//                    var data = {cellphone: this.tel}
+                    api.call("user/sendSMS", {cellphone: this.tel}, function (ret) {
+                    });
+//                 -----------------------获取验证码-----------------------------------
+                } else {
+                    api.tost("请输入正确的手机号")  //判断是否是11位手机号
+                }
+            },
+            djsfunc: function (e) {
+                var self = this;
+                var s = self.date.s;
+                timer = setInterval(function (e) {
+                    if (s <= 0) {
+                        clearInterval(timer);
+                        self.date.s = 60;
+                        self.yzm = true;
+                        return;
+                    } else {
+                        s--;
+                    }
+                    self.date.s = s;
+                }, 1000);
+            },
+            qqclick: function (e) {
+                require('@weex-module/login3').login3("qq", function (e) {
+                    var api = require("../../common/api.we");
+                    api.log(e);
+//            -----------------------第三方登录（qq）-----------------------------------
+                    var info = {
+                        thirdPartyName: e.username,
+                        thirdPartyID: e.userid,
+                        userIcon: e.usericon,
+                        thirdPartyToken: e.usertoken,
+                        platName: e.paltname
+                    }
+                    api.call("user/thirdPartyLogin", {user: info}, function (ret) {
+//                        api.log(ret.data)
+                        if (ret.data.user.cellphone == "") {
+                            api.push("denglu2.js", {
+                                name: "qq",
+                                info: info,
+                                user: ret.data.user,
+                                fanhuiurl: "denglu.js"
+                            });
+                        } else {
+                            api.log(ret.data.user);
+                            api.save("user", ret.data.user);
+                            api.save("token", ret.data.user.userToken);
+                            api.save("userinfo", {
+                                userid: ret.data.user.id,
+                                userSex: ret.data.user.gender,
+                                username: ret.data.user.realName,
+                                usertel: ret.data.user.cellphone,
+                                isZhuanjia: ret.data.user.isZhuanjia
+                            });
+                            require('@weex-module/finish').finLis();
+                        }
+                    });
+//            -----------------------第三方登录（qq）-----------------------------------
+                })
+            },
+            weixinclick: function (e) {
+                require('@weex-module/login3').login3("weixin", function (e) {
+                    var api = require("../../common/api.we");
+                    api.log(e);
+//            -----------------------第三方登录（qq）-----------------------------------
+                    var info = {
+                        thirdPartyName: e.username,
+                        thirdPartyID: e.userid,
+                        userIcon: e.usericon,
+                        thirdPartyToken: e.usertoken,
+                        platName: e.paltname
+                    }
+                    api.call("user/thirdPartyLogin", {user: info}, function (ret) {
+                        if (ret.data.user.cellphone == "") {
+                            api.push("denglu2.js", {
+                                name: "weixin",
+                                info: info,
+                                user: ret.data.user,
+                                fanhuiurl: "denglu.js"
+                            });
+                        } else {
+                            api.save("user", ret.data.user);
+                            api.save("token", ret.data.user.userToken);
+                            api.save("userinfo", {
+                                userid: ret.data.user.id,
+                                userSex: ret.data.user.gender,
+                                username: ret.data.user.realName,
+                                usertel: ret.data.user.cellphone,
+                                isZhuanjia: ret.data.user.isZhuanjia
+                            });
+                            require('@weex-module/finish').finLis();
+                        }
+                    });
+
+//            -----------------------第三方登录（qq）-----------------------------------
+                })
+            },
+            weiboclick: function (e) {
+                require('@weex-module/login3').login3("sina", function (e) {
+                    var api = require("../../common/api.we");
+                    api.log(e);
+//            -----------------------第三方登录（qq）-----------------------------------
+                    var info = {
+                        thirdPartyName: e.username,
+                        thirdPartyID: e.userid,
+                        userIcon: e.usericon,
+                        thirdPartyToken: e.usertoken,
+                        platName: e.paltname
+                    }
+                    api.call("user/thirdPartyLogin", {user: info}, function (ret) {
+                        if (ret.data.user.cellphone == "") {
+                            api.push("denglu2.js", {
+                                name: "sina",
+                                info: info,
+                                user: ret.data.user,
+                                fanhuiurl: "denglu.js"
+                            });
+                        } else {
+                            api.save("user", ret.data.user);
+                            api.save("token", ret.data.user.userToken);
+                            api.save("userinfo", {
+                                userid: ret.data.user.id,
+                                username: ret.data.user.realName,
+                                usertel: ret.data.user.cellphone,
+                                userSex: ret.data.user.gender,
+                                isZhuanjia: ret.data.user.isZhuanjia
+                            });
+                            require('@weex-module/finish').finLis();
+                        }
+                    });
+//            -----------------------第三方登录（qq）-----------------------------------
+                })
+            }
+        }
+    }
+</script>

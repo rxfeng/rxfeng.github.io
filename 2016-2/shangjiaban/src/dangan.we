@@ -1,0 +1,171 @@
+<template>
+    <container>
+        <list style="position: absolute;top:0;bottom:0;left:0;right:0;">
+            <refresh class="refresh-view" display="{{refresh_display}}" onrefresh="datarefresh">
+                <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+            </refresh>
+            <cell class="dingdaninfo" repeat="{{kefu}}" onclick="goxq">
+                <div class="info">
+                    <text class="info-txt1">姓名：</text>
+                    <text class="info-txt2">{{name}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">手机号：</text>
+                    <text class="info-txt2">{{phone}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">性别：</text>
+                    <text class="info-txt2">{{sex}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">车牌号：</text>
+                    <text class="info-txt2">{{chepaihao}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">车型：</text>
+                    <text class="info-txt2">{{car}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">保险到期：</text>
+                    <text class="info-txt2">{{bxdq1}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">年检到期：</text>
+                    <text class="info-txt2">{{bxdq2}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">保养到期：</text>
+                    <text class="info-txt2">{{bxdq3}}</text>
+                </div>
+                <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+            </cell>
+        </list>
+    </container>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports ={
+        data: {
+            dir:api.dir,
+            height:0,
+            page: 1,
+            refresh_display: "hide",
+            dd:[],
+            kefu:[
+                {
+                    id:"",
+                    name: "",
+                    phone: "",
+                    sex: "",
+                    chepaihao: "",
+                    car: "",
+                    bxdq1: "",
+                    bxdq2:"",
+                    bxdq3:"",
+                    flag:false,
+                },
+            ],
+        },
+        methods: {
+            goxq: function (e) {
+                var vm = this;
+                api.push("kehuxiangqing.js", {id: vm.id});
+            },
+            onseclled: function (e) {
+                var sx = e.data.rangeHeight - e.data.height - e.data.offsetY;
+                if (sx < 50) {
+                    this.loadMore();
+                }
+            },
+            datarefresh: function (e) {
+                this.refresh_display = "show"
+                this.page = 1;
+                this.loaddata();
+            },
+            loadMore: function (e) {
+                api.log(this.page);
+                var _this = this;
+                this.page++;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                var _this = this;
+                api.log(this.kefu)
+                _this.kefu = [];
+                api.call("factory/queryClient", {factoryId: _this.factoryId, text: _this.text,pagerNum: _this.page}, function (ret) {
+                    for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                        if (ret.data.ClientInfo[i].insuranceEndDate) {
+                            ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                        }
+                        if (ret.data.ClientInfo[i].checkEndDate) {
+                            ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                        }
+                        _this.kefu.$set(i,
+                                {
+                                    id: ret.data.ClientInfo[i].id,
+                                    name: ret.data.ClientInfo[i].realName,
+                                    phone: ret.data.ClientInfo[i].cellphone,
+                                    sex: ret.data.ClientInfo[i].gender,
+                                    chepaihao: ret.data.ClientInfo[i].carLicence,
+                                    car: ret.data.ClientInfo[i].carFullTypeName,
+                                    bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                    bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                    bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                    flag: true,
+                                })
+                    }
+                    _this.refresh_display = 'hide';
+                }, function (e) {
+                    _this.refresh_display = 'hide';
+                })
+            },
+        }
+    }
+</script>
+<style>
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        margin-bottom: 20px;
+        borderTopWidth:1px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+        backgroundColor:#fff;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 130px;
+        right: 20px;
+    }
+    .refresh-view {
+        height: 120px;
+        width: 750px;
+        display: -ms-flex;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+</style>

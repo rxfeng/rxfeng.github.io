@@ -1,0 +1,126 @@
+<template>
+    <xx-navpage navtitle="商家选择" navrighttitle="" navlefturl="" navrighturl=""
+                navrightsrc="{{dir}}images/sousuo1.png"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+
+        <div class="zhuangtai">
+            <div class="zt">
+                <text class="zt-txt">汽车</text>
+                <image class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+            </div>
+            <div class="zt">
+                <text class="zt-txt">全 城</text>
+                <image class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+            </div>
+            <div class="zt">
+                <text class="zt-txt">智能排序</text>
+                <image class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+            </div>
+        </div>
+        <list style="flex: 1;margin-top: 100">
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <text class="xuanze">选 择</text>
+                <div class="spane"></div>
+            </cell>
+        </list>
+    </xx-navpage>
+</template>
+<style>
+    .zhuangtai {
+        flex-direction: row;
+        border-bottom: 2px solid #e6e6e6;
+        backgroundColor: #fff;
+        position: fixed;
+        width: 750px;
+        top: 88px;
+    }
+
+    .zt {
+        flex-direction: row;
+        flex: 1;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-right: 2px solid #ccc;
+        justify-content: center;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #373634;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-left: 10px;
+    }
+
+    .spane {
+        height: 10px;
+        backgroundColor: #fff;
+    }
+
+    .jiantoured {
+        width: 36px;
+        height: 36px;
+        transform: rotate(180deg);
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+
+    .spane {
+        height: 10px;
+        backgroundColor: #fff;
+    }
+    .xuanze{
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-right: 15px;
+        padding-left: 15px;
+        font-size: 28px;
+        color: #fff;
+        backgroundColor: #E95412;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 25px;
+        right: 30px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

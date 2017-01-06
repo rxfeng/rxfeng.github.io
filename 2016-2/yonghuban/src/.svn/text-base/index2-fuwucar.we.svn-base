@@ -1,0 +1,187 @@
+<template>
+    <xx-navpage navtitle="一修车管家" navrighttitle="" navlefturl="" navrighturl=""
+                navrightsrc="{{dir}}images/xiaoxi.png"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+
+        <!--<scroller style="">-->
+        <xx title="1" class="top-xiaoxi"></xx>
+        <div class="weather">
+            <div class="weather-one">
+                <div class="tianqi">
+                    <div style="flex-direction: row">
+                        <image class="sum" src="{{dir}}images/sum.png"></image>
+                        <div style="margin-left: 10px;margin-top: 20px">
+                            <text class="sum-txt">晴</text>
+                            <text class="sum-txt">16-19℃ PM2.5：78</text>
+                        </div>
+                    </div>
+                    <div style="margin-left: 40px;">
+                        <text class="xiche-txt">洗车建议：阳光明媚，正是洗车好日子</text>
+                        <text class="xiche-txt youhui">洗车优惠噢！</text>
+                    </div>
+                </div>
+                <div class="jifen">
+                    <text class="danshu-txt">8000</text>
+                    <text class="jfxc-txt">我的积分</text>
+                </div>
+            </div>
+            <text class="tishixinxi yellow">当前车辆将于40天后保险到期，请及时投保。</text>
+            <zi-sy-fuwucar></zi-sy-fuwucar>
+        </div>
+        <zi-sy-yuyue></zi-sy-yuyue>
+
+        <div class="wntj-top">
+            <container style="flex-direction: row;justify-content: space-between">
+                <div style="flex-direction: row">
+                    <image src="{{dir}}images/tuijian.png"
+                           style="width: 30px;height: 30px;margin-top: 5px;margin-right: 5px;"></image>
+                    <text class="txt red">为你推荐</text>
+                </div>
+                <div style="flex-direction: row">
+                    <text class="txt">更多</text>
+                    <image src="{{dir}}images/right-jiao.fw.png"
+                           style="width: 40px;height: 40px;margin-top: 3px;margin-left: 5px;"></image>
+                </div>
+            </container>
+        </div>
+        <!--</scroller>-->
+        <list style="flex:1">
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+            <cell style="position: relative">
+                <sy-neirong class="nr cell"></sy-neirong>
+                <div class="spane"></div>
+            </cell>
+        </list>
+
+    </xx-navpage>
+</template>
+<style>
+    .wntj-top {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        backgroundColor: #fff;
+        margin-top: 10px;
+    }
+
+    .txt {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+    .yellow{
+        color: #F39801;
+    }
+
+    .spane {
+        height: 10px;
+        backgroundColor: #fff;
+    }
+
+    /*天气*/
+    .weather {
+        margin-bottom: 10px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        backgroundColor: #fff;
+    }
+
+    .weather-one {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .jifen {
+        width: 150px;
+        height: 150px;
+        borderWidth: 2px;
+        borderColor: #E95412;
+        border-radius: 75px;
+        background-color: #fff;
+        margin-right: 50px;
+        margin-top: 20px;
+        margin-bottom: 60px;
+    }
+
+    .jfxc-txt {
+        text-align: center;
+        fontSize: 26px;
+        color: #ccc;
+    }
+
+    .danshu-txt {
+        margin-top: 40px;
+        text-align: center;
+        fontSize: 28px;
+        color: #E95412;
+        fontWeight: 700;
+    }
+
+    .tishixinxi {
+        font-size: 24px;
+        color: #737373;
+        text-decoration: underline;
+        position: absolute;
+        bottom: 160px;
+        left: 200px;
+    }
+
+    .sum {
+        width: 117px;
+        height: 117px;
+        margin-left: 20px;
+    }
+
+    .sum-txt {
+        font-size: 32px;
+        color: #737373;
+    }
+
+    .xiche-txt {
+        font-size: 26px;
+        color: #a0a0a0;
+    }
+
+    .youhui {
+        margin-left: 140px;
+    }
+
+    .top-xiaoxi {
+        position: fixed;
+        top: 10px;
+        right: 20px;
+        z-index: 100;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

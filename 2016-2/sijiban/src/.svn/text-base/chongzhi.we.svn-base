@@ -1,0 +1,79 @@
+<template>
+    <xx-navpage navtitle="充值" navrighttitle="" navrightsrc="" navrighturl=""
+                navlefturl="wodeqianbao.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="yue">
+            <text class="yue-txt1">{{jine}}</text>
+            <text class="yue-txt2">当前钱包余额（元）</text>
+        </div>
+        <div class="main">
+            <text class="txt-info">充值金额：</text>
+            <input class="inp" type="tel" placeholder="请输入充值金额" />
+        </div>
+        <div class="qrbtn">
+            <btn title="确认充值" class="btn"></btn>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+    .yue{
+        height: 200px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+        backgroundColor: #fff;
+    }
+    .yue-txt1{
+        text-align: center;
+        color: #E95412;
+        font-size: 60px;
+        margin-top: 50px;
+    }
+    .yue-txt2{
+        font-size: 30px;
+        text-align: center;
+        color: #a0a0a0;
+    }
+    .main{
+        padding: 30px;
+        backgroundColor:#fff;
+        flex-direction: row;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .inp{
+        width: 520px;
+        height: 70px;
+        borderWidth:1px;
+        borderColor:#ccc;
+        border-radius: 10px;
+        padding-left: 20px;
+        font-size: 30px;
+    }
+    .txt-info{
+        color: #373634;
+        font-size: 30px;
+        margin-top: 10px;
+    }
+    .qrbtn{
+        width: 750px;
+        position: fixed;
+        bottom:100px;
+    }
+    .btn{
+        position: relative;
+        bottom: 0px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports={
+        data:{
+            dir:api.dir,
+            jine:"285"
+        }
+    }
+</script>

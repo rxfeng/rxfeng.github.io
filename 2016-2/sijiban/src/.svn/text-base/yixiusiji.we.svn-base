@@ -1,0 +1,328 @@
+<template>
+    <xx-navpage navtitle="一修司机" navrighttitle="我的" navrighturl="wode.js" bg="">
+        <div class="time">
+            <text class="time-txt">{{date.yueri}} {{date.xingqi}} 今日在线{{date.hh}}:{{date.mm}}:{{date.ss}}</text>
+        </div>
+        <div class="today">
+            <div class="todaydiv">
+                <text class="txt1">{{danshu}}</text>
+                <text class="txt2">今日代驾（单）</text>
+            </div>
+            <div class="todaydiv">
+                <text class="txt1">{{shouru}}</text>
+                <text class="txt2">今日收入（元）</text>
+            </div>
+        </div>
+        <div if={{xinxiflag}} style="position: relative">
+            <!--<qiangdan qd={{qd}}></qiangdan>-->
+            <div class="dingdaninfo">
+                <div class="info">
+                    <text class="info-txt1">车牌号：</text>
+                    <text class="info-txt2">{{qd.carLicence}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">车辆型号：</text>
+                    <text class="info-txt2">{{qd.carFullTypeName}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客户姓名：</text>
+                    <text class="info-txt2">{{qd.realName}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客户手机：</text>
+                    <text class="info-txt2">{{qd.cellphone}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客人地址：</text>
+                    <text class="info-txt2">{{qd.start}}</text>
+                </div>
+            </div>
+            <jiedan txt="{{jiedanTitle}}" if={{jiedanFlag}}  class="btn2" onclick="jiedan"></jiedan>
+        </div>
+        <div class="qrbtn" onclick="tingdanclick">
+            <btn if={{kstd}} title="开始听单" class="btn"></btn>
+            <btn if={{!kstd}} title="结束听单" class="btn"></btn>
+        </div>
+        <!--<div class="qrbtn" if={{!kstd}} onclick="tingdanclick">-->
+            <!--<btn title="结束听单" class="btn"></btn>-->
+        <!--</div>-->
+    </xx-navpage>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    var timer;
+    var HH;
+    var MM;
+    var SS;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            danshu: 0,
+            shouru: 0,
+            kstd: true,
+            qd: {},
+            date: {
+                yueri: "",
+                xingqi: "",
+                hh: 00,
+                mm: 00,
+                ss: 00,
+            },
+            xinxiflag:false,
+            jiedanTitle:"",
+            jiedanFlag:true,
+            sijitype:"",
+            orderId:"",
+        },
+        created: function () {
+            var _this = this;
+            api.get("token", function (e) {
+                if(e.data==undefined || e.data=="" || e.data=="undefined"){
+                    api.push("denglu.js");
+                }else{
+                    api.call("driver/loginMess", {}, function (ret) {
+                        _this.sijitype = ret.data.driverInfo.driverType;
+//                        driverType==0 代驾 接单
+//                        driverType==1 拖车 抢单
+//                        driverType==2 技师 没有
+                        if(ret.data.driverInfo.workState){
+                            api.log(ret.data.driverInfo.driverType);
+//                            _this.xinxiflag = true;
+                            _this.kstd = false;
+                            if(ret.data.driverInfo.driverType==0){
+                                _this.jiedanTitle= "接单";
+                            }else if(ret.data.driverInfo.driverType==1){
+                                _this.jiedanTitle= "抢单";
+                            }else if(ret.data.driverInfo.driverType==2){
+//                                _this.jiedanFlag = false;
+                                _this.jiedanTitle= "进入";
+                            }
+                            var self = _this;
+                            api.call("driver/queryOrderOne", {}, function (info) {
+                                if(info.data.orderInfo==undefined){
+                                    self.xinxiflag = false;
+                                }else{
+                                    api.log(info.data.orderInfo);
+                                    self.xinxiflag = true;
+                                    self.qd = info.data.orderInfo;
+                                    self.orderId = info.data.orderInfo.id;
+                                }
+                            });
+                        }else{
+//                            api.log("下班中,开始听单");
+                            _this.xinxiflag = false;
+                            _this.kstd = true;
+                        }
+
+                    });
+                    api.call("driver/queryDay", {}, function (ret) {
+                        _this.danshu = ret.data.ddInfo.countOrder;
+                        _this.shouru = ret.data.ddInfo.earning;
+                    });
+                    api.call("driver/queryOnlinne", {}, function (ret) {
+                        _this.date.ss = ret.data.olInfo.online%60;
+                        _this.date.mm = parseInt(ret.data.olInfo.online/60%60);
+                        _this.date.hh = parseInt(ret.data.olInfo.online/3600%24);
+//                api.log(_this.date.hh+" "+_this.date.mm+" "+_this.date.ss);
+                        HH = _this.date.hh;
+                        MM = _this.date.mm;
+                        SS = _this.date.ss;
+                    });
+                    var m = new Date().getMonth() + 1;
+                    var d = new Date().getDate();
+                    var xq = new Date().getDay();
+                    m = m < 10 ? "0" + m : m;
+                    d = d < 10 ? "0" + d : d;
+                    switch (xq) {
+                        case 0:
+                            xq = "星期天";
+                            break;
+                        case 1:
+                            xq = "星期一";
+                            break;
+                        case 2:
+                            xq = "星期二";
+                            break;
+                        case 3:
+                            xq = "星期三";
+                            break;
+                        case 4:
+                            xq = "星期四";
+                            break;
+                        case 5:
+                            xq = "星期五";
+                            break;
+                        case 6:
+                            xq = "星期六";
+                            break;
+                    }
+                    _this.date.yueri = m + "月" + d + "日";
+                    _this.date.xingqi = xq;
+//           ------------------------------- 时间累加 --> 定时器-----------------------------------------------
+                    setInterval(function (e) {
+                        if (SS >= 59) {
+                            SS = 0;
+                            if (MM >= 59) {
+                                MM = 0;
+                                HH++;
+                            } else {
+                                MM++;
+                            }
+                        } else {
+                            SS++;
+                        }
+                        _this.date.ss = SS;
+                        _this.date.mm = MM;
+                        _this.date.hh = HH;
+//                api.log(_this.date.mm*60 + _this.date.ss+_this.date.hh*3600)
+//                判断,如果小于9,时分秒就挂0
+                        if (SS <= 9) _this.date.ss = "0" + SS;
+                        if (MM <= 9) _this.date.mm = "0" + MM;
+                        if (HH <= 9) _this.date.hh = "0" + HH;
+//                api.log(_this.date.hh+" "+_this.date.mm+" "+_this.date.ss);
+                    }, 1000);
+                    require('@weex-module/getloc').getLocation("", function (e) {
+                        var lnglat = {};
+                        lnglat.lon = e.lon;
+                        lnglat.lat = e.lat;
+                        lnglat.city = e.city;
+                        lnglat.province = e.province;
+                        api.save("lnglat", lnglat);
+                    });
+                }
+            })
+        },
+        methods: {
+            jiedan: function () {
+                var _this = this;
+                api.log(_this.orderId);
+                api.log("sijitype"+_this.sijitype)
+                if(_this.sijitype==0){
+                    api.log("出发接单");
+                    api.call("driver/updateOrderOne", {orderId:_this.orderId}, function (ret) {
+                        api.push("chufajiedan.js",{orderId:_this.orderId});
+//                        _this.xinxiflag = false;
+                    });
+                }else if(_this.sijitype==1){
+                    api.log("2222");
+                    api.call("driver/jiedan", {orderId:_this.orderId}, function (ret) {
+                        api.push("tuochejiedan.js", {orderId:_this.orderId});
+//                        _this.xinxiflag = false;
+                    });
+                }else if(_this.sijitype==2){
+                    api.log("3333")
+                    api.push("jishijiuyuan.js", {orderId:_this.orderId});
+                }
+
+            },
+            tingdanclick: function (e) {
+                var _this = this;
+//                this.kstd = !this.kstd;
+                api.call("driver/updateState", {}, function (ret) {
+                    _this.kstd = !_this.kstd;
+                    if(_this.kstd){
+                        _this.xinxiflag = false;
+                    }else{
+                        var self = _this;
+                        api.call("driver/queryOrderOne", {}, function (info) {
+                            if(info.data.orderInfo==undefined){
+                                self.xinxiflag = false;
+                            }else{
+                                api.log(info.data.orderInfo.id);
+                                self.xinxiflag = true;
+                                self.qd = info.data.orderInfo;
+                                self.orderId = info.data.orderInfo.id;
+                            }
+                        });
+                    }
+                });
+            },
+            stop: function () {
+                clearInterval(timer);
+            },
+            huadongclick: function (e) {
+                api.log(e.str);
+                api.push("tuoche.js", {});
+            }
+        }
+    }
+
+</script>
+<style>
+    .time {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        backgroundColor: #DDDDDD;
+    }
+
+    .time-txt {
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .today {
+        flex-direction: row;
+    }
+
+    .todaydiv {
+        flex: 1;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        borderBottomWidth: 1px;
+        borderColor: #ccc;
+    }
+
+    .txt1 {
+        text-align: center;
+        font-size: 60px;
+        color: #E95412;
+    }
+
+    .txt2 {
+        text-align: center;
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+
+    .qrbtn {
+        width: 750px;
+        position: fixed;
+        bottom: 50px;
+    }
+
+    .btn {
+        position: relative;
+        bottom: 0px;
+    }
+
+    .btn2 {
+        position: absolute;
+        bottom: 50px;
+        right: 50px;
+    }
+
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #ccc;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+</style>

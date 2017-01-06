@@ -1,0 +1,143 @@
+<template>
+    <xx-navpage navtitle="二次增加项目" navrighttitle="{{title}}" navrighturl="" navrightsrc=""
+                navlefturl="jindugenzong2.js"
+                navleftsrc="{{dir}}images/fanhui.png">
+        <scroller style="flex:1;">
+            <div class="ddbox" if={{fff}}>
+                <image src="{{dir}}images/dd.png" class="ddimg"></image>
+            </div>
+            <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">没有二次增项哦</text>
+            <div if={{!fff}}>
+                <div class="info">
+                    <text class="title-left small2">二次增加项目</text>
+                </div>
+                <div class="" repeat={{oiList}}>
+                    <div class="one" style="border-bottom-width: 1px;border-color: #e6e6e6">
+                        <div class="left">
+                            <image class="img1" src="{{dir}}images/danxuan2.png" style="margin-top: -1px"></image>
+                            <div style="flex-direction: row;margin-top: 3px;">
+                                <text class="xiangmu-txt">{{programName}}</text>
+                            </div>
+                        </div>
+                        <div style="flex-direction: row;margin-top: 5px;">
+                            <text class="list-txt-right" style="text-decoration: line-through">￥{{cost}}</text>
+                            <text class="list-txt-right red">￥{{bargain}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .info {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+
+    .title-left {
+        font-size: 36px;
+        color: #373634;
+    }
+
+
+    .one {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .line {
+        margin-right: 20px;
+        margin-left: 70px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+    }
+
+    .line3{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .left {
+        flex-direction: row;
+    }
+
+
+    .img1 {
+        width: 50px;
+        height: 50px;
+        margin-top: 7px;
+    }
+
+    .img2 {
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+
+    .xiangmu-txt {
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+    .red{
+        color: #E95412;
+    }
+    .list-txt-right {
+        color: #a0a0a0;
+        font-size: 28px;
+        padding-right: 10px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            oiList:[],
+            programParts:"",
+            type:"",
+            title:"",
+            fff:true,
+        },
+        methods: {
+            jianyiadd: function (e) {
+                api.push("jianyixiangmu.js", {});
+            }
+        },
+        ready: function () {
+            var _this = this;
+            var ddid =api.getData(_this).ddid;
+//            -----------------------维修保养记录-----------------------------------
+            api.call("factory/twoOrderItem", {id:ddid}, function (ret) {
+                if(ret.data.orderItmeInfo.list.length==0){
+                    _this.fff = true;
+                }else if(ret.data.orderItmeInfo.list.length>=1){
+                    _this.fff = false;
+                }
+                _this.oiList = ret.data.orderItmeInfo.list;
+            });
+//            -----------------------维修保养记录-----------------------------------
+        }
+    }
+</script>

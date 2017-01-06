@@ -1,0 +1,71 @@
+<template>
+    <div style="width: 750px;flex-direction: row;justify-content: center;align-content: center;backgroundColor:rgba(0,0,0,0)">
+        <div class="box">
+            <div style="padding-left: 20px;">
+                <text class="zhifu-txt">{{title}}</text>
+                <text class="zhifu-cont">{{cont}}</text>
+                <div style="flex-direction: row;">
+                    <text class="zhifu-gh">更换标准：</text>
+                    <text class="zhifu-gh-cont">{{bot}}</text>
+                </div>
+            </div>
+            <div onclick="wanchengclick" style="border-top-width:1px;border-color:#ccc;margin-top:10px">
+                <text class="btn red">确 认</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .box{
+        width: 710px;
+        backgroundColor: #ffffff;
+        border-radius: 10px;
+    }
+
+    .zhifu-txt{
+        text-align: center;
+        font-size: 35px;
+        color: #373634;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .zhifu-cont{
+        font-size: 30px;
+        color: #373634;
+    }
+    .zhifu-gh{
+        font-size: 30px;
+        color: #373634;
+        font-weight: bold;
+    }
+    .zhifu-gh-cont{
+        font-size: 30px;
+        color: #E95412;
+        width: 520px;
+    }
+    .btn{
+        font-size: 35px;
+        color: #373634;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .red{
+        color: #E95412;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            zhuyitxt:"没有提示信息哦~"
+        },
+        methods: {
+            wanchengclick: function (e) {
+                api.hidden();
+            }
+        }
+    }
+</script>

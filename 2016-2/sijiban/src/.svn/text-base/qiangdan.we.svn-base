@@ -1,0 +1,63 @@
+<template>
+    <div class="dingdaninfo">
+        <div class="info">
+            <text class="info-txt1">车牌号：</text>
+            <text class="info-txt2">{{carLicence}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">车辆型号：</text>
+            <text class="info-txt2">{{carFullTypeName}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">客户姓名：</text>
+            <text class="info-txt2">{{realName}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">客户手机：</text>
+            <text class="info-txt2">{{cellphone}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">客人地址：</text>
+            <text class="info-txt2">{{start}}</text>
+        </div>
+    </div>
+</template>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data:{
+            dir:api.dir,
+            qd:{}
+        },
+        ready: function () {
+
+        }
+    }
+
+</script>
+<style>
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#ccc;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+</style>

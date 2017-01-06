@@ -1,0 +1,98 @@
+<template>
+    <xx-navpage navtitle="我的" navrighttitle=""
+                navlefturl="yixiusiji.js" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="kehuinfo">
+                <image src="{{img}}" class="yonghu1"></image>
+                <div class="infotxt">
+                    <text class="nametxt">姓名：{{shangjia.partsName||''}}</text>
+                    <text class="phonetxt">电话：{{shangjia.cellphone||''}}</text>
+                </div>
+            </div>
+            <!--<kehu-info3 qianbao="{{qianbao}}" dingdan="{{dingdan}}" xiaoxi="{{xiaoxi}}"></kehu-info3>-->
+            <kehu-info4 factoryId={{factoryId}}></kehu-info4>
+            <div class="qrbtn">
+                <btn title="退出登录" class="btn" onclick="tuichu"></btn>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .qrbtn {
+        width: 750px;
+        position: fixed;
+        bottom: 50px;
+    }
+
+    .btn {
+        position: relative;
+        bottom: 0px;
+    }
+    .kehuinfo {
+        flex-direction: row;
+        justify-content: center;
+        padding-bottom: 50px;
+        padding-top: 20px;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .yonghu1{
+        width: 155px;
+        height: 155px;
+        border-radius: 77px;
+        position: absolute;
+        left:70px;
+    }
+    .infotxt{
+        margin-top: 10px;
+    }
+    .nametxt{
+        font-size: 36px;
+        margin-top: 24px;
+        margin-left: 10px;
+        color: #373634;
+
+    }
+    .phonetxt{
+        font-size: 26px;
+        color: #888;
+        margin-top: 5px;
+        color: #a0a0a0;
+    }
+</style>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            img:api.dir+"images/yonghu1.png",
+            qianbao: "0",
+            dingdan: "0",
+            xiaoxi: "0",
+            shangjia:{},
+            factoryId:"",
+        },
+        created: function () {
+            var _this = this;
+            _this.factoryId = api.getData(_this).factoryId;
+            api.call("factory/loginMess", {}, function (ret) {
+                _this.shangjia = ret.data.adviserInfo;
+                _this.img = ret.data.adviserInfo.imageUrl||_this.dir +"images/yonghu1.png";
+            });
+            this.$on('naviBar.leftItem.click',function(e){
+                api.pop();
+            });
+        },
+        methods:{
+            tuichu: function (e) {
+                api.del('token');
+                require('@weex-module/navigator').navTop();
+                api.hxlogout();
+            }
+        }
+
+    }
+</script>

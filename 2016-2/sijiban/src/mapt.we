@@ -1,0 +1,141 @@
+<template>
+    <div>
+        <text onclick="start">123456</text>
+        <amap class="bg" zoom="{{zoom}}" lines="{{lines}}" position="{{position}}" markers="{{markers}}"
+              oninfoclick="oninfoclick" oncamerachangefinish="oncamerachangefinish" oncamerachange="onCameraChange">
+        </amap>
+        <text style="height:80px" onclick="search">搜索</text>
+        <
+        <scroller>
+            <div id="ccc" onclick="zoomclick">
+                <text>{{ll}}</text>
+            </div>
+            <div id="ccc" onclick="positionClick">
+                <text>{{ll1}}</text>
+            </div>
+            <div id="ccc">
+                <text>{{ll2}}</text>
+            </div>
+            <div id="ccc" onclick="l3click">
+                <text>{{ll3}}</text>
+            </div>
+        </scroller>
+    </div>
+</template>
+<style>
+    .bg {
+        width: 750px;
+        height: 450px;
+        border-width: 1;
+        border-color: red;
+
+    }
+</style>
+<script>
+    var list = [];
+    module.exports = {
+        data: {
+            ll: 123,
+            ll1: 11,
+            lines: [
+                [
+                    [31.411049, 120.639186,time,sudu,jiaodu],
+                    [31.410756, 120.641761],
+                    [31.409951, 120.645194],
+                    [31.407643, 120.652318],
+                    [31.404421, 120.660429],
+                    [31.400757, 120.678110],
+                    [31.395262, 120.688581],
+                    [31.387423, 120.703602],
+                    [31.376358, 120.740466],
+                    [31.373281, 120.754886],
+                    [31.367564, 120.760207],
+                    [31.358476, 120.762782],
+                    [31.347921, 120.765014],
+                    [31.347042, 120.745959],
+                    [31.342352, 120.725361],
+                    [31.342937, 120.717978],
+                    [31.346602, 120.718322],
+                    [31.352466, 120.717807],
+                    [31.356277, 120.716948],
+                    [31.359942, 120.709224],
+                    [31.356571, 120.688453],
+                    [31.354519, 120.679355],
+                    [31.348948, 120.681415]
+                ]
+            ],
+            ll2: 11,
+            ll3: 11,
+            position: [39.885826, 116.4106],
+            zoom: 12,
+            markers: [{
+                position: [39.906901, 116.397972],
+                title: "天安门",
+                icon: "http://www.yixiucar.com/app/user/images/sya.png",
+                info: {url: "http://192.168.0.137:8080/dist/info.js", data: {}}
+            }, {position: [39.885826, 116.4106], title: "天坛", info: {url: "", data: {a: 123, b: 1223}}}]
+        },
+        methods: {
+            search: function (e) {
+                var _this = this;
+                var amap = require('@weex-module/amap');
+                amap.poiSearch({
+                    key: "中石化",
+                    city: "苏州",
+                    pageSize: 2,
+                    postion: {lat: 31.410477, lon: 120.63879, radius: 1000}
+                }, function (e) {
+                    _this.ll1 = e.data;
+                });
+            },
+            start: function (e) {
+                var geolocation = require('@weex-module/geolocation');
+                geolocation.watchPosition({}, "geolocation");
+            },
+            onCameraChange: function (e) {
+                this.ll = e.data;
+            },
+            oncamerachangefinish: function (e) {
+                this.ll1 = e.data;
+                this.markers = [{
+                    position: [e.data.target.latitude, e.data.target.longitude],
+                    title: "天安门",
+                    icon: "http://www.yixiucar.com/app/user/images/sya.png",
+                    info: {url: "http://192.168.0.137:8080/dist/info.js", id: "ccc"}
+                }, {position: [39.885826, 116.4106], title: "天坛", info: {url: "", data: {a: 123, b: 1223}}}];
+            },
+            oninfoclick: function (e) {
+                this.ll2 = e.data;
+            },
+            zoomclick: function (e) {
+                this.zoom--;
+            },
+            positionClick: function (e) {
+                this.position = [39.885826, 116.4106];
+            },
+            l3click: function (e) {
+                var _this = this;
+                var storage = require('@weex-module/storage');
+                storage.getItem("list", function (e) {
+                    _this.ll2 = e.data;
+                });
+            }
+        },
+        ready: function (e) {
+            //alert(e);
+            var _this = this;
+            var a = 0;
+
+            var globalEvent = require('@weex-module/globalEvent');
+            globalEvent.addEventListener("geolocation", function (e) {
+                //console.log("get geolocation")
+                _this.ll3 = e.data;
+                _this.position = [e.data.latitude, e.data.longitude];
+                list[a++] = e.data;
+                var storage = require('@weex-module/storage');
+                storage.setItem('list', list, function (e) {
+                });
+            });
+        }
+    }
+</script>

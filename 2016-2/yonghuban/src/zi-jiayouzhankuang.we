@@ -1,0 +1,92 @@
+<template>
+    <!--<div>-->
+        <!--<text class="title-txt">中石化太阳路加油站</text>-->
+        <!--<text class="txt" style="margin-top: 10px">地址：上课了地方加拉斯</text>-->
+        <!--<div style="flex-direction: row;justify-content: space-between">-->
+            <!--<div style="flex-direction: row;margin-top: 20px;">-->
+                <!--<image class="imgdw" style="margin-left: -10px;" src="{{dir}}images/dw.png"></image>-->
+                <!--<text class="txt">2.66Km</text>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<text class="anniu">去加油</text>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div>
+        <div style="flex-direction:row;justify-content: space-between">
+            <text class="title-txt">中石化太阳路加油站</text>
+            <text class="txt" style="margin-top: 10px;margin-right: 20px">类型类型</text>
+        </div>
+        <text class="txt" style="margin-top: 10px">电话：19131157299</text>
+        <div style="flex-direction: row;justify-content: space-between">
+            <div style="flex-direction: row;margin-top: 20px;">
+                <text class="txt">地址：河北省石家庄市</text>
+                <image class="imgdw" style="margin-left: 20px" src="{{dir}}images/dw.png"></image>
+                <text class="txt">2.66Km</text>
+            </div>
+            <div>
+                <text class="anniu">快速救援</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .box{
+        margin-right: 70px;
+        margin-left: 70px;
+        justify-content: center;
+        borderWidth:2px;
+        borderColor:#DCDDDD;
+        padding: 20px;
+        border-radius: 20px;
+        position: relative;
+        backgroundColor: #fff;
+    }
+    .imgdw{
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+    .anniu{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        color: #fff;
+        backgroundColor: #E95412;
+        font-size: 28px;
+        /*border-radius: 10px;*/
+        margin-right: 20px;
+    }
+    .title-txt{
+        font-size: 38px;
+        color: #373634;
+    }
+    .txt{
+        font-size: 28px;
+        color: #737373;
+    }
+    .jiao{
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        bottom:-56px;
+        left:80px;
+        transform: rotate(-90deg);
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            you:[
+                {
+                    name:"",
+                    dizhi:"",
+                    juli:"",
+                }
+            ]
+        }
+    }
+</script>

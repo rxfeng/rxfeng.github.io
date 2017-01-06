@@ -1,0 +1,46 @@
+<template>
+    <xx-navpage navtitle="照片展示" navleftsrc="{{dir}}images/fanhui.png" bg="#000000">
+        <slider interval="10000000000" auto-play="false">
+            <div repeat={{photos}} class="slider">
+                <image class="img"  resize=contain src="{{imageUrl}}"></image>
+                <!--resize=cover  resize=contain  resize=default-->
+            </div>
+        </slider>
+    </xx-navpage>
+</template>
+<style>
+    .slider {
+        flex: 1;
+        align-content: center;
+        justify-content: center;
+        width: 750px;
+        height: 600px;
+        margin-top: 250px;
+    }
+
+    .img {
+        width: 750px;
+        height: 600px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            photos: []
+        },
+        ready: function () {
+            var _this = this;
+            var factoryId = api.getData(_this).factoryId;
+            api.log(factoryId);
+//            -----------------------图片列表-----------------------------------
+            api.call("user/photos", {factoryId: factoryId}, function (ret) {
+                api.log(ret.data);
+                _this.photos = ret.data.factoryPhotos;
+            });
+//            -----------------------图片列表-----------------------------------
+        }
+    }
+</script>

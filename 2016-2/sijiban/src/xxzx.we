@@ -1,0 +1,191 @@
+<template>
+    <xx-navpage navtitle="消息中心" navrighttitle=""
+                navlefturl="{{dir}}wode.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="main">
+                <div class="line"></div>
+                <div class="spean"></div>
+                <div class="c" repeat={{cont}}>
+                    <div class="line"></div>
+                    <div class="cont">
+                        <text class="one">{{text1}}</text>
+                        <text class="two">{{text2}}</text>
+                        <text class="time">{{text3}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle">
+                        <image src="{{dir}}images/xiche1.png"
+                               class="tixingimg"></image>
+                    </div>
+                </div>
+                <div class="history-div">
+                    <div class="line2"></div>
+                    <div class="history">
+                        <text class="history-txt">查看历史消息</text>
+                    </div>
+                </div>
+                <div class="c" repeat={{cont}}>
+                    <div class="line"></div>
+                    <div class="cont">
+                        <text class="one">{{text1}}</text>
+                        <text class="two">{{text2}}</text>
+                        <text class="time">{{text3}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle2">
+                        <image src="{{dir}}images/xiche2.png"
+                               class="tixingimg"></image>
+                    </div>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+
+    .spean {
+        height: 40px;
+    }
+
+    .line {
+        width: 5px;
+        height: 1000px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+        /*left: 60px;*/
+    }
+
+    .main {
+        padding-right: 20px;
+    }
+
+    .c {
+        sposition: relative;
+        width: 100%;
+        padding-bottom: 50px;
+        margin-right: 20px;
+    }
+
+    .circle {
+        position: absolute;
+        /*bottom: -15px;*/
+        top: 20px;
+        left: 18px;
+    }
+
+    .circle2 {
+        position: absolute;
+        top: 10px;
+        left: 18px;
+    }
+
+    .tixingimg {
+        width: 130px;
+        height: 130px;
+    }
+
+    .cont {
+        borderWidth: 2px;
+        borderColor: #DCDDDD;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        padding-right: 5px;
+        margin-left: 170px;
+    }
+
+    .jiao {
+        width: 93px;
+        height: 93px;
+        position: absolute;
+        top: 30px;
+        left: 120px;
+    }
+
+    .one {
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .two {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 6px;
+    }
+
+    .time {
+        font-size: 30px;
+        text-align: right;
+        color: #a0a0a0;
+        margin-right: 15px;
+    }
+
+    .history-div {
+
+    }
+
+    .history {
+        width: 350px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderWidth: 1px;
+        borderColor: #888;
+        border-radius: 10px;
+        margin-left: 240px;
+        margin-bottom: 50px;
+    }
+
+    .line2 {
+        width: 5px;
+        height: 120px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+    }
+
+    .history-txt {
+        text-align: center;
+        color: #737373;
+    }
+</style>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            cont: [
+                {
+                    text1: "写点就分手了打开附梵蒂冈的双方各件三老地方",
+                    text2: "就凯撒的斯的夫斯基的罚款垃圾收电费拉斯",
+                    text3: "昨天",
+                },
+                {
+                    text1: "写点就分手了打开附件三老地方",
+                    text2: "就凯撒的浪费就拉上看见对方拉萨拉上看见对方拉萨的夫斯的夫斯基的罚款垃圾收电费拉斯",
+                    text3: "昨天",
+                },
+                {
+                    text1: "写点就分手了打开附件三老地方",
+                    text2: "就凯撒夫斯的浪费就拉上看见对方拉萨就拉上看见对方拉萨的夫斯就拉上看见对方拉萨的夫夫斯基的罚款垃圾收基款垃圾收电费拉斯",
+                    text3: "昨天",
+                },
+                {
+                    text1: "写点就分手了打开附件三老地方",
+                    text2: "就凯撒的电费拉斯",
+                    text3: "昨天",
+                }
+            ]
+        },
+        created: function () {
+
+        },
+    }
+</script>

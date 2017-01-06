@@ -1,0 +1,94 @@
+<template>
+    <xx-navpage navtitle="我的" navrighttitle=""
+                navlefturl="yixiusiji.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="kehuinfo">
+                <image src="{{img}}" class="yonghu1"></image>
+                <div class="infotxt">
+                    <text class="nametxt">姓名：{{driver.realName}}</text>
+                    <text class="phonetxt">电话：{{driver.cellphone}}</text>
+                </div>
+            </div>
+            <kehu-info3 qianbao="{{qianbao}}" dingdan="{{dingdan}}" xiaoxi="{{xiaoxi}}"></kehu-info3>
+            <kehu-info4></kehu-info4>
+            <div class="qrbtn">
+                <btn title="退出登录" class="btn" onclick="tuichu"></btn>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .qrbtn {
+        width: 750px;
+        position: fixed;
+        bottom: 50px;
+    }
+
+    .btn {
+        position: relative;
+        bottom: 0px;
+    }
+    .kehuinfo {
+        flex-direction: row;
+        justify-content: center;
+        padding-bottom: 40px;
+        padding-top: 40px;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .yonghu1{
+        width: 155px;
+        height: 155px;
+    }
+    .infotxt{
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+    .nametxt{
+        font-size: 36px;
+        margin-top: 24px;
+        margin-left: 10px;
+        color: #373634;
+
+    }
+    .phonetxt{
+        font-size: 26px;
+        color: #888;
+        margin-top: 5px;
+        color: #a0a0a0;
+    }
+</style>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            img:api.dir+"images/yonghu1.png",
+            qianbao: "0",
+            dingdan: "0",
+            xiaoxi: "0",
+            driver:{}
+        },
+        created: function () {
+            var _this = this;
+            api.call("driver/DriverMessage", {}, function (ret) {
+                api.log(ret.data);
+                _this.driver = ret.data.driver;
+                _this.img = ret.data.driver.imgUrl;
+                _this.qianbao = ret.data.burse;
+                _this.dingdan = ret.data.order;
+                _this.xiaoxi = ret.data.mess;
+            });
+        },
+        methods:{
+            tuichu: function (e) {
+                require('@weex-module/finish').finLis();
+                api.del("token");
+            }
+        }
+
+    }
+</script>

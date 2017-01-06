@@ -1,0 +1,200 @@
+<template>
+    <xx-navpage navtitle="评价详情" navrighttitle="" navlefturl="{{fhurl}}" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="title" repeat={{shangjia}}>
+                <div style="flex-direction: row">
+                    <text class="title-txt">{{factoryName||''}}</text>
+                    <xingxing star="{{startNum}}"></xingxing>
+                </div>
+                <text class="title-right-txt">{{type||''}}</text>
+            </div>
+            <div class="spean"></div>
+            <div class="title">
+                <div style="flex-direction: row">
+                    <text class="title-txt">全部评价</text>
+                    <text class="title-txt samll">({{num||0}}人评价)</text>
+                </div>
+            </div>
+            <!--<zi-pingjia pinglun={{pinglun}}></zi-pingjia>-->
+            <list onscrolled="onseclled">
+                <refresh class="refresh-view" display="{{refresh_display}}" onrefresh="datarefresh">
+                    <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+                </refresh>
+                <cell index="{{$index}}" append="tree">
+                    <scroller>
+                        <zi-pingjia pinglun={{pinglun}}></zi-pingjia>
+                    </scroller>
+                </cell>
+                <loading class="refresh-view" display="{{loading_display}}" onloading="onloading">
+                    <text class="refresh-arrow" style="text-align: center; color:rgb(238, 162, 54)" if="{{(refresh_display==='hide')}}">更多</text>
+                    <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+                </loading>
+            </list>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .refresh-view {
+        align-items: center;
+    }
+    .spean{
+        height: 10px;
+        backgroundColor: #F5F3F8;
+    }
+    .title{
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        padding:20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .title-txt{
+        font-size: 36px;
+        color: #373634;
+    }
+    .title-right-txt{
+        font-size: 30px;
+        color: #737373;
+        margin-top: 5px;
+    }
+    .samll{
+        font-size: 30px;
+        margin-top: 3px;
+        margin-left: 5px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api=require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            dir2: api.dir2,
+            num:0,
+            shangjia:[],
+            pinglun:[],
+            pinglun2:[],
+            factoryId:"",
+            fhurl:"",
+            refresh_display: "hide",
+            loading_display:"hide",
+            page: 1,
+        },
+        created: function () {
+            var _this = this;
+            _this.factoryId = api.getData(_this).factoryId;
+            _this.fhurl = api.getData(_this).fhurl;
+//            -----------------------商家评价-----------------------------------
+            var CommentReq = {factoryId:_this.factoryId};
+            api.call("user/commentFac",CommentReq,function(ret){
+                _this.shangjia = ret.data.facCommentList;
+            });
+//            -----------------------商家评价-----------------------------------
+//            -----------------------商家评价-----------------------------------
+            api.call("user/comments",{factoryId:_this.factoryId, pageNumber: _this.page},function(ret){
+                api.log(ret.data);
+                _this.num = ret.data.commentNumber;
+                for (var i = 0; i < ret.data.fComments.length; i++) {
+                    _this.pinglun.$set(i,
+                            {
+                                id:ret.data.fComments[i].id,
+                                img : _this.dir2 + "images/u/"+ret.data.fComments[i].userId +"/" +new Date().getTime(),
+                                name: ret.data.fComments[i].nickName,
+                                neirong: ret.data.fComments[i].comment,
+                                shijian: ret.data.fComments[i].time,    //还没转换过来
+                                zan: ret.data.fComments[i].riseCount,
+                                flag: ret.data.fComments[i].likeState,
+                                red: "",
+                                star: ret.data.fComments[i].totalscore,
+                            })
+                    if(_this.pinglun[i].flag==false){
+                        _this.pinglun[i].red = "red"
+                    }
+                }
+            });
+//            -----------------------商家评价-----------------------------------
+        },
+        methods:{
+            onloading: function (e) {
+                this.loading_display = "show"
+                setTimeout(function () {
+                    this.loading_display = 'hide'
+                }.bind(this), 1000)
+            },
+            onseclled: function (e) {
+                var sx = e.data.rangeHeight - e.data.height - e.data.offsetY;
+                if (sx < 50) {
+                    this.loadMore();
+                }
+            },
+            datarefresh: function (e) {
+                this.refresh_display = "show";
+                this.page = 1;
+                this.loaddata();
+
+            },
+            loadMore: function (e) {
+                api.log(this.page);
+                var _this = this;
+                this.page++;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                var _this = this;
+                api.call("user/comments", {factoryId: _this.factoryId, pageNumber: _this.page}, function (ret) {
+                    if (_this.page == 1) {
+                        if (ret.data.requestCode != 0) {
+                            _this.pinglun = [];
+                        } else {
+                            for (var i = 0; i < ret.data.fComments.length; i++) {
+                                _this.pinglun.$set(i,
+                                        {
+                                            id:ret.data.fComments[i].id,
+                                            img : _this.dir2 + "images/u/"+ret.data.fComments[i].userId +"/" +new Date().getTime(),
+                                            name: ret.data.fComments[i].nickName,
+                                            neirong: ret.data.fComments[i].comment,
+                                            shijian: ret.data.fComments[i].time,    //还没转换过来
+                                            zan: ret.data.fComments[i].riseCount,
+                                            flag: ret.data.fComments[i].likeState,
+                                            red: "",
+                                            star: ret.data.fComments[i].totalscore,
+                                        })
+                                if(_this.pinglun[i].flag==false){
+                                    _this.pinglun[i].red = "red"
+                                }
+                            }
+                        }
+                    } else {
+                        if (ret.data.requestCode == 0) {
+                            for (var i = 0; i < ret.data.fComments.length; i++) {
+                                _this.pinglun2.$set(i,
+                                        {
+                                            id:ret.data.fComments[i].id,
+                                            img : _this.dir2 + "images/u/"+ret.data.fComments[i].userId +"/" +new Date().getTime(),
+                                            name: ret.data.fComments[i].nickName,
+                                            neirong: ret.data.fComments[i].comment,
+                                            shijian: ret.data.fComments[i].time,    //还没转换过来
+                                            zan: ret.data.fComments[i].riseCount,
+                                            flag: ret.data.fComments[i].likeState,
+                                            red: "",
+                                            star: ret.data.fComments[i].totalscore,
+                                        })
+                                if(_this.pinglun2[i].flag==false){
+                                    _this.pinglun2[i].red = "red"
+                                }
+                            }
+                            if(ret.data.fComments.length!=0){
+                                _this.pinglun = _this.pinglun.concat(_this.pinglun2);
+                            }
+                        }
+                    }
+                    _this.refresh_display = 'hide';
+                }, function (e) {
+                    _this.refresh_display = 'hide';
+                });
+            },
+        },
+    }
+</script>

@@ -1,0 +1,150 @@
+<template>
+    <div>
+        <hlist class="list" id="alist" onscrolled="scrolled">
+            <cell class="row" repeat="{{rows}}">
+                <div class="item" index="{{$index}}" onclick="itemClick">
+                    <text class="item-title">row {{id}}</text>
+                    <text class="item-title">row {{id+100}}</text>
+                </div>
+            </cell>
+        </hlist>
+        <text>{{scrollvalue}}</text>
+    </div>
+</template>
+
+<script>
+    require('weex-components');
+    module.exports = {
+        methods: {
+            scrolled: function (e) {
+                var c = e.data.width / 3;
+                if (e.data.offsetX % c != 0) {
+                    var d = Math.round(e.data.offsetX / c);
+                    var target = this.$el("alist").pureChildren[d + 1];
+                    var dom = require('@weex-module/dom');
+                    dom.scrollToElement(target, {
+                        offset: -250
+                    });
+                    this.scrollvalue = e.data.offsetX + "," + d;
+                } else {
+                    this.scrollvalue = "";
+                }
+            },
+            itemClick: function (e) {
+                console.log(this.$el("alist"));
+                this.appearMax = e.target;
+                var dom = require('@weex-module/dom');
+                dom.scrollToElement(e.target, {
+                    offset: -250
+                });
+            }
+        },
+        data: {
+            appearMin: 1,
+            appearMax: 1,
+            scrollvalue: "11",
+            appearIds: [],
+            rows: [{
+                id: 1
+            }, {
+                id: 2
+            }, {
+                id: 3
+            }, {
+                id: 4
+            }, {
+                id: 5
+            }, {
+                id: 6
+            }, {
+                id: 7
+            }, {
+                id: 8
+            }, {
+                id: 9
+            }, {
+                id: 10
+            }, {
+                id: 11
+            }, {
+                id: 12
+            }, {
+                id: 13
+            }, {
+                id: 14
+            }, {
+                id: 15
+            }, {
+                id: 16
+            }, {
+                id: 17
+            }, {
+                id: 18
+            }, {
+                id: 19
+            }, {
+                id: 20
+            }, {
+                id: 21
+            }, {
+                id: 22
+            }, {
+                id: 23
+            }, {
+                id: 24
+            }, {
+                id: 25
+            }, {
+                id: 26
+            }, {
+                id: 27
+            }, {
+                id: 28
+            }, {
+                id: 29
+            }]
+        }
+    }
+</script>
+<style>
+    .list {
+
+    }
+
+    /*.input {*/
+        /*height: 80px;*/
+    /*}*/
+
+    /*.count {*/
+        /*font-size: 48px;*/
+        /*margin: 10px;*/
+    /*}*/
+
+    /*.indicator {*/
+        /*height: 40px;*/
+        /*width: 40px;*/
+        /*color: #45b5f0;*/
+    /*}*/
+
+    .row {
+        width: 250px;
+        border-width: 1px;
+        border-color: #FF0000;
+    }
+
+    .item {
+        justify-content: center;
+        border-bottom-width: 2px;
+        border-bottom-color: #c0c0c0;
+        height: 100px;
+        padding: 20px;
+    }
+
+    /*.sitem {*/
+        /*color: #ff0000;*/
+    /*}*/
+
+    .item-title {
+        text-align: center;
+    }
+</style>

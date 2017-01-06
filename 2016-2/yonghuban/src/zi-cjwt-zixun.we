@@ -1,0 +1,40 @@
+<template>
+    <div class="wt">
+        <text class="txt title">问题一：平台上的专家是怎么认证的？</text>
+        <text class="txt shsj">全国4S店的技术人员在得到品牌厂家的技术认证书后向一修车管家申请并审核通过的。</text>
+        <div style="height: 20px;"></div>
+        <text class="txt title">问题二：平台专家可以提供什么咨询服务？</text>
+        <text class="txt shsj">平台专家可以为您提供您需要的合理维修保养方案，并解答您所遇见的问题，帮您节省不必要的费用。</text>
+        <div style="height: 20px;"></div>
+        <text class="txt title">问题三：我对4S店或者维修店的方案和价格有疑问，如何选择合适的版块提问？</text>
+        <text class="txt shsj">您可以选择专家在线咨询，通过在线聊天的方式便捷快速的帮您解决问题。</text>
+        <div style="height: 20px;"></div>
+        <text class="txt title">问题四：我如何选择合适的专家咨询，系统可以推荐专家吗？</text>
+        <text class="txt shsj">选择相应品牌，进入权威专家在线咨询，系统可以给您推荐相应厂家认证专家。</text>
+        <div style="height: 20px;"></div>
+        <text class="txt title">问题五：专家咨询需要费用吗？</text>
+        <text class="txt shsj">只需要您支付一定的积分来咨询专家，同时也可以分享你的咨询答案赚取积分。</text>
+    </div>
+</template>
+<style>
+    .wt{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .title{
+        font-size: 30px;
+        font-weight: bold;
+    }
+    .txt{
+        font-size: 29px;
+        color: #a0a0a0;
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+    .ol{
+        margin-left: 25px;
+    }
+    .shsj{
+        margin-left: 10px;
+    }
+</style>
