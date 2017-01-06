@@ -1,0 +1,87 @@
+<template>
+    <container>
+        <div class="info3">
+            <div class="main" onclick="wodeqianbao">
+                <div style="flex-direction: row;justify-content: center;">
+                    <image src="{{dir}}images/wode-qianbao.png" class="mainimg"></image>
+                </div>
+                <text class="main-txt1">我的钱包</text>
+                <text class="main-txt2">可提现{{qianbao}}元</text>
+            </div>
+            <div class="main"  onclick="wodedingdan">
+                <div style="flex-direction: row;justify-content: center;">
+                    <image src="{{dir}}images/wode-dingdan.png" class="mainimg"></image>
+                </div>
+                <text class="main-txt1">我的订单</text>
+                <text class="main-txt2">总计{{dingdan}}单</text>
+            </div>
+            <div class="main"  onclick="wodexiaoxi">
+                <div style="flex-direction: row;justify-content: center;">
+                    <image src="{{dir}}images/wode-xiaoxi.png" class="mainimg"></image>
+                </div>
+                <text class="main-txt1">我的消息</text>
+                <text class="main-txt2">未读{{xiaoxi}}条</text>
+            </div>
+        </div>
+    </container>
+</template>
+<script>
+    var api=require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            qianbao: "",
+            dingdan:"",
+            xiaoxi:""
+        },
+        methods:{
+            wodeqianbao: function () {
+                api.push("wodeqianbao.js", {}, function (e) {
+                    api.refresh();
+                });
+            },
+            wodedingdan: function () {
+                api.push("dingdan1.js", {});
+            },
+            wodexiaoxi: function () {
+                var _this = this;
+                api.push("xiaoxi.js", {}, function (e) {
+//                    _this.xiaoxi = e.len;
+//                    api.log(e);
+                    api.refresh();
+                });
+            }
+        }
+    }
+</script>
+<style>
+    .info3{
+        flex-direction: row;
+        backgroundColor: #fff;
+        margin-top: 20px;
+        borderWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .main{
+        flex: 1;
+        borderRightWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .mainimg{
+        width: 70px;
+        height: 70px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    .main-txt1{
+        text-align: center;
+        font-size: 30px;
+        color: #727071;
+    }
+    .main-txt2{
+        text-align: center;
+        color: #9F9F9F;
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+</style>

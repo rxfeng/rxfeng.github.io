@@ -1,0 +1,544 @@
+<template>
+    <xx-navpage navtitle="车辆档案" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="wode.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="box1">
+            <div onclick="xicheclick">
+                <text style="font-size: 32px;color:#fff; text-align: right;margin-right: 10px">{{leixing}}</text>
+            </div>
+        </div>
+        <div class="box" if={{xiche}}>
+            <div class="title" onclick="xichebox">
+                <text class="title-txt left">保养到期提醒</text>
+            </div>
+            <div class="title" onclick="xichebox">
+                <text class="title-txt left">保险到期提醒</text>
+            </div>
+            <div class="title" onclick="xichebox">
+                <text class="title-txt left">年检到期提醒</text>
+            </div>
+        </div>
+        <scroller style="flex:1;">
+            <div class="top">
+                <input class="inp" type="text" oninput="oninput1" placeholder="请输入车牌号或姓名手机号搜索用户"/>
+
+                <div class="quxiao" onclick="souzuoclick">
+                    <text class="quxiao-txt">搜索</text>
+                </div>
+            </div>
+            <div class="ddbox" if={{fff}}>
+                <image src="{{dir}}images/dd.png" class="ddimg"></image>
+            </div>
+            <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">没有信息哦</text>
+            <!--<dangan kefu={{kefu}} style="flex:1;margin-top: 20px;"></dangan>-->
+            <list if={{!fff}} style="margin-top: 20px;" onscrolled="onseclled">
+                <refresh class="refresh-view" display="{{refresh_display}}" onrefresh="datarefresh">
+                    <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+                </refresh>
+                <cell class="dingdaninfo" repeat="{{kefu}}" onclick="goxq">
+                    <!--<div style="flex-direction: row;">-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">姓名：</text>-->
+                            <!--<text class="info-txt2">{{name}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">性别：</text>-->
+                            <!--<text class="info-txt2">{{sex}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="info">
+                        <text class="info-txt1">姓名：</text>
+                        <text class="info-txt2">{{name}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">性别：</text>
+                        <text class="info-txt2">{{sex}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">手机号：</text>
+                        <text class="info-txt2">{{phone}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">车牌号：</text>
+                        <text class="info-txt2">{{chepaihao}}</text>
+                    </div>
+
+                    <!--<div style="flex-direction: row">-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">车牌号：</text>-->
+                            <!--<text class="info-txt2">{{chepaihao}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">手机号：</text>-->
+                            <!--<text class="info-txt2">{{phone}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="info">
+                        <text class="info-txt1">车型：</text>
+                        <text class="info-txt2" style="width: 560px;lines: 1;text-overflow: ellipsis;">{{car}}</text>
+                    </div>
+                    <!--<div style="flex-direction: row">-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">保险到期：</text>-->
+                            <!--<text class="info-txt2">{{bxdq1}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="info yiban">-->
+                            <!--<text class="info-txt1">年检到期：</text>-->
+                            <!--<text class="info-txt2">{{bxdq2}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="info">
+                        <text class="info-txt1">保险到期：</text>
+                        <text class="info-txt2">{{bxdq1}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">年检到期：</text>
+                        <text class="info-txt2">{{bxdq2}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">下次保养里程：</text>
+                        <text class="info-txt2">{{bxdq3}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">保养到期时间：</text>
+                        <text class="info-txt2">{{shijian}}</text>
+                    </div>
+                    <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                </cell>
+                <loading class="refresh-view" display="{{loading_display}}" onloading="onloading">
+                    <text style="text-align: center; color:rgb(238, 162, 54)" if="{{(refresh_display==='hide')}}">更多</text>
+                    <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+                </loading>
+            </list>
+        </scroller>
+    </xx-navpage>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports = {
+        data: {
+            dir: api.dir,
+            fff:false,
+            text: "",
+            navBarHeight: 88,
+            kefu: [],
+            kefu2: [],
+            factoryId: "",
+            page: 1,
+            refresh_display: "hide",
+            loading_display:"hide",
+            type:3,
+            leixing:"保养到期提醒",
+            xiche:false,
+        },
+        created: function (e) {
+            var _this = this;
+            _this.factoryId = api.getData(_this).factoryId
+            var factoryId = api.getData(_this).factoryId;
+            api.call("factory/queryClient", {
+                factoryId: _this.factoryId,
+                text: _this.text,
+                pageNum: _this.page,
+                type:_this.type
+            }, function (ret) {
+//                api.log(ret.data);
+                if(ret.data.ClientInfo.length==0){
+                    _this.fff = true;
+                }else if(ret.data.ClientInfo.length>=1){
+                    _this.fff = false;
+                }
+                for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                    if (ret.data.ClientInfo[i].insuranceEndDate) {
+                        ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                    }
+                    if (ret.data.ClientInfo[i].checkEndDate) {
+                        ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                    }
+                    if (ret.data.ClientInfo[i].carNextTime) {
+                        ret.data.ClientInfo[i].carNextTime = ret.data.ClientInfo[i].carNextTime.slice(0, 10)
+                    }
+                    _this.kefu.$set(i,
+                            {
+                                carId: ret.data.ClientInfo[i].carId,
+                                name: ret.data.ClientInfo[i].realName,
+                                phone: ret.data.ClientInfo[i].cellphone,
+                                sex: ret.data.ClientInfo[i].gender,
+                                chepaihao: ret.data.ClientInfo[i].carLicence,
+                                car: ret.data.ClientInfo[i].carFullTypeName,
+                                bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                shijian: ret.data.ClientInfo[i].carNextTime,
+                                flag: true,
+                            })
+                }
+            });
+//            -----------------------客户档案请求-----------------------------------
+        },
+        methods: {
+            onloading: function (e) {
+                this.xiche =false;
+                this.loading_display = "show";
+                setTimeout(function () {
+                    this.loading_display = 'hide';
+                }.bind(this), 1000)
+            },
+            xicheclick: function (e) {
+                this.xiche = !this.xiche;
+            },
+            ss: function (e) {
+                var _this = this;
+                _this.kefu = [];
+                api.call("factory/queryClient", {
+                    factoryId: _this.factoryId,
+                    text: _this.text,
+                    pageNum: 1,
+                    type:_this.type
+                }, function (ret) {
+//                    api.log(ret.data);
+                    if(ret.data.ClientInfo.length==0){
+                        _this.fff = true;
+                    }else if(ret.data.ClientInfo.length>=1){
+                        _this.fff = false;
+                    }
+                    for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                        if (ret.data.ClientInfo[i].insuranceEndDate) {
+                            ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                        }
+                        if (ret.data.ClientInfo[i].checkEndDate) {
+                            ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                        }
+                        if (ret.data.ClientInfo[i].carNextTime) {
+                            ret.data.ClientInfo[i].carNextTime = ret.data.ClientInfo[i].carNextTime.slice(0, 10)
+                        }
+                        _this.kefu.$set(i,
+                                {
+                                    carId: ret.data.ClientInfo[i].carId,
+                                    name: ret.data.ClientInfo[i].realName,
+                                    phone: ret.data.ClientInfo[i].cellphone,
+                                    sex: ret.data.ClientInfo[i].gender,
+                                    chepaihao: ret.data.ClientInfo[i].carLicence,
+                                    car: ret.data.ClientInfo[i].carFullTypeName,
+                                    bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                    bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                    bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                    shijian: ret.data.ClientInfo[i].carNextTime,
+                                    flag: true,
+                                })
+                    }
+                });
+            },
+            xichebox: function (e) {
+//                api.log(e.target.children[0].attr.value);
+                this.leixing = e.target.children[0].attr.value;
+                this.xiche = false;
+                this.quan = false;
+                if (e.target.children[0].attr.value == "保险到期提醒") {
+                    this.type = 1;
+                    this.ss();
+                } else if (e.target.children[0].attr.value == "年检到期提醒") {
+                    this.type = 2;
+                    this.ss();
+                } else if (e.target.children[0].attr.value == "保养到期提醒") {
+                    this.type = 3;
+                    this.ss();
+                }
+            },
+            oninput1: function (event) {
+                this.text = event.value;
+            },
+            souzuoclick: function (e) {
+                var _this = this;
+                var factoryId = api.getData(_this).factoryId;
+                var ClientMessageReq = {factoryId: factoryId, text: _this.text,pageNum: 1,type:_this.type};
+                _this.kefu = [];
+//            -----------------------客户档案模糊查询-----------------------------------
+                api.call("factory/queryClient", ClientMessageReq, function (ret) {
+//                    api.log(ret.data);
+                    if(ret.data.ClientInfo.length==0){
+                        _this.fff = true;
+                    }else if(ret.data.ClientInfo.length>=1){
+                        _this.fff = false;
+                    }
+                    for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                        if (ret.data.ClientInfo[i].insuranceEndDate) {
+                            ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                        }
+                        if (ret.data.ClientInfo[i].checkEndDate) {
+                            ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                        }
+                        if (ret.data.ClientInfo[i].carNextTime) {
+                            ret.data.ClientInfo[i].carNextTime = ret.data.ClientInfo[i].carNextTime.slice(0, 10)
+                        }
+                        _this.kefu.$set(i,
+                                {
+                                    carId: ret.data.ClientInfo[i].carId,
+                                    name: ret.data.ClientInfo[i].realName,
+                                    phone: ret.data.ClientInfo[i].cellphone,
+                                    sex: ret.data.ClientInfo[i].gender,
+                                    chepaihao: ret.data.ClientInfo[i].carLicence,
+                                    car: ret.data.ClientInfo[i].carFullTypeName,
+                                    bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                    bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                    bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                    shijian: ret.data.ClientInfo[i].carNextTime,
+                                    flag: true,
+                                });
+                    }
+                });
+//            -----------------------客户档案模糊查询-----------------------------------
+            },
+            goxq: function (e) {
+                var vm = this;
+                this.xiche = false;
+//                api.push("kehuxiangqing.js", {id: vm.id});
+//                api.log(vm.carId)
+                api.push("weixiubaoyang.js", {
+                    carId: vm.carId,
+                });
+            },
+            onseclled: function (e) {
+                var sx = e.data.rangeHeight - e.data.height - e.data.offsetY;
+                if (sx < 50) {
+                    this.loadMore();
+                }
+            },
+            datarefresh: function (e) {
+                this.xiche =false;
+                this.refresh_display = "show"
+                this.page = 1;
+                this.loaddata();
+            },
+            loadMore: function (e) {
+                api.log(this.page);
+                var _this = this;
+                this.page++;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                var _this = this;
+                api.call("factory/queryClient", {factoryId: _this.factoryId, text: _this.text,pageNum: _this.page,type:_this.type}, function (ret) {
+//                    api.log(ret.data);
+                   if(_this.page == 1){
+                       if(ret.data.requestCode != 0){
+                           _this.kefu=[];
+                       }else{
+                           if(ret.data.ClientInfo.length==0){
+                               _this.fff = true;
+                           }else if(ret.data.ClientInfo.length>=1){
+                               _this.fff = false;
+                           }
+                           for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                               if (ret.data.ClientInfo[i].insuranceEndDate) {
+                                   ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                               }
+                               if (ret.data.ClientInfo[i].checkEndDate) {
+                                   ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                               }
+                               if (ret.data.ClientInfo[i].carNextTime) {
+                                   ret.data.ClientInfo[i].carNextTime = ret.data.ClientInfo[i].carNextTime.slice(0, 10)
+                               }
+                               _this.kefu.$set(i,
+                                       {
+                                           carId: ret.data.ClientInfo[i].carId,
+                                           name: ret.data.ClientInfo[i].realName,
+                                           phone: ret.data.ClientInfo[i].cellphone,
+                                           sex: ret.data.ClientInfo[i].gender,
+                                           chepaihao: ret.data.ClientInfo[i].carLicence,
+                                           car: ret.data.ClientInfo[i].carFullTypeName,
+                                           bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                           bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                           bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                           shijian: ret.data.ClientInfo[i].carNextTime,
+                                           flag: true,
+                                       })
+                           }
+                       }
+                   }else{
+                       if (ret.data.requestCode == 0) {
+//                           var list = _this.kefu;
+                           for (var i = 0; i < ret.data.ClientInfo.length; i++) {
+                               if (ret.data.ClientInfo[i].insuranceEndDate) {
+                                   ret.data.ClientInfo[i].insuranceEndDate = ret.data.ClientInfo[i].insuranceEndDate.slice(0, 10)
+                               }
+                               if (ret.data.ClientInfo[i].checkEndDate) {
+                                   ret.data.ClientInfo[i].checkEndDate = ret.data.ClientInfo[i].checkEndDate.slice(0, 10)
+                               }
+                               if (ret.data.ClientInfo[i].carNextTime) {
+                                   ret.data.ClientInfo[i].carNextTime = ret.data.ClientInfo[i].carNextTime.slice(0, 10)
+                               }
+                               _this.kefu2.$set(i,
+                                       {
+                                           carId: ret.data.ClientInfo[i].carId,
+                                           name: ret.data.ClientInfo[i].realName,
+                                           phone: ret.data.ClientInfo[i].cellphone,
+                                           sex: ret.data.ClientInfo[i].gender,
+                                           chepaihao: ret.data.ClientInfo[i].carLicence,
+                                           car: ret.data.ClientInfo[i].carFullTypeName,
+                                           bxdq1: ret.data.ClientInfo[i].insuranceEndDate,
+                                           bxdq2: ret.data.ClientInfo[i].checkEndDate,
+                                           bxdq3: ret.data.ClientInfo[i].carNextDate,
+                                           shijian: ret.data.ClientInfo[i].carNextTime,
+                                           flag: true,
+                                       })
+                           }
+                           if(ret.data.ClientInfo.length==0){
+                               api.tost("亲，没有更多数据啦~");
+                           }else{
+                               _this.kefu =_this.kefu.concat(_this.kefu2);
+                           }
+                           api.log("长度:"+_this.kefu.length);
+                       }
+                   }
+                    _this.refresh_display = 'hide';
+                }, function (e) {
+                    _this.refresh_display = 'hide';
+                })
+            },
+        }
+    }
+</script>
+
+<style>
+    .yiban{
+        /*width: 375px;*/
+        flex:1;
+    }
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .refresh-view {
+        align-items: center;
+    }
+
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+    .box1 {
+        width: 250px;
+        position: fixed;
+        right:15px;
+        top: 18px;
+    }
+    .box {
+        width: 250px;
+        position: fixed;
+        right:0px;
+        top: 88px;
+        background-color: #E95412;
+    }
+
+    .title {
+        padding-top: 20px;
+        padding-bottom: 15px;
+        padding-right: 20px;
+    }
+
+    .left {
+        text-align: right;
+    }
+
+    .title-txt {
+        font-size: 32px;
+        color: #fff;
+    }
+
+    .zt {
+        flex-direction: row;
+        flex: 1;
+        margin-left: 30px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-right-width: 2px;
+        border-color: #ccc;
+        /*justify-content: center;*/
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #fff;
+    }
+
+    .jiantou1 {
+        width: 37px;
+        height: 37px;
+        margin-left: 10px;
+    }
+
+    .jiantoured {
+        transform: rotate(180deg);
+    }
+
+    .top {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .inp {
+        width: 590px;
+        margin-left: 40px;
+        height: 70px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        padding-left: 20px;
+        font-size: 30px;
+        color: #373634;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+
+    .quxiao {
+        margin-right: 0px;
+        margin-top: 15px;
+        width: 100px;
+        height: 50px;
+        text-align: center;
+    }
+
+    .quxiao-txt {
+        color: #E95412;
+        font-size: 30px;
+    }
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        margin-bottom: 20px;
+        borderTopWidth:1px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+        backgroundColor:#fff;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 200px;
+        right: 20px;
+    }
+</style>

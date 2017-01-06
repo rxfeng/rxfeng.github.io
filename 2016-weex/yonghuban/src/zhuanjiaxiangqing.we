@@ -1,0 +1,69 @@
+<template>
+    <xx-navpage navtitle="专家详情" navrighttitle="" navlefturl="quanweizhuanjia.js" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div style="backgroundColor: #fff">
+                <zi-zhuanjia4 zhuanjia={{zhuanjia}}></zi-zhuanjia4>
+                <div style="height: 2px;margin-top: -2px;backgroundColor: #fff"></div>
+                <image class="xuxian" src="{{dir}}images/xuxian.png"></image>
+                <text class="txt">{{zhuanjia.expertIntroduce}}</text>
+                <div class="line"></div>
+                <text class="title-txt">已帮助过{{bangzhu}}人/次</text>
+            </div>
+            <div style="height: 20px;"></div>
+            <zi-wenzhang2 repeat={{wenzhang}} zjid={{zjid}}></zi-wenzhang2>
+            <div style="height: 100px;"></div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .xuxian{
+        width: 700px;
+        height: 10px;
+        margin-right: 25px;
+        margin-left: 25px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    .line{
+        width: 750px;
+        height: 2px;
+        backgroundColor: #F5F3F8;
+        margin-top: 20px;
+    }
+    .txt{
+        font-size: 30px;
+        color: #373634;
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+    .title-txt{
+        font-size: 30px;
+        color: #373634;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            zhuanjia: [],
+            wenzhang: [],
+            bangzhu:0,
+            zjid:"",
+        },
+        created: function (e) {
+            var _this= this;
+            _this.zjid=api.getData(_this).expertId;
+            api.call("factory/expertDetails", {expertId:api.getData(_this).expertId}, function (ret) {
+                _this.zhuanjia=ret.data.experEntity.expert;
+                _this.bangzhu = ret.data.experEntity.issueNum;
+                _this.wenzhang = ret.data.experEntity.issues;
+            });
+        }
+    }
+</script>

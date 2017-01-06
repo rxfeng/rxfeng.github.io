@@ -1,0 +1,82 @@
+<template>
+    <xx-navpage navtitle="" navrighttitle=""
+                navrighturl="" navlefturl="{{dir}}yijianyuyue.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div style="flex-direction: row">
+            <text class="txt" onclick="sousuoclick">搜索</text>
+            <div class="sousuo">
+                <div style="justify-content: center; margin-left: 10px">
+                    <image class="sousuo-pic" src="{{dir}}images/sousuo2.png"></image>
+                </div>
+                <input type="text" class="sousuo-inp" value="{{val}}" autofocus=true
+                       placeholder="请输入您要搜索的商家" oninput="oninput1"/>
+
+            </div>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .sousuo {
+        width: 550px;
+        height: 70px;
+        background-color: #F8C09B;
+        position: fixed;
+        top: 9px;
+        left: 100px;
+        border-radius: 5px;
+        flex-direction: row;
+    }
+
+    .sousuo-pic {
+        width: 60px;
+        height: 60px;
+    }
+
+    .dwimg {
+        width: 60px;
+        height: 60px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+
+    .txt{
+        font-size: 30px;
+        margin-top: 10px;
+        padding: 10px;
+        padding-left: 15px;
+        padding-right: 15px;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        color: #ffffff;
+    }
+    .sousuo-inp {
+        width: 450px;
+        height: 70px;
+        placeholder-color: #fff;
+        font-size: 28px;
+        color: #fff;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            val:"",
+            lujing:"",
+        },
+        methods:{
+            oninput1: function (e) {
+                 this.val = e.value;
+            },
+            sousuoclick: function (e) {
+                api.push(this.lujing,{wenben:this.val})
+            }
+        },
+        created: function () {
+            this.lujing = api.getData(this).lujing;
+        }
+    }
+</script>

@@ -1,0 +1,79 @@
+<template>
+    <xx-navpage navtitle="视频详情" navrighttitle="" navrightsrc="" navrighturl=""
+                navlefturl="{{fanhuiurl}}"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <div style="flex: 1">
+            <video class="video"
+                   onpause="onpause"
+                   onstart="onstart"
+                   onfinish="onfinish"
+                   onfail="onfail"
+                   src="{{shipinplay}}"
+                   auto-play="true"
+                   play-status="{{playStatus}}">
+            </video>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .video {
+        /*width: 750px;*/
+        /*height: 500px;*/
+        flex: 1;
+    }
+    .shipin{
+        width: 100px;
+        height: 100px;
+    }
+    .jiantou{
+        width: 60px;
+        height: 60px;
+        margin-top: 20px;
+    }
+    .shipintxt{
+        font-size: 34px;
+        color: #E95412;
+        margin-top: 25px;
+    }
+    .shichangtxt{
+        font-size: 30px;
+        color: #373634;
+        margin-top: 30px;
+    }
+
+</style>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            playStatus: "play",
+            shipin:[],
+            shipinplay:"",
+            index:"",
+        },
+        created:function(){
+            var _this = this;
+            var factoryId = api.getData(_this).factoryId;
+            api.log(factoryId);
+//            -----------------------图片列表-----------------------------------
+            api.call("user/videos", {factoryId: factoryId}, function (ret) {
+                _this.shipin = ret.data.factoryVideos;
+                _this.shipinplay = ret.data.factoryVideos[0].videoURL;
+                api.log(_this.shipin[0].videoURL);
+            }, function (ret) {});
+//            -----------------------图片列表-----------------------------------
+        },
+        methods:{
+            bofang: function (e) {
+                var _this = this;
+//                api.log(e);
+//                for(var i = 0;i<_this.shipin.length;i++){
+//                    _this.shipinplay = _this.shipin[i].videoURL;
+//                }
+            }
+        }
+    }
+</script>

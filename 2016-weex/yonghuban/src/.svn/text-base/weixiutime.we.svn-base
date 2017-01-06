@@ -1,0 +1,57 @@
+<template>
+    <div class="con" onclick="baoyangjilu">
+        <text class="title-txt">维修保养日期：{{startTime.slice(0,10)}}</text>
+        <text class="txt">公里数：{{mileage}}</text>
+        <text class="txt">金额：{{totalCost}}</text>
+        <text class="txt bot20">服务商家：{{factoryName}}</text>
+        <image class="jiao" src="{{dir}}images/right-jiao.fw.png"></image>
+    </div>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            orderinfo:[],
+        },
+        methods:{
+            baoyangjilu: function (e) {
+
+                api.push("weixiubaoyangxiangmu.js", {ddid:this.id});
+            }
+        },
+        created: function () {
+
+        }
+    }
+</script>
+<style>
+    .con{
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .title-txt{
+        font-size: 32px;
+        color: #373634;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+    }
+    .txt{
+        font-size: 30px;
+        color: #a0a0a0;
+        padding-left: 20px;
+    }
+    .bot20{
+        padding-bottom: 20px;
+    }
+    .jiao{
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top:90px;
+        right:20px;
+    }
+</style>

@@ -1,0 +1,68 @@
+<template>
+    <xx-navpage navtitle="商家地图" navrighttitle="洗车∨" navlefturl="" navrighturl=""
+                navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="box">
+            <div class="title">
+                <text class="title-txt">洗车美容</text>
+                <image class="img" src="{{dir}}images/weizhi2.png"></image>
+            </div>
+            <div class="title">
+                <text class="title-txt">加油站</text>
+                <image class="img" src="{{dir}}images/weizhi1.png"></image>
+            </div>
+            <div class="title">
+                <text class="title-txt">4S店</text>
+                <image class="img" src="{{dir}}images/weizhi3.png"></image>
+            </div>
+            <div class="title">
+                <text class="title-txt">专修店</text>
+                <image class="img" src="{{dir}}images/weizhi4.png"></image>
+            </div>
+
+        </div>
+        <div style="flex: 1;position: absolute">
+            <maploc></maploc>
+        </div>
+
+        <div class="quan"></div>
+    </xx-navpage>
+</template>
+<style>
+    .quan {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .box {
+        width: 750px;
+        position: fixed;
+        top: 88px;
+        background-color: #fff;
+    }
+
+    .title {
+        /*padding-top: 20px;*/
+        /*padding-bottom: 15px;*/
+        margin-right: 20px;
+        margin-left: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .title-txt {
+        font-size: 30px;
+        color: #737373;
+        padding-top: 30px;
+    }
+    .img{
+        width: 80px;
+        height: 80px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+
+</script>

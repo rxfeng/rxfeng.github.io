@@ -1,0 +1,214 @@
+<template>
+    <xx-navpage navtitle="建议项目" navrighttitle="保存" navrighturl="" navrightsrc="" navlefturl="addxiangmu.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <!--<div class="fangan">-->
+            <!--<div class="pthb" style="margin-bottom: 0;borderWidth:0;">-->
+                <!--<div class="title">-->
+                    <!--<text class="title-txt">智能保养方案</text>-->
+                    <!--<div class="rxfrow">-->
+                        <!--<text class="title-txt red1">合计：</text>-->
+                        <!--<text class="title-right-txt" style="margin-left: 10px;text-decoration: line-through;">-->
+                            <!--￥{{huiqian}}-->
+                        <!--</text>-->
+                        <!--<text class="title-right-txt red1">￥{{redqian}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <scroller append="node">
+            <div style="background-color: #fff">
+                <div class="info info2">
+                    <text class="title-left small2">{{serverData.length}}项零件建议保养项目</text>
+                </div>
+                <div>
+                    <zi-fangan datas="{{serverData}}"></zi-fangan>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .rxfrow {
+        flex-direction: row;
+        padding-top: 15px;
+        margin-top: -15px;
+    }
+
+    .title {
+        border-bottom-width: 2px;
+        border-color: #e6e6e6;
+        margin-bottom: 10px;
+        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .title-txt {
+        margin-top: -5px;
+        font-size: 34px;
+
+    }
+
+    .title-right-txt {
+        font-size: 28px;
+        color: #a0a0a0;
+        margin-right: 10px;
+    }
+
+    .title-left {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+    }
+
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .small2{
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .red {
+        color: #E95412;
+        font-size: 34px;
+    }
+
+    .red1 {
+        color: #E95412;
+    }
+
+    .fangan {
+        backgroundColor: #fff;
+    }
+
+    .xian {
+        width: 710px;
+        height: 62px;
+        position: absolute;
+        top: 50px;
+        left: 20px;
+    }
+
+    .cen {
+        text-align: center;
+    }
+
+    .txt {
+        font-size: 30px;
+        color: #737373;
+    }
+
+    .rowtime {
+        width: 250px;
+        height: 150px;
+        flex-direction: row;
+    }
+
+    .info {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .info2 {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 0px;
+    }
+    .txt {
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+
+</style>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var item = [];
+    module.exports = {
+        data: {
+            dir: api.dir,
+            huiqian:0,
+            redqian:0,
+            serverData: [
+                {
+                    mppList: [],
+                }
+            ],
+        },
+        created: function () {
+            var _this = this;
+            this.orderId = api.getData(this).orderId;
+            api.call("factory/quickAdd", {orderId:this.orderId }, function (ret) {
+                _this.serverData = ret.data.qaInfo;
+            });
+            this.$on('naviBar.rightItem.click',function(e){
+                var a = 0;
+                item = [];
+                var _this = this;
+                for(var i= 0;i<_this.serverData.length;i++){
+                    if(_this.serverData[i].isCheck){
+                        item[a++] = _this.serverData[i];
+                    }
+                }
+                api.log(item);
+                api.call("factory/save", {orderId:this.orderId,qaeList:item}, function (ret) {
+                    api.log(ret.data);
+                    api.pop();
+                });
+            });
+        },
+        methods: {
+            baocunclick: function (e) {
+                var a = 0;
+                item = [];
+                var _this = this;
+                for(var i= 0;i<_this.serverData.length;i++){
+                    if(_this.serverData[i].isCheck){
+                        item[a++] = _this.serverData[i];
+                    }
+                }
+                api.log(item);
+                api.call("factory/save", {orderId:this.orderId,qaeList:item}, function (ret) {
+                    api.log(ret.data);
+                    api.pop();
+                });
+            }
+        }
+    }
+
+</script>

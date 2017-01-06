@@ -1,0 +1,39 @@
+<template>
+    <xx-navpage navtitle="拖车服务中" navrighttitle=""
+                navlefturl="yixiusiji-map.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div style="position: absolute;">
+                <tuoche1 mdd="太阳城1999号" style="width: 750px;"></tuoche1>
+                <tuoche2 chefei="156" juli="100" style="width: 750px;"></tuoche2>
+            </div>
+            <mengban meng={{meng}} src="yixiusiji-map.js"></mengban>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+</style>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data:{
+            dir:api.dir,
+            meng:[
+                {
+                    jie:"￥300元",
+                    chufadi:"太阳路1999号",
+                    mudidi:"太阳路1999号",
+                }
+            ],
+        },
+        created: function () {
+
+        }
+    }
+</script>
+
+

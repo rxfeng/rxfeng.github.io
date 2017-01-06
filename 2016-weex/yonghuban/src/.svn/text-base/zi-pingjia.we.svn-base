@@ -1,0 +1,104 @@
+<template>
+    <div class="title" repeat={{pinglun}}>
+        <div style="flex-direction: row">
+            <image class="touxiang" src="{{img}}"></image>
+            <div>
+                <div style="flex-direction: row">
+                    <text class="txt">{{name}}</text>
+                    <xingxing star={{star}}></xingxing>
+                </div>
+                <text class="txt neirong-txt">{{neirong}}</text>
+                <text class="txt">{{shijian}}</text>
+            </div>
+        </div>
+
+        <div style="flex-direction: row" onclick="zanclick">
+            <image if={{flag}} class="zan" src="{{dir}}images/zan1.png"></image>
+            <image if={{!flag}} class="zan" src="{{dir}}images/zan2.png"></image>
+            <text class="txt {{red}}">{{zan}}</text>
+        </div>
+    </div>
+</template>
+<script>
+    var wee = require('@weex-module/modal');
+    var api=require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            pinglun:{
+                id:"",
+                img:"",
+                name:"",
+                neirong:"",
+                shijian:"",
+                zan:0,
+                flag:false,
+                red:"",
+                star:0,
+            }
+        },
+        methods:{
+            zanclick: function (e) {
+                var self = this;
+//            -----------------------点赞功能-----------------------------------
+                var PraiseReq = {commentId:self.id};
+                api.call("user/praises",PraiseReq,function(ret){
+                    var _this = self;
+ //                前台判断点赞数量
+                    _this.flag = !_this.flag;
+                    if(_this.flag == false){
+                        _this.red ="red";
+                        _this.zan = _this.zan+1;
+                    }else{
+                        _this.red ="";
+                        _this.zan = _this.zan-1;
+                    }
+//                    if(ret.data.requestCode == 0){
+//                        _this.zan = ret.data.likeNum;
+//                        if(ret.data.likeState==false){
+//                            _this.red ="red";
+//                            _this.flag =true;
+//                        }else{
+//                            _this.red = "";
+//                            _this.flag =false;
+//                        }
+//                    }
+                }, function (ret) { });
+//            -----------------------点赞功能-----------------------------------
+            }
+        }
+    }
+</script>
+<style>
+    .title{
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        padding:20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .red{
+        color: #E95412;
+    }
+    .touxiang{
+        width: 100px;
+        height: 100px;
+        margin-left: 10px;
+        margin-right: 20px;
+    }
+    .zan{
+        width: 40px;
+        height: 40px;
+        margin-top: -3px;
+    }
+    .txt{
+        font-size: 30px;
+        color: #737373;
+    }
+    .neirong-txt{
+        width: 480px;
+        font-size: 34px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+</style>

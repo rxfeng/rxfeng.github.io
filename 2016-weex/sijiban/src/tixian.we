@@ -1,0 +1,161 @@
+<template>
+    <xx-navpage navtitle="提现" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="http://192.168.1.105:63344/2016/sijiban/wodeqianbao.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="yue">
+                <text class="yue-txt1">{{jine}}</text>
+                <text class="yue-txt2">可提现金额（元）</text>
+            </div>
+
+            <div class="bangding">
+                <text class="bangding-txt1">{{zhifubao}}</text>
+                <text class="bangding-txt2">{{zhanghao}}</text>
+            </div>
+
+            <div class="maindiv">
+                <div class="main">
+                    <text class="txt-info">提现金额：</text>
+                    <input class="inp" type="tel" placeholder="请输入提现金额" value={{val1}} oninput="input1"/>
+                </div>
+                <div class="main">
+                    <text class="txt-info">登录密码：</text>
+                    <input class="inp" type="text" placeholder="请输入登录密码" value={{val2}} oninput="input2"/>
+                </div>
+            </div>
+            <div class="qrbtn">
+                <btn title="确认提现" class="btn" onclick="tixianclick"></btn>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .backcolor {
+        backgroundColor: #F5F3F8;
+    }
+
+    .yue {
+        height: 200px;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+        backgroundColor: #fff;
+    }
+
+    .yue-txt1 {
+        text-align: center;
+        color: #E95412;
+        font-size: 60px;
+        margin-top: 50px;
+    }
+
+    .yue-txt2 {
+        text-align: center;
+        color: #a0a0a0;
+        font-size: 30px;
+    }
+
+    .bangding {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        backgroundColor: #fff;
+        borderWidth: 1px;
+        borderColor: #e6e6e6;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .bangding-txt1 {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .bangding-txt2 {
+        font-size: 32px;
+        color: #888;
+        /*margin-top: 10px;*/
+    }
+
+    .maindiv{
+        borderWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .main {
+        padding: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor: #fff;
+        flex-direction: row;
+
+    }
+
+    .inp {
+        width: 520px;
+        height: 70px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        border-radius: 10px;
+        padding-left: 20px;
+        font-size: 28px;
+        color:#373634;
+    }
+
+    .txt-info {
+        margin-top: 10px;
+    }
+    .qrbtn{
+        width: 750px;
+        position: fixed;
+        bottom: 100px;
+    }
+    .btn{
+        position: relative;
+        bottom: 0px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api=require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            jine: 0,
+            zhifubao: "已绑定支付宝账号",
+            zhanghao: "",
+            val1:"",
+            val2:"",
+        },
+        created: function () {
+            var _this = this;
+            api.call("driver/queryWithDraw", {}, function (ret) {
+                _this.jine = ret.data.wdInfo.withdrawMoney;
+               _this.zhanghao=ret.data.wdInfo.thirdPartyAccount;
+            });
+        },
+        methods:{
+            input1: function (e) {
+                this.val1 = e.value;
+            },
+            input2: function (e) {
+                this.val2 = e.value;
+            },
+            tixianclick: function (e) {
+                this.val1 = this.val1.replace(/(^\s*)|(\s*$)/g, "");
+                if(this.val1=="" || this.val1 <=0 || isNaN(this.val1)){
+                    api.tost("请输入正确的提现金额")
+                }else if(this.val1>this.jine){
+                    api.tost("超过了可提现金额，请重新输入");
+                    this.val1 = "";
+                }else{
+                    var _this = this;
+                    api.call("driver/insertWithDraw", {money:_this.val1,password:_this.val2}, function (ret) {
+                       api.pop();
+                    });
+                }
+            }
+        }
+    }
+</script>

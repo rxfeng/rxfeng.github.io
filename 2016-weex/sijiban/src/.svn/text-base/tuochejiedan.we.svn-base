@@ -1,0 +1,140 @@
+<template>
+    <xx-navpage navtitle="拖车接单" navrighttitle=""
+                navlefturl="yixiusiji.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;position: relative">
+            <div style="position: relative">
+                <!--<qiangdan qd={{qd}}></qiangdan>-->
+                <div class="dingdaninfo">
+                    <div class="info">
+                        <text class="info-txt1">车牌号：</text>
+                        <text class="info-txt2">{{qd.carLicence}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">车辆型号：</text>
+                        <text class="info-txt2">{{qd.carFullTypeName}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客户姓名：</text>
+                        <text class="info-txt2">{{qd.realName}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客户手机：</text>
+                        <text class="info-txt2">{{qd.cellphone}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客人地址：</text>
+                        <text class="info-txt2">{{qd.start}}</text>
+                    </div>
+                </div>
+                <image class="img dianhua" onclick="telclick" src="{{dir}}images/dianhua.png"></image>
+                <image class="img mdd" onclick="daohangclick" src="{{dir}}images/mdd.png"></image>
+            </div>
+            <div style="flex: 1">
+                <mapdriver info="{{info}}" style="flex:1"></mapdriver>
+            </div>
+            <div style="width: 400px;height: 100px;position: absolute;bottom: 100px;left: 175px;flex-direction: row;justify-content: center">
+                <sliding onmove="huadongclick" style="width: 400px;height: 100px;" info="滑动结束服务"></sliding>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<script>
+    var api=require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir:api.dir,
+            info:"",
+            qd: [
+                {
+                    chepaihaotitle: "车牌号：",
+                    cartitle: "车辆型号：",
+                    nametitle: "客户姓名：",
+                    phonetitle: "客户手机：",
+                    addresstitle: "客人地址：",
+                    chepaihao: "",
+                    car: "",
+                    name: "",
+                    phone: "",
+                    address: "",
+                },
+            ],
+            mdd:"",
+        },
+        created: function() {
+            var _this = this;
+            _this.orderId = api.getData(_this).orderId;
+            api.call("driver/queryOrderO", {orderId: _this.orderId}, function (ret) {
+                _this.qd = ret.data.orderInfo;
+                _this.mdd = ret.data.orderInfo.end;
+                api.log("end:"+ret.data.orderInfo.end);
+                _this.info = {lng:ret.data.orderInfo.startLng,lat:ret.data.orderInfo.startLat}
+            });
+            setInterval(function (e) {
+                require('@weex-module/getloc').getLocation("", function (e) {
+                    api.call("driver/getDriverAdd", {longitude:e.lon,latitude:e.lat}, function (ret) {});
+                });
+            }, 60000);
+        },
+        methods:{
+            daohangclick: function (e) {
+                api.get("lnglat", function (e) {
+                    require('@weex-module/navi').Navi(JSON.parse(e.data).lat, JSON.parse(e.data).lon);
+                });
+            },
+            telclick: function (e) {
+                require('@weex-module/dialanumber').boHao(this.qd.cellphone);
+            },
+            huadongclick: function (e) {
+                if(e.str=="确定"){
+                    api.push("tuoche.js", {orderId: this.orderId,end:this.mdd});
+                }
+            }
+        }
+    }
+
+</script>
+<style>
+    .map {
+        flex: 1;
+        borderWidth: 1px;
+        borderColor: red;
+    }
+    .img {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        bottom: 50px;
+    }
+
+    .dianhua {
+        right: 130px;
+    }
+    .mdd {
+        right: 30px;
+    }
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #ccc;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+</style>

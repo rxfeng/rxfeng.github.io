@@ -1,0 +1,690 @@
+<template>
+    <xx-navpage navtitle="订单" navrighttitle="" navlefttitle=""  navleftsrc="{{dir}}images/wode-bangzhu1.png"
+                navleftsrc="" bg="#ffffff">
+
+        <div class="title pr20 pl20" style="position: {{zw}}">
+            <text class="title-txt">服务中订单</text>
+        </div>
+        <list>
+            <refresh style="align-items: center;" display="{{refresh_display}}" onrefresh="datarefresh">
+                <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+            </refresh>
+            <cell index="{{$index}}" append="tree">
+                <scroller>
+                    <div class="dingdaninfo" repeat="{{dd}}" if={{ddflag}} style="flex:{{num1}};" onclick="gofuzdd">
+                        <div class="info">
+                            <text class="info-txt1">订单类型：</text>
+                            <text class="info-txt2">{{ddlx}}</text>
+                        </div>
+                        <div class="info">
+                            <text class="info-txt1">车辆型号：</text>
+                            <text class="info-txt2" style="width: 500px;lines: 1;text-overflow: ellipsis;">{{xinghao}}
+                            </text>
+                        </div>
+                        <div class="info">
+                            <text class="info-txt1">车牌号码：</text>
+                            <text class="info-txt2">{{cphm}}</text>
+                        </div>
+                        <div class="info">
+                            <text class="info-txt1">客户姓名：</text>
+                            <text class="info-txt2">{{kkxx}}</text>
+                        </div>
+                        <div class="info">
+                            <text class="info-txt1">客户手机：</text>
+                            <text class="info-txt2">{{kksj}}</text>
+                        </div>
+                        <div class="info">
+                            <text class="info-txt1">订单号：</text>
+                            <text class="info-txt2">{{ddh}}</text>
+                        </div>
+                        <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                    </div>
+                </scroller>
+            </cell>
+        </list>
+        <!--<dd-info dd={{dd}} if={{ddflag}} style="flex:{{num1}};"></dd-info>-->
+        <!--<div class="box1">-->
+            <!--<div onclick="xicheclick">-->
+                <!--<text style="font-size: 32px;color:#fff; text-align: right;margin-right: 10px">{{leixing}}</text>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="box" if={{xiche}}>-->
+            <!--<div class="title1" onclick="xichebox">-->
+                <!--<text class="title1-txt left">快速报价</text>-->
+            <!--</div>-->
+            <!--<div class="title1" onclick="xichebox">-->
+                <!--<text class="title1-txt left">历史订单</text>-->
+            <!--</div>-->
+        <!--</div>-->
+        <scroller style="flex:{{num2}};height: {{h}};margin-bottom: 100">
+            <div class="jiedan" style="height: {{h}};border-top-width: 2px;border-color: #ccc">
+                <dd-info2 jiedan1={{jiedan1}} if={{jiedanflag}} id={{id}} class="jiedaninfo"
+                          style="height: {{h}}"></dd-info2>
+            </div>
+        </scroller>
+        <div class="dd">
+            <!--<dd2 title1="客户档案" title1src="kehudangan.js" kehudangan={{kehudangan}}></dd2>-->
+            <!--<dd2 title1="客户档案" state={{state}}></dd2>-->
+            <div class="two">
+                <div class="d" onclick="title1url">
+                    <text class="txt">快速报价</text>
+                </div>
+                <div class="d current" onclick="toggle">
+                    <text class="txt current-txt" if="{{!f}}">开始听单</text>
+                    <text class="txt current-txt" if="{{f}}">结束听单</text>
+                </div>
+            </div>
+        </div>
+    </xx-navpage>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports = {
+        data: {
+            dir: api.dir,
+            title: "登录",
+            refresh_display: "hide",
+            page: 1,
+            f: false,
+            xiche: false,
+            leixing: "快速报价",
+            h: "",
+            leftdata: "",
+            num1: "1",
+            num2: "0",
+            zw: "relative",
+            dd: [
+                {
+                    id: "",
+                    ddlx: "",
+                    clxh: "",
+                    cphm: "",
+                    kkxx: "",
+                    kksj: "",
+                    ddh: "",
+                    xinghao: "",
+                    flag: true,
+                    orderType:"",
+                    orderState:"",
+                },
+            ],
+            ddd: [],
+            jiedan1: [],
+            id: "",
+            kehudangan: "",
+            ddflag: false,
+            jiedanflag: false,
+            state: "",
+        },
+        created: function () {
+            var _this = this;
+            _this.jiedan1 = []
+            _this.dd = [];
+
+            api.call("factory/loginMess", {}, function (ret) {
+                if (ret.data.message == "失败") {
+                    api.push("denglu.js");
+                } else {
+                    _this.factoryId = ret.data.adviserInfo.factoryId;
+                    _this.state = ret.data.adviserInfo.state;
+//                    api.log("state" + _this.state)
+//            -----------------------打开这个页面就得知道上班下班的状态,不用接口，从登陆页面传来的值-----------------------------------
+                    if (_this.state == 1) {
+//                        api.log("上班中");
+                        _this.f = true;
+                        api.call("factory/queryOrder", {factoryId: _this.factoryId}, function (ret) {
+//                            api.log(ret.data);
+                            if (ret.data.OrderInfo.length != 0) {
+                                _this.jiedanflag = true;
+                            }
+                            _this.h = ret.data.OrderInfo.length * 300;
+                            _this.jiedan1 = [];
+                            if (ret.data.OrderInfo.length >= 1) {
+                                if (ret.data.OrderInfo.length > 3) {
+                                    _this.zw = "absolute";
+                                    _this.num1 = 0;
+                                    _this.num2 = 1;
+                                } else {
+                                    _this.zw = "relative";
+                                    _this.num1 = 1;
+                                    _this.num2 = 0;
+                                }
+
+                                for (var i = 0; i < ret.data.OrderInfo.length; i++) {
+                                    _this.jiedan1.$set(i,
+                                            {
+                                                id: ret.data.OrderInfo[i].id,
+                                                xinghao: ret.data.OrderInfo[i].carFullTypeName,
+                                                cphm: ret.data.OrderInfo[i].carLicence,
+                                                kkxx: ret.data.OrderInfo[i].senderName,
+                                                kksj: ret.data.OrderInfo[i].senderCell,
+                                                ddh: ret.data.OrderInfo[i].orderNumber,
+                                                orderType:ret.data.OrderInfo[i].orderType,
+                                                flag: true,
+                                            });
+                                    if (ret.data.OrderInfo[i].orderType == 1) {
+                                        _this.jiedan1[i].ddlx = "维修保养";
+                                    } else if (ret.data.OrderInfo[i].orderType == 3) {
+                                        _this.jiedan1[i].ddlx = "现场救援";
+                                    }
+                                }
+                            }
+                            if (ret.data.OrderInfo.length == 0) {
+                                _this.jiedan1 = [];
+                                _this.h = 0;
+                                _this.zw = "relative";
+                                _this.num1 = 1;
+                                _this.num2 = 0;
+                            }
+                        });
+                    } else if (_this.state == 0) {
+                        api.log("下班中");
+                        _this.f = false;
+                    }
+                    api.call("factory/queryService", {factoryId: _this.factoryId}, function (ret) {
+                        api.log("length:" + ret.data.ServiceOrderInfo.length);
+                        if (ret.data.ServiceOrderInfo.length != 0) {
+                            _this.ddflag = true;
+                        }
+                        for (var i = 0; i < ret.data.ServiceOrderInfo.length; i++) {
+                            _this.dd.$set(i,
+                                    {
+                                        id: ret.data.ServiceOrderInfo[i].id,
+                                        xinghao: ret.data.ServiceOrderInfo[i].carFullTypeName,
+                                        cphm: ret.data.ServiceOrderInfo[i].carLicence,
+                                        kkxx: ret.data.ServiceOrderInfo[i].senderName,
+                                        kksj: ret.data.ServiceOrderInfo[i].senderCell,
+                                        ddh: ret.data.ServiceOrderInfo[i].orderNumber,
+                                        orderType:ret.data.ServiceOrderInfo[i].orderType,
+                                        orderState:ret.data.ServiceOrderInfo[i].orderState,
+                                    });
+                            if (ret.data.ServiceOrderInfo[i].orderType == 1) {
+                                _this.dd[i].ddlx = "维修保养";
+                            } else if (ret.data.ServiceOrderInfo[i].orderType == 3) {
+                                _this.dd[i].ddlx = "现场救援";
+                            }
+                        }
+                    });
+                    _this.$on('naviBar.leftItem.click', function (e) {
+                        this.xiche = false;
+                        api.push("wode.js", {factoryId: _this.factoryId});
+                    });
+
+
+//            点击完订单之后，再次请求
+                    _this.$on('notify', function (e) {
+                        _this.xiche = false;
+//            -----------------------服务中订单-----------------------------------
+                        api.call("factory/queryService", {factoryId: _this.factoryId}, function (ret) {
+                            _this.dd = [];
+                            if (ret.data.ServiceOrderInfo.length != 0) {
+                                _this.ddflag = true;
+                            }
+                            for (var i = 0; i < ret.data.ServiceOrderInfo.length; i++) {
+                                _this.dd.$set(i,
+                                        {
+                                            id: ret.data.ServiceOrderInfo[i].id,
+                                            xinghao: ret.data.ServiceOrderInfo[i].carFullTypeName,
+                                            cphm: ret.data.ServiceOrderInfo[i].carLicence,
+                                            kkxx: ret.data.ServiceOrderInfo[i].senderName,
+                                            kksj: ret.data.ServiceOrderInfo[i].senderCell,
+                                            ddh: ret.data.ServiceOrderInfo[i].orderNumber,
+                                            orderType:ret.data.ServiceOrderInfo[i].orderType,
+                                            orderState:ret.data.ServiceOrderInfo[i].orderState,
+                                        });
+                                if (ret.data.ServiceOrderInfo[i].orderType == 1) {
+                                    _this.dd[i].ddlx = "维修保养";
+                                } else if (ret.data.ServiceOrderInfo[i].orderType == 3) {
+                                    _this.dd[i].ddlx = "现场救援";
+                                }
+                            }
+                        });
+                        api.call("factory/queryOrder", {factoryId: _this.factoryId}, function (ret) {
+                            if (ret.data.OrderInfo.length != 0) {
+                                _this.jiedanflag = true;
+                            }
+                            _this.h = ret.data.OrderInfo.length * 300;
+                            _this.jiedan1 = [];
+                            if (ret.data.OrderInfo.length >= 1) {
+                                if (ret.data.OrderInfo.length > 3) {
+                                    _this.zw = "absolute";
+                                    _this.num1 = 0;
+                                    _this.num2 = 1;
+                                } else {
+                                    _this.zw = "relative";
+                                    _this.num1 = 1;
+                                    _this.num2 = 0;
+                                }
+                                for (var i = 0; i < ret.data.OrderInfo.length; i++) {
+                                    _this.jiedan1.$set(i,
+                                            {
+                                                id: ret.data.OrderInfo[i].id,
+                                                xinghao: ret.data.OrderInfo[i].carFullTypeName,
+                                                cphm: ret.data.OrderInfo[i].carLicence,
+                                                kkxx: ret.data.OrderInfo[i].senderName,
+                                                kksj: ret.data.OrderInfo[i].senderCell,
+                                                ddh: ret.data.OrderInfo[i].orderNumber,
+                                                orderType:ret.data.OrderInfo[i].orderType,
+                                                flag: true,
+                                            });
+                                    if (ret.data.OrderInfo[i].orderType == 1) {
+                                        _this.jiedan1[i].ddlx = "维修保养";
+                                    } else if (ret.data.OrderInfo[i].orderType == 3) {
+                                        _this.jiedan1[i].ddlx = "现场救援";
+                                    }
+                                }
+                            }
+                            if (ret.data.OrderInfo.length == 0) {
+                                _this.jiedan1 = [];
+                                _this.h = 0;
+                                _this.zw = "relative";
+                                _this.num1 = 1;
+                                _this.num2 = 0;
+                            }
+                        });
+                    })
+                }
+            });
+            _this.title = api.getData(_this).title || _this.title;
+//            -----------------------拿到上页面传来的值-----------------------------------
+//            点击客户档案，传到下个页面的值
+            _this.leftdata = {"factoryId": _this.factoryId}
+            _this.kehudangan = {"factoryId": _this.factoryId, "state": _this.state}
+//            -----------------------服务中订单-----------------------------------
+            require('@weex-module/geolocation').getCurrentPosition({}, function (e) {
+//                require('@weex-module/mytoast').upStr(e);
+                var lnglat = {};
+                lnglat.lon = e.longitude;
+                lnglat.lat = e.latitude;
+                lnglat.city = e.city;
+                lnglat.province = e.province;
+                api.save("lnglat", lnglat);
+            });
+        },
+        methods: {
+            datarefresh: function (e) {
+                this.xiche = false;
+                this.refresh_display = "show";
+                this.page = 1;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                var _this = this;
+//                api.refresh();
+//                _this.refresh_display = 'hide';
+                api.call("factory/queryService", {factoryId: _this.factoryId}, function (ret) {
+                    api.log("length:" + ret.data.ServiceOrderInfo.length);
+                    if (_this.page == 1) {
+                        if (ret.data.requestCode != 0) {
+                            _this.dd = [];
+                        } else {
+                            if (ret.data.ServiceOrderInfo.length != 0) {
+                                _this.ddflag = true;
+                            }
+                            _this.dd = [];
+                            for (var i = 0; i < ret.data.ServiceOrderInfo.length; i++) {
+                                _this.dd.$set(i,
+                                        {
+                                            id: ret.data.ServiceOrderInfo[i].id,
+                                            xinghao: ret.data.ServiceOrderInfo[i].carFullTypeName,
+                                            cphm: ret.data.ServiceOrderInfo[i].carLicence,
+                                            kkxx: ret.data.ServiceOrderInfo[i].senderName,
+                                            kksj: ret.data.ServiceOrderInfo[i].senderCell,
+                                            ddh: ret.data.ServiceOrderInfo[i].orderNumber,
+                                            orderType:ret.data.ServiceOrderInfo[i].orderType,
+                                            orderState:ret.data.ServiceOrderInfo[i].orderState,
+                                        });
+                                if (ret.data.ServiceOrderInfo[i].orderType == 1) {
+                                    _this.dd[i].ddlx = "维修保养";
+                                } else if (ret.data.ServiceOrderInfo[i].orderType == 3) {
+                                    _this.dd[i].ddlx = "现场救援";
+                                }
+                            }
+                        }
+                    }
+                    _this.refresh_display = 'hide';
+                }, function (e) {
+                    _this.refresh_display = 'hide';
+                });
+
+                if(_this.f){
+                    api.call("factory/queryOrder", {factoryId: _this.factoryId}, function (ret) {
+//                            api.log(ret.data);
+                        if (ret.data.OrderInfo.length != 0) {
+                            _this.jiedanflag = true;
+                        }
+                        _this.h = ret.data.OrderInfo.length * 300;
+                        _this.jiedan1 = [];
+                        if (ret.data.OrderInfo.length >= 1) {
+                            if (ret.data.OrderInfo.length > 3) {
+                                _this.zw = "absolute";
+                                _this.num1 = 0;
+                                _this.num2 = 1;
+                            } else {
+                                _this.zw = "relative";
+                                _this.num1 = 1;
+                                _this.num2 = 0;
+                            }
+
+                            for (var i = 0; i < ret.data.OrderInfo.length; i++) {
+                                _this.jiedan1.$set(i,
+                                        {
+                                            id: ret.data.OrderInfo[i].id,
+                                            xinghao: ret.data.OrderInfo[i].carFullTypeName,
+                                            cphm: ret.data.OrderInfo[i].carLicence,
+                                            kkxx: ret.data.OrderInfo[i].senderName,
+                                            kksj: ret.data.OrderInfo[i].senderCell,
+                                            ddh: ret.data.OrderInfo[i].orderNumber,
+                                            orderType:ret.data.OrderInfo[i].orderType,
+                                            flag: true,
+                                        });
+                                if (ret.data.OrderInfo[i].orderType == 1) {
+                                    _this.jiedan1[i].ddlx = "维修保养";
+                                } else if (ret.data.OrderInfo[i].orderType == 3) {
+                                    _this.jiedan1[i].ddlx = "现场救援";
+                                }
+                            }
+                        }
+                        if (ret.data.OrderInfo.length == 0) {
+                            _this.jiedan1 = [];
+                            _this.h = 0;
+                            _this.zw = "relative";
+                            _this.num1 = 1;
+                            _this.num2 = 0;
+                        }
+                    });
+                }
+
+            },
+            gofuzdd: function (e) {
+                var _this = this;
+                this.xiche = false;
+                api.log("orderType:"+this.orderType+",orderStat e:"+this.orderState);
+                if(this.orderType==3){
+                    if(this.orderState==1){
+                        api.tost("此单已经分配了~")
+                    }else{
+                        api.push("jishi.js",{jsid:this.id}, function (e) {
+                            api.refresh();
+                        });
+                    }
+                }else{
+                    api.push("dingdan3.js", {id: this.id});
+                }
+            },
+//            xicheclick: function (e) {
+//                this.xiche = !this.xiche;
+//            },
+//            xichebox: function (e) {
+//                this.leixing = e.target.children[0].attr.value;
+//                this.xiche = false;
+//                if (e.target.children[0].attr.value == "快速报价") {
+//                    api.push("kuaisubaojia.js");
+//                } else if (e.target.children[0].attr.value == "历史订单") {
+//                    api.push("lishidingdan2.js", {factoryId: this.factoryId});
+//                }
+//            },
+            title1url: function (e) {
+//                api.push("kuaisubaojia.js");
+                api.push("xuanpinpai.js");
+//                var _this = this;
+//                this.xiche = false;
+//                api.push("kehudangan.js", {
+//                    factoryId: _this.factoryId,
+//                });
+            },
+            toggle: function (e) {
+                var _this = this;
+                this.xiche = false;
+                if (_this.f) {
+                    api.dialog(_this.dir + "zi-queren.js", {}, function (e) {
+                        if (e.ok) {
+                            api.call("factory/updateAdviser", {}, function (ret) {
+                                _this.f = false;
+                                _this.jiedan1 = [];
+                                _this.h = 0;
+                                _this.zw = "relative";
+                                _this.num1 = 1;
+                                _this.num2 = 0;
+                            });
+                        }
+                    });
+                } else {
+                    api.call("factory/updateAdviser", {}, function (ret) {
+                        _this.f = true;
+                        api.call("factory/queryOrder", {factoryId: _this.factoryId}, function (ret) {
+//                        api.log(ret.data);
+                            if (ret.data.OrderInfo.length != 0) {
+                                _this.jiedanflag = true;
+                            }
+                            for (var i = 0; i < ret.data.OrderInfo.length; i++) {
+                                _this.jiedan1.$set(i,
+                                        {
+                                            id: ret.data.OrderInfo[i].id,
+                                            xinghao: ret.data.OrderInfo[i].carFullTypeName,
+                                            cphm: ret.data.OrderInfo[i].carLicence,
+                                            kkxx: ret.data.OrderInfo[i].senderName,
+                                            kksj: ret.data.OrderInfo[i].senderCell,
+                                            ddh: ret.data.OrderInfo[i].orderNumber,
+                                            orderType:ret.data.OrderInfo[i].orderType,
+                                            flag: true,
+                                        });
+                                if (ret.data.OrderInfo[i].orderType == 1) {
+                                    _this.jiedan1[i].ddlx = "维修保养";
+                                } else if (ret.data.OrderInfo[i].orderType == 3) {
+                                    _this.jiedan1[i].ddlx = "现场救援";
+                                }
+                            }
+                            _this.h = ret.data.OrderInfo.length * 300;
+                            if (ret.data.OrderInfo.length > 3) {
+                                _this.zw = "absolute";
+                                _this.num1 = 0;
+                                _this.num2 = 1;
+                            }
+                        });
+                    });
+                }
+//            -----------------------上班下班状态-----------------------------------
+//                api.call("factory/updateAdviser", {}, function (ret) {
+//                    if (ret.data.state == 1) {
+//                        _this.f = true;
+//                        api.call("factory/queryOrder", {factoryId: _this.factoryId}, function (ret) {
+////                        api.log(ret.data);
+//                            if (ret.data.OrderInfo.length != 0) {
+//                                _this.jiedanflag = true;
+//                            }
+//                            for (var i = 0; i < ret.data.OrderInfo.length; i++) {
+//                                _this.jiedan1.$set(i,
+//                                        {
+//                                            id: ret.data.OrderInfo[i].id,
+//                                            xinghao:ret.data.OrderInfo[i].carFullTypeName,
+//                                            cphm: ret.data.OrderInfo[i].carLicence,
+//                                            kkxx: ret.data.OrderInfo[i].senderName,
+//                                            kksj: ret.data.OrderInfo[i].senderCell,
+//                                            ddh: ret.data.OrderInfo[i].orderNumber,
+//                                            flag: true,
+//                                        });
+//                                if (ret.data.OrderInfo[i].orderType == 1) {
+//                                    _this.jiedan1[i].ddlx = "维修保养";
+//                                } else if (ret.data.OrderInfo[i].orderType == 3) {
+//                                    _this.jiedan1[i].ddlx = "现场救援";
+//                                }
+//                            }
+//                            _this.h = ret.data.OrderInfo.length * 300;
+//                            if (ret.data.OrderInfo.length > 3) {
+//                                _this.zw = "absolute";
+//                                _this.num1 = 0;
+//                                _this.num2 = 1;
+//                            }
+//                        });
+//                    } else if (ret.data.state == 0) {
+//                        api.dialog(_this.dir + "zi-queren.js",{}, function (e) {
+//                            api.log("结束听单");
+//                            _this.f = false;
+//                            _this.jiedan1 = [];
+//                            _this.h = 0;
+//                            _this.zw = "relative";
+//                            _this.num1 = 1;
+//                            _this.num2 = 0;
+//                        });
+////                        好像没用
+////                        api.call("factory/queryService", {factoryId: _this.factoryId}, function (ret) {
+////                        api.log(ret.data);
+////                            if (ret.data.ServiceOrderInfo.length != 0) {
+////                                _this.ddflag = true;
+////                            }
+////                            for (var i = 0; i < ret.data.ServiceOrderInfo.length; i++) {
+////                                _this.dd.$set(i,
+////                                        {
+////                                            id: ret.data.ServiceOrderInfo[i].id,
+////                                            xinghao:ret.data.ServiceOrderInfo[i].carFullTypeName,
+////                                            cphm: ret.data.ServiceOrderInfo[i].carLicence,
+////                                            kkxx: ret.data.ServiceOrderInfo[i].senderName,
+////                                            kksj: ret.data.ServiceOrderInfo[i].senderCell,
+////                                            ddh: ret.data.ServiceOrderInfo[i].orderNumber,
+////                                        });
+////                                if (ret.data.ServiceOrderInfo[i].orderType == 1) {
+////                                    _this.dd[i].ddlx = "维修保养";
+////                                } else if (ret.data.ServiceOrderInfo[i].orderType == 3) {
+////                                    _this.dd[i].ddlx = "现场救援";
+////                                }
+////                            }
+////                        });
+//                    }
+//                });
+//            -----------------------上班下班状态-----------------------------------
+            }
+        }
+    }
+</script>
+<style>
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        margin-bottom: 20px;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737172;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 130px;
+        right: 20px;
+    }
+
+    .box1 {
+        width: 180px;
+        position: fixed;
+        right: 10px;
+        top: 15px;
+    }
+
+    .box {
+        width: 180px;
+        position: fixed;
+        right: 0px;
+        top: 88px;
+        background-color: #E95412;
+    }
+
+    .title1 {
+        padding-top: 20px;
+        padding-bottom: 15px;
+        padding-right: 20px;
+    }
+
+    .left {
+        text-align: right;
+    }
+
+    .title1-txt {
+        font-size: 32px;
+        color: #fff;
+    }
+
+    .pr20 {
+        padding-right: 10px;
+    }
+
+    .pl20 {
+        padding-left: 10px;
+    }
+
+    .title {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+        margin-left: 10px;
+        margin-right: 10px;
+        position: relative;
+    }
+
+    .title-txt {
+        font-size: 32px;
+    }
+
+    .jiedan {
+        width: 750px;
+    }
+
+    .jiedaninfo {
+        /*position: absolute;*/
+        /*bottom: 0;*/
+        width: 750px;
+        backgroundColor: #eee;
+    }
+
+    .dd {
+        position: fixed;
+        bottom: 0;
+    }
+
+    .two {
+        flex-direction: row;
+        width: 750px;
+        borderTopWidth: 1px;
+        borderColor: #ccc;
+        backgroundColor: #fff;
+    }
+
+    .d {
+        flex: 1;
+    }
+
+    .txt {
+        text-align: center;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        color: #E95412;
+        font-size: 34px;
+    }
+
+    .current {
+        backgroundColor: #E95412;
+    }
+
+    .current-txt {
+        color: #fff;
+    }
+</style>

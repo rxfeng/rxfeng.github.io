@@ -1,0 +1,75 @@
+<template>
+    <div class="xxdiv" haha="{{star}}">
+        <image onclick="xx1click" index="1" class="xxpic xx1" src="{{xx1}}"></image>
+        <image onclick="xx1click" index="2" class="xxpic xx2" src="{{xx2}}"></image>
+        <image onclick="xx1click" index="3" class="xxpic xx3" src="{{xx3}}"></image>
+        <image onclick="xx1click" index="4" class="xxpic xx4" src="{{xx4}}"></image>
+        <image onclick="xx1click" index="5" class="xxpic xx5" src="{{xx5}}"></image>
+    </div>
+</template>
+<style>
+    .xxdiv {
+        position: relative;
+        width: 220px;
+        height: 40px;
+        margin-top: 5px;
+    }
+
+    .xxpic {
+        width: 44px;
+        height: 44px;
+        position: absolute;
+        top: -5px;
+    }
+
+    .xx1 {
+        /*left: -10px;*/
+    }
+
+    .xx2 {
+        left: 44px;
+    }
+
+    .xx3 {
+        left: 88px;
+    }
+
+    .xx4 {
+        left: 132px;
+    }
+
+    .xx5 {
+        left: 176px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            xx1: "",
+            xx2: "",
+            xx3: "",
+            xx4: "",
+            xx5: "",
+            star: 0,
+        },
+        created: function () {
+            this.setStar(this.star);
+        },
+        methods: {
+            xx1click: function (e) {
+                var cindex = e.target.attr.index;
+                this.setStar(cindex);
+                this.star = cindex;
+            },
+            setStar:function(value){
+                this.xx1 = api.dir + "images/" + (value >= 1 ? "xx2.png" : "xx1.png");
+                this.xx2 = api.dir + "images/" + (value >= 2 ? "xx2.png" : "xx1.png");
+                this.xx3 = api.dir + "images/" + (value >= 3 ? "xx2.png" : "xx1.png");
+                this.xx4 = api.dir + "images/" + (value >= 4 ? "xx2.png" : "xx1.png");
+                this.xx5 = api.dir + "images/" + (value >= 5 ? "xx2.png" : "xx1.png");
+            }
+        }
+    }
+</script>

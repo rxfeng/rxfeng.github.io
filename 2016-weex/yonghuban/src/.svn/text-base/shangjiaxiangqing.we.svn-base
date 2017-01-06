@@ -1,0 +1,408 @@
+<template>
+    <xx-navpage navtitle="商家详情" navrighttitle="" navrightsrc="" navrighturl=""
+                navlefturl="aa.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="fenxiang">
+            <image if={{sc}} class="img" src="{{dir}}images/shoucang.png" onclick="scclick"></image>
+            <image if={{!sc}} class="img img1" src="{{dir}}images/shoucang2.png" onclick="scclick"></image>
+            <image class="img" onclick="fenxiangclick" src="{{dir}}images/fenxiang.png"></image>
+        </div>
+        <scroller style="flex: 1;" repeat={{serverData}}>
+            <div class="pic">
+                <image if={{spzhanshi}} class="shipin" src="{{imageUrl}}"></image>
+                <div if={{!spzhanshi}} class="shipin">
+                    <video style="flex:1;"
+                           onpause="onpause"
+                           onstart="onstart"
+                           onfinish="onfinish"
+                           onfail="onfail"
+                           src="{{shipinUrl}}"
+                           auto-play="true"
+                           play-status="{{playStatus}}">
+                    </video>
+                </div>
+                <image class="shipinpic pics" src="{{dir}}images/shipin1.png" onclick="shipin"></image>
+                <image class="shipinpic play" src="{{dir}}images/shipin2.png" onclick="tupian"></image>
+            </div>
+            <div class="pthb">
+                <div class="title">
+                    <div class="rxfrow">
+                        <text class="title-txt">{{factoryName}}</text>
+                        <xingxing star={{startSum}} style="margin-top: 5px"></xingxing>
+                    </div>
+                    <div style="flex-direction: row">
+                        <text class="title-right-txt unline">￥{{price}}</text>
+                        <text class="title-right-txt red">￥{{memberPrice}}</text>
+                    </div>
+                </div>
+                <div class="title" style="padding-bottom: 20px;">
+                    <div style="flex-direction: row;flex:1;border-right-width: 1px;border-color: #e6e6e6">
+                        <image class="left-pic left-pic1" src="{{dir}}images/yytime.png"></image>
+                        <text class="title-right-txt">营业时间:{{startTime}}--{{endTime}}</text>
+                    </div>
+                    <div style="flex-direction: row;flex:1;justify-content: flex-end" onclick="bodadianhua">
+                        <image class="left-pic left-pic1" src="{{dir}}images/phone.png"></image>
+                        <text class="title-right-txt">电话:{{telPhone}}</text>
+                    </div>
+                </div>
+                <div class="title" style="padding-bottom: 20px;borderWidth:0;">
+                    <div style="flex-direction: row;flex:1;border-right-width: 1px;border-color: #e6e6e6">
+                        <image if={{isCost}} class="left-pic" src="{{dir}}images/danxuan2.png"></image>
+                        <image if={{!isCost}} class="left-pic" src="{{dir}}images/danxuan3.png"></image>
+                        <text class="title-right-txt">支持积分消费</text>
+                    </div>
+                    <div style="flex-direction: row;flex:1;justify-content: flex-end">
+                        <text class="title-right-txt">销量：{{saleCount}}次</text>
+                    </div>
+                </div>
+                <div style="flex-direction: row;justify-content: space-between;padding-right: 20px;padding-left: 20px;padding-top: 10px">
+                    <div>
+                        <text class="title-right-txt">{{location}}</text>
+                        <div style="flex-direction: row;margin-top: 7px">
+                            <image class="dw" src="{{dir}}images/dw.png"></image>
+                            <text class="title-right-txt"> {{distance}}Km</text>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <image class="zhixiang" src="{{dir}}images/zhixiang.png" onclick="daohangclick"></image>
+                </div>
+            </div>
+            <div class="spean"></div>
+            <div class="xingxing">
+                <div class="dengji">
+                    <div style="flex: 1;">
+                        <text class=" small">店面环境</text>
+                        <xingxing star="{{start1}}"></xingxing>
+                    </div>
+                    <div style="flex: 1;">
+                        <text class=" small">清洁程度</text>
+                        <xingxing star="{{start2}}"></xingxing>
+                    </div>
+                    <div style="flex: 1;">
+                        <text class=" small">服务态度</text>
+                        <xingxing star="{{start3}}"></xingxing>
+                    </div>
+                </div>
+                <div class="title tit bordertop" style="margin-top: 60px;margin-bottom: 0" onclick="pinglunclick">
+                    <div class="rxfrow">
+                        <text class="title-txt">评论（{{commentNum}}人评价）</text>
+                    </div>
+                    <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                </div>
+            </div>
+            <div class="spean"></div>
+            <div style="backgroundColor: #fff" repeat={{items}}>
+                <div class="title tit">
+                    <div class="rxfrow" onclick="xuanzeclick">
+                        <image if={{isDefault}} class="xuanxiang" src="{{dir}}images/danxuan2.png"></image>
+                        <image if={{!isDefault}} class="xuanxiang" src="{{dir}}images/danxuan1.png"></image>
+                        <text class="title-txt">{{itemName}}</text>
+                    </div>
+                    <div style="flex-direction: row">
+                        <text class="title-right-txt xiao unline">￥{{price}}</text>
+                        <text class="title-right-txt red xiao">￥{{memberPrice}}</text>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 100px;"></div>
+            <div style="position: fixed;bottom: 0;height: 100px;">
+                <zi-zongji title="支 付" dd={{dd}} redqian={{redqian}} itemdata={{itemdata}} huiqian={{huiqian}}
+                           chajia={{chajia}} url="dingdanzhifu.js" nextinfo={{nextinfo}}></zi-zongji>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+
+    .fenxiang {
+        /*width: 150px;*/
+        /*height: 50px;*/
+        flex-direction: row;
+        position: fixed;
+        top: 20px;
+        right: 0;
+    }
+
+    .img {
+        width: 50px;
+        height: 50px;
+        margin-right: 25px;
+    }
+    .img1{
+        width: 40px;
+        height: 40px;
+        margin-top: 5px;
+        margin-right: 30px;
+    }
+
+    .rxfrow {
+        flex-direction: row;
+        padding-top: 15px;
+        margin-top: -15px;
+    }
+
+    .title {
+        border-bottom-width: 2px;
+        border-color: #e6e6e6;
+        margin-bottom: 10px;
+        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .title-txt {
+        /*margin-top: 0px;*/
+        font-size: 36px;
+    }
+
+    .title-right-txt {
+        font-size: 28px;
+        color: #a0a0a0;
+        margin-right: 10px;
+    }
+
+    .title-left {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .shipin {
+        width: 750px;
+        height: 320px;
+        position: relative;
+    }
+
+    .shipinpic {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        bottom: 20px;
+    }
+
+    .pic {
+
+    }
+
+    .pics {
+        left: 20px;
+    }
+
+    .play {
+        right: 20px;
+    }
+
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #fff;
+        border-width: 1;
+        border-color: #e6e6e6;
+    }
+
+    .unline {
+        text-decoration: line-through;
+    }
+
+    .left-pic {
+        width: 37px;
+        height: 37px;
+        margin-right: 10px;
+    }
+
+    .left-pic1 {
+        margin-right: 0px;
+    }
+
+    .dw {
+        width: 40px;
+        height: 40px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .zhixiang {
+        width: 80px;
+        height: 80px;
+    }
+
+    .line {
+        width: 2px;
+        height: 40px;
+        backgroundColor: #e6e6e6;
+        position: absolute;
+        top: 30px;
+        right: 110px;
+    }
+
+    .spean {
+        height: 20px;
+        background-color: #F5F3F8;
+    }
+
+    .xingxing {
+        backgroundColor: #fff;
+    }
+
+    .dengji {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 20px;
+        padding-top: 20px;
+    }
+
+    .small {
+        font-size: 36px;
+        margin-left: 30px;
+        margin-bottom: 10px;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+    }
+
+    .xiao {
+        font-size: 26px;
+    }
+
+    .xuanxiang {
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+
+    .tit {
+        margin-bottom: 0;
+        padding-top: 20px;
+    }
+
+    .bordertop {
+        borderTopWidth: 1px;
+        borderColor: #F5F3F8;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            spzhanshi: true,
+            playStatus: "play",
+            shipinplay: "",
+            shipinUrl: "",
+            redqian: 0,
+            huiqian: 0,
+            chajia: 0,
+            sc: false,
+            factoryId: "",
+            xicheid: "",
+            serverData: [
+                {
+                    items: [],
+                }
+            ],
+            nextinfo: "",
+            dd: "",
+            factoryName: "",
+            itemdata: [],
+
+        },
+        methods: {
+            fenxiangclick: function (e) {
+                require('@weex-module/share').toShare(this.factoryName, "http://www.yixiucar.com/");
+            },
+            daohangclick: function (e) {
+                api.get("lnglat", function (e) {
+                    require('@weex-module/navi').Navi(JSON.parse(e.data).lat, JSON.parse(e.data).lon);
+                });
+            },
+            bodadianhua: function (e) {
+                require('@weex-module/dialanumber').boHao(this.telPhone);
+            },
+            scclick: function (e) {
+                var _this = this;
+                api.log("xicheid11111111111111111：" + _this.xicheid);
+////            -----------------------收藏功能-----------------------------------
+                var CollectionReq = {factoryId: _this.xicheid};
+                api.call("user/collection", CollectionReq, function (ret) {
+                    _this.sc = !_this.sc;
+                }, function () {
+                });
+////            -----------------------收藏功能-----------------------------------
+            },
+            shipin: function (e) {
+                this.spzhanshi = !this.spzhanshi;
+                var _this = this;
+                api.call("user/videos", {factoryId: _this.factoryId}, function (ret) {
+                    _this.shipinUrl = ret.data.factoryVideos[0].videoURL;
+                    api.log(_this.shipin[0].videoURL);
+                }, function (ret) {
+                });
+            },
+            tupian: function (e) {
+                api.push("shipin2.js", {factoryId: this.factoryId});
+            },
+            xuanzeclick: function (e) {
+//                改变状态
+                var _this = this;
+                _this.isDefault = _this.isDefault ? false : true;
+//                api.log(_this.isDefault);
+//                api.log(_this.serverData[0].items.length);
+                _this.huiqian = 0;
+                _this.redqian = 0;
+                _this.itemdata = [];
+                for (var i = 0; i < _this.serverData[0].items.length; i++) {
+                    if (_this.serverData[0].items[i].isDefault == true) {
+                        _this.huiqian = _this.serverData[0].items[i].price + _this.huiqian;
+                        _this.redqian = _this.serverData[0].items[i].memberPrice + _this.redqian;
+                        _this.itemdata.push(_this.serverData[0].items[i].id);
+                    }
+                }
+                _this.huiqian = _this.huiqian + _this.serverData[0].price;
+                _this.redqian = _this.redqian + _this.serverData[0].memberPrice;
+                _this.chajia = _this.huiqian - _this.redqian;
+                _this.nextinfo = {redqian: _this.redqian, factoryId: _this.factoryId};
+            },
+            pinglunclick: function (e) {
+                api.push("pingjiaxiangqing.js", {factoryId: this.factoryId});
+            }
+        },
+        ready: function () {
+            var _this = this;
+//            api.log("factoryId222222222222："+_this.factoryId);
+//            -----------------------首页商家列表-----------------------------------
+//            api.log(api.getData(_this).factoryId);
+            api.call("driver/washFactory", {factoryId: api.getData(_this).factoryId}, function (ret) {
+                _this.sc = ret.data.washEns[0].originalStatus;
+                _this.factoryName = ret.data.washEns[0].factoryName;
+//                api.log( ret.data.washEns[0].factoryId);
+                _this.xicheid = ret.data.washEns[0].factoryId;
+                _this.serverData = ret.data.washEns;
+                for (var i = 0; i < ret.data.washEns[0].items.length; i++) {
+                    if (ret.data.washEns[0].items[i].isDefault == true) {
+                        _this.huiqian = ret.data.washEns[0].items[i].price + _this.huiqian;
+                        _this.redqian = ret.data.washEns[0].items[i].memberPrice + _this.redqian;
+                        _this.itemdata.push(ret.data.washEns[0].items[i].id);
+                    }
+                }
+                _this.huiqian = _this.huiqian + _this.serverData[0].price;
+                _this.redqian = _this.redqian + _this.serverData[0].memberPrice;
+                _this.chajia = _this.huiqian - _this.redqian;
+                _this.nextinfo = {redqian: _this.redqian, factoryId: _this.factoryId};
+//                api.log()
+            }, function (ret) {
+            });
+//            -----------------------首页商家列表-----------------------------------
+        },
+        created: function () {
+            this.factoryId = api.getData(this).factoryId;
+            this.dd = api.getData(this).dd;
+        }
+    }
+</script>

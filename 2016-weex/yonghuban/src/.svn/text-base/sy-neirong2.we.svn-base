@@ -1,0 +1,368 @@
+<template>
+    <container>
+        <!--修车-->
+        <div if={{falg1}}>
+            <div if={{wash.id==null}} class="cont" onclick="shangjiaxiangqing">
+                <div class="cont-left">
+                    <image src="{{facIcon}}" class="cont-left-img"></image>
+                </div>
+                <div class="cont-right">
+                    <div class="cont-right-one">
+                        <text class="bcj">{{factoryName}}</text>
+                        <text class="yuyue-txt">{{repair.repairType}}</text>
+                    </div>
+                    <div class="cont-right-two">
+                        <xingxing star="{{starCount}}"
+                                  style="width: 200px;margin-left: -10px;margin-top: 5px"></xingxing>
+                        <div class="yuyue">
+                            <text class="yuyue-txt2">已预约:{{saleCount}} | 车均消费:{{repair.average}}￥</text>
+                        </div>
+                    </div>
+                    <div class="cont-right-three">
+                        <div class="cont-right-three1">
+                            <div class="tb">
+                                <image if={{repair.control}} src="{{dir}}images/danxuan2.png"
+                                       class="sel"></image>
+                                <image if={{!repair.control}}
+                                       src="{{dir}}images/danxuan3.png"
+                                       class="sel"></image>
+                            </div>
+                            <text class="yuyue-txt">修车全程监控</text>
+                        </div>
+                        <div class="cont-right-three2">
+                            <div class="tb">
+                                <image if={{repair.isDrive}}
+                                       src="{{dir}}images/danxuan2.png"
+                                       class="sel"></image>
+                                <image if={{!repair.isDrive}}
+                                       src="{{dir}}images/danxuan3.png"
+                                       class="sel"></image>
+                            </div>
+                            <text class="yuyue-txt">免费上门取送车</text>
+                        </div>
+                        <div class="cont-right-three3">
+                            <div class="tb">
+                                <image src="{{dir}}images/dw.png" class="sel"></image>
+                            </div>
+                            <text class="yuyue-txt">{{distance}}Km</text>
+                        </div>
+                    </div>
+                    <div style="flex-direction: row;flex-wrap: wrap;">
+                        <div style="flex-direction: row;margin-top: -5px" repeat="{{eventList}}">
+                            <div if={{sign}} style="margin-bottom: 10px;margin-left: 10px;flex-direction: row;">
+                                <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-left.png"></image>
+                                <text class="zhe2-txt">{{content}}</text>
+                                <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-right.png"></image>
+                            </div>
+                            <div if={{!sign}} style="margin-bottom: 10px;margin-left: 10px;flex-direction: row;">
+                                <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-left.png"></image>
+                                <text class="zhe2-txt">{{content}}</text>
+                                <image class="zhe2" resize=stretch src="{{dir}}images/zhe2-right.png"></image>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <text class="xuanze" if={{xuanze}} onclick="xuanzeclick">选 择</text>
+                <div class="dianpu" if={{isYuyue}}>
+                    <text class="dianpu-txt">上次预约店</text>
+                </div>
+            </div>
+        </div>
+        <!--洗车-->
+        <div if={{falg2}}>
+            <div if={{repair.id==null}} class="cont" onclick="shangjiaxiangqing">
+                <div class="cont-left">
+                    <image src="{{facIcon}}" class="cont-left-img"></image>
+                </div>
+                <div class="cont-right">
+                    <div class="cont-right-one">
+                        <text class="bcj">{{factoryName}}</text>
+                        <div style="flex-direction: row">
+                            <text class="title-txt unline">￥{{wash.price}}</text>
+                            <text class="title-txt red">￥{{wash.memberPrice}}</text>
+                        </div>
+                    </div>
+                    <div class="cont-right-two" style="margin-top: -5px">
+                        <xingxing star="{{starCount}}" style="margin-left: -10px;margin-top: 10px"></xingxing>
+                        <div class="yuyue">
+                            <text class="title-txt xltxt">销量：{{saleCount}}次</text>
+                        </div>
+                    </div>
+                    <div class="cont-right-three">
+                        <div class="cont-right-three1">
+                            <div class="tb">
+                                <image if={{wash.isCost}} src="{{dir}}images/danxuan2.png"
+                                       class="sel"></image>
+                                <image if={{!wash.isCost}}
+                                       src="{{dir}}images/danxuan3.png"
+                                       class="sel"></image>
+                            </div>
+                            <text class="title-txt">支持积分消费</text>
+                        </div>
+                    </div>
+                    <div style="flex-direction: row;justify-content: space-between">
+                        <div class="cont-right-three3">
+                            <text class="title-txt">地址：{{location}}</text>
+                        </div>
+                        <div class="cont-right-three3">
+                            <div class="tb">
+                                <image src="{{dir}}images/dw.png" class="sel"></image>
+                            </div>
+                            <text class="title-txt">{{distance}}Km</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="dianpu" if={{isYuyue}}>
+                    <text class="dianpu-txt">上次预约店</text>
+                </div>
+            </div>
+        </div>
+    </container>
+</template>
+<style>
+    /*上次预约店*/
+    .dianpu {
+        width: 170px;
+        background-color: rgba(255, 255, 255, 0.4);
+        position: absolute;
+        top: 165px;
+        left: 30px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .dianpu-txt {
+        color: #E95412;
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .cont {
+        flex-direction: row;
+        margin-bottom: 10px;
+        padding: 30px;
+        padding-bottom: 10px;
+        backgroundColor: #fff;
+
+    }
+
+    .cont-left {
+        margin-right: 10px;
+    }
+
+    .xltxt {
+        margin-left: 30px;
+    }
+
+    .cont-right {
+        position: relative;
+        margin-top: -5px;
+        width: 510px;
+    }
+
+    .cont-left-img {
+        width: 170px;
+        height: 170px;
+        flex-direction: row;
+    }
+
+    .cont-right-one {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .bcj {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .cont-right-two {
+        height: 50px;
+        flex-direction: row;
+    }
+
+    .yuyue {
+        margin-left: 0px;
+        margin-top: 12px;
+    }
+
+    .yuyue-txt {
+        font-size: 24px;
+        color: #a0a0a0;
+        margin-top: 0px;
+        margin-left: -5px;
+    }
+
+    .yuyue-txt2 {
+        font-size: 24px;
+        color: #a0a0a0;
+    }
+
+    .cont-right-three {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        margin-bottom: 10px;
+    }
+
+    .tb {
+        margin-left: -5px;
+    }
+
+    .cont-right-three1 {
+        flex-direction: row;
+        margin-right: 0px;
+
+    }
+
+    .cont-right-three2 {
+        flex-direction: row;
+        margin-left: 5px;
+    }
+
+    .cont-right-three3 {
+        flex-direction: row;
+        margin-left: 5px;
+    }
+
+    .sel {
+        width: 37px;
+        height: 37px;
+        /*margin-right: ;*/
+    }
+
+    .zhe {
+        width: 72px;
+        height: 42px;
+        /*margin-bottom: 5px;*/
+        margin-top: 5px;
+    }
+
+    .zhe2 {
+        width: 25px;
+        height: 42px;
+        margin-top: 5px;
+    }
+
+    .zhe2-txt {
+        font-size: 30px;
+        height: 42px;
+        color: #fff;
+        text-align: center;
+        background-color: #E95412;
+        margin-top: 5px;
+    }
+
+    .xuanze {
+        padding-bottom: 2px;
+        padding-top: 2px;
+        padding-right: 20px;
+        padding-left: 20px;
+        font-size: 28px;
+        color: #fff;
+        backgroundColor: #E95412;
+        position: absolute;
+        bottom: 10px;
+        right: 20;
+    }
+
+    .title-txt {
+        font-size: 28px;
+        color: #737373;
+    }
+
+    .unline {
+        text-decoration: line-through;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            eventList: [],
+            xuanze: false,
+            factoryId: "",
+            factory: "",
+            wash: {},
+            repair: {},
+            txt1: 0,
+            falg1: true,
+            falg2: true,
+            dingdanhao: "",
+            dd: "",
+            carMileage: "",
+        },
+        methods: {
+            shangjiaxiangqing: function (e) {
+                var _this = this;
+//                api.log("factoryId："+_this.id);
+//                api.log(_this.repair.id == null);
+//                api.get("carInfo", function (e) {
+//                    api.log(JSON.parse(e.data));
+//                    if(JSON.parse(e.data)){
+//                        if (_this.repair.id == null) {
+//                            api.push("shangjiaxiangqing.js", {factoryId: _this.id, dd: JSON.parse(e.data).dd});
+//                        } else {
+//                            api.push("shangjiaxiangqing4.js", {
+//                                factoryId: _this.id,
+//                                dd: JSON.parse(e.data).dd,
+//                                carMileage: JSON.parse(e.data).carMileage
+//                            });
+//                        }
+//                    }else{
+//                        if (_this.repair.id == null) {
+//                            api.log("洗车");
+//                            api.push("shangjiaxiangqing.js", {factoryId: _this.id});
+//                        } else {
+//                            api.log("修车");
+//                            api.push("shangjiaxiangqing4.js", {factoryId: _this.id});
+//                        }
+//                    }
+//                });
+
+
+                if (_this.repair.id == null) {
+                    api.log("洗车");
+                    api.push("shangjiaxiangqing.js", {factoryId: _this.id});
+                } else {
+                    api.log("修车"+_this.dd);
+                    api.push("shangjiaxiangqing4.js", {factoryId: _this.id,dd:_this.dd});
+                }
+            },
+            xuanzeclick: function (e) {
+                var _this = this;
+                api.get("orderinfo", function (e) {
+                    var orderinfo = JSON.parse(e.data);
+                    orderinfo.shangjiaid = _this.id;
+                    api.save("orderinfo", orderinfo);
+                    api.push("xiangmuqueren.js");
+//                    api.save("orderinfo",e.data);
+                });
+            }
+        },
+        ready: function () {
+//            api.log(this.dd + "," + this.carMileage);
+//            if (this.txt1 != 1 && this.txt1 != 0) {    //修车类
+//                this.falg1 = true;
+//                this.falg2 = false;
+//                this.factoryId = this.repair.id;
+//                this.factory = this.repair.factoryId;
+//            } else if (this.txt1 == 1) {  //洗车
+//                this.falg1 = false;
+//                this.falg2 = true;
+//                this.factoryId = this.wash.id;
+//                this.factory = this.wash.factoryId;
+//            } else if (this.txt1 == 0) {   //全部
+//                this.falg1 = true;
+//                this.falg2 = true;
+//                this.factoryId = this.repair.id || this.wash.id;
+//                this.factory = this.repair.factoryId || this.wash.factoryId;
+//            }
+        }
+    }
+</script>

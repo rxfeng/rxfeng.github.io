@@ -1,0 +1,134 @@
+<template>
+    <scroller>
+        <div>
+            <text style="height:100px;" onclick="submit">tttttttttt</text>
+            <text>推荐项目{{sdata.nelist.length}}</text>
+            <a2 datas="{{sdata.nelist}}"></a2>
+            <text>推荐项目{{sdata.unlist.length}}</text>
+            <a2 datas="{{sdata.unlist}}"></a2>
+        </div>
+    </scroller>
+</template>
+<script>
+    module.exports = {
+        methods: {
+            submit: function () {
+                console.log(this.sdata);
+            }
+        },
+        data: {
+            sdata: {
+                "nelist": [{
+                    "itemList": [{
+                        "id": 1,
+                        "partsName": "原厂专用5W-10M SM级合成",
+                        "cost": 1000,
+                        "memberCost": 801,
+                        "isRecommend": true,
+                        "tag": "1",
+                        "mpId": 1,
+                        "factoryId": 7
+                    }, {
+                        "id": 2,
+                        "partsName": "圆场嘉实多0W-30SN级全合成",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": false,
+                        "tag": "2",
+                        "mpId": 1,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "机油",
+                    "IsNecessary": true
+                }, {
+                    "itemList": [{
+                        "id": 3,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 2,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "机油滤清",
+                    "IsNecessary": true
+                }, {
+                    "itemList": [{
+                        "id": 4,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 3,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "空气滤清",
+                    "IsNecessary": true
+                }, {
+                    "itemList": [{
+                        "id": 5,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 4,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "燃油滤清",
+                    "IsNecessary": true
+                }, {
+                    "itemList": [{
+                        "id": 6,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 5,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "火花塞",
+                    "IsNecessary": true
+                }, {
+                    "itemList": [{
+                        "id": 9,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 8,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "自动变速箱油",
+                    "IsNecessary": true
+                }],
+                "unlist": [{
+                    "itemList": [{
+                        "id": 8,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 7,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "整车制动液",
+                    "IsNecessary": false
+                }, {
+                    "itemList": [{
+                        "id": 11,
+                        "partsName": "原厂件",
+                        "cost": 1000,
+                        "memberCost": 800,
+                        "isRecommend": true,
+                        "mpId": 10,
+                        "factoryId": 7
+                    }],
+                    "MaintainName": "发动机正时皮带",
+                    "IsNecessary": false
+                }],
+                "requestCode": 0
+            }
+
+        }
+    }
+</script>

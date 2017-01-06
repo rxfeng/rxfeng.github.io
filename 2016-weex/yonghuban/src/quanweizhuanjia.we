@@ -1,0 +1,86 @@
+<template>
+    <xx-navpage navtitle="权威专家" navrighttitle="" navlefturl="zhuanjiazixun.js" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="title" onclick="xuanzeclick">
+                <text class="title-txt">{{xuanpinpai}}</text>
+                <image class="jiantou" src="{{dir}}images/xiajiaobiao-red.png"></image>
+            </div>
+            <div if={{xiala}} class="box">
+                <scroller style="border-top-width:2px;border-color: #e6e6e6">
+                    <div class="title" onclick="chequbox">
+                        <text class="title-txt center" haha=0>全部</text>
+                    </div>
+                    <div repeat={{list}} class="title" onclick="chequbox">
+                        <text class="title-txt center" haha={{id}}>{{brandName}}</text>
+                    </div>
+                </scroller>
+            </div>
+            <zi-zhuanjia repeat={{zhuanjia}}></zi-zhuanjia>
+            <div style="height: 200px;backgroundColor: #F5F3F8;margin-top: -20px"></div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .box {
+        width: 750px;
+        position: fixed;
+        top: 158px;
+        background-color: #fff;
+    }
+    .title{
+        padding: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor:#fff ;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .jiantou{
+        width: 32px;
+        height: 32px;
+    }
+    .title-txt{
+        font-size: 32px;
+        color: #E95412;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            zhuanjia: [],
+            xiala:false,
+            xuanpinpai:"选择品牌",
+            list:[],
+            pinpaitxt:"全部",
+        },
+        methods:{
+            xuanzeclick: function (e) {
+                this.xiala = !this.xiala;
+                this.xuanpinpai = e.target.children[0].attr.value;
+            },
+            chequbox : function(e) {
+                this.xuanpinpai = e.target.children[0].attr.value;
+                this.pinpaiid = e.target.children[0].attr.haha;
+                api.log("pinpaiid:"+e.target.children[0].attr.haha);
+                this.xiala = false;
+                var _this = this;
+                _this.zhuanjia=[];
+                api.call("factory/experts", {brandId:_this.pinpaiid}, function (ret) {
+                    _this.zhuanjia=ret.data.expertEntitys.experts;
+                });
+            },
+        },
+        created: function () {
+            var _this= this;
+            api.call("factory/getExpertType", {}, function (ret) {
+                _this.list=ret.data.carBrand;
+            });
+            api.call("factory/experts", {}, function (ret) {
+                _this.zhuanjia=ret.data.expertEntitys.experts;
+            });
+        }
+    }
+</script>

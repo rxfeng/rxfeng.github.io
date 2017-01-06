@@ -1,0 +1,327 @@
+<template>
+    <xx-navpage navtitle="智能保养" navrighttitle="保养手册" navrighturl="" navrightsrc=""
+                navlefturl="{{fanhuiurl}}"
+                navleftsrc="{{dir}}images/fanhui.png">
+        <scroller style="flex:1;">
+            <zi-jiuyuan2 repeat={{info}}></zi-jiuyuan2>
+            <div class="spean"></div>
+            <div style="margin-bottom: 100px;">
+                <div style="background-color: #fff">
+                    <div class="info info2">
+                        <text class="title-left small">智能保养方案</text>
+                    </div>
+                    <div class="info info2"  onclick="click1">
+                        <text class="title-left small2">{{sdata.nelist.length}}项零件建议保养（均含工时费）</text>
+                        <image if={{flag1}} class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+                        <image if={{!flag1}} class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                    </div>
+                    <zi-fangan if={{flag1}} datas="{{sdata.nelist}}" zyimg=1></zi-fangan>
+                    <div class="info info2" onclick="click2">
+                        <text class="title-left small2">{{sdata.unlist.length}}项零件可选保养</text>
+                        <image if={{flag2}} class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+                        <image if={{!flag2}} class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                    </div>
+                    <zi-fangan if={{flag2}} datas="{{sdata.unlist}}"></zi-fangan>
+                </div>
+                <div class="info info2">
+                    <text class="title-left small">维修问题描述</text>
+                    <!--<image onclick="zhuyiclick" class="img2" src="{{dir}}images/zhuyi.png"></image>-->
+                </div>
+                <div style="position: relative">
+                    <textarea name="" id="" cols="30" rows="5" value="{{val}}" oninput="textArea"
+                              onfocus="textareaclick"
+                              onblur="textareablur"
+                              style="color: #373634;border-width: 1px;border-color: #ccc;margin: 20px;padding: 10px;"></textarea>
+                    <div class="pla" id="pla">
+                        <text class="txt xiao">请输入文字内容...</text>
+                    </div>
+                </div>
+            </div>
+            <zi-zongji2 title="下一步" huiqian={{huiqian}} redqian={{redqian}} chajia={{chajia}}
+                        url="yuyuequeren.js"></zi-zongji2>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .info {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .info2 {
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 0px;
+    }
+
+    .title-left {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .small {
+        font-size: 33px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-left: 10px;
+    }
+    .spean {
+        height: 20px;
+        backgroundColor: #F5F3F8;
+    }
+
+    .pla {
+        position: absolute;
+        top: 30;
+        left: 30;
+    }
+
+    .txt {
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+
+    .xiao {
+        font-size: 26px;
+    }
+    .img2 {
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+    .small2{
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+</style>
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    var item2 = [];
+    var item3 = [];
+    module.exports = {
+        data: {
+            dir: api.dir,
+            carid:"",
+            flag1: true,
+            flag2: false,
+            sdata: {unlist: [], nelist: []},
+            fanhuiurl: "",
+            val: "",
+//            bor1: "border-red",
+//            bor2: "",
+            info: [],
+            num1: "",
+            num2: "",
+            huiqian: 0,
+            redqian: 0,
+            chajia: 0,
+            zhuyi:{},
+            zhuyitxt:"",
+            isC:false,
+        },
+        methods: {
+            suanjia: function () {
+                var _this = this;
+//                价格的重新计算
+                var zj1 = 0, zj2 = 0;
+                for (var i = 0; i < _this.sdata.nelist.length; i++) {
+                    var item = _this.sdata.nelist[i];
+                    if (item.IsNecessary) {
+                        var subitem = item.itemList[item.selectIndex];
+                        zj1 += subitem.cost;
+                        zj2 += subitem.memberCost;
+                    }
+                }
+                for (var i = 0; i < _this.sdata.unlist.length; i++) {
+                    var item = _this.sdata.unlist[i];
+                    if (item.IsNecessary) {
+                        var subitem = item.itemList[item.selectIndex];
+                        zj1 += subitem.cost;
+                        zj2 += subitem.memberCost;
+                    }
+                }
+                _this.redqian = zj2;
+                _this.huiqian = zj1;
+                _this.chajia = zj1 - zj2;
+//                    选中的保养项目
+                item2 = [];
+                item3 = [];
+                var a = 0;
+                var b = 0;
+                for(var k = 0;k < _this.sdata.nelist.length;k++){
+                    if(_this.sdata.nelist[k].IsNecessary){
+//                        item2[k] = _this.sdata.nelist[k];
+                        item2[a++] = _this.sdata.nelist[k];
+                    }
+                }
+                for(var j = 0;j < _this.sdata.unlist.length ;j++){
+                    if(_this.sdata.unlist[j].IsNecessary){
+                        item3[b++] = _this.sdata.unlist[j];
+                    }
+                }
+            },
+            click1: function (e) {
+                this.flag1 =!this.flag1;
+            },
+            click2: function (e) {
+                this.flag2 =!this.flag2;
+            },
+            textareaclick: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'hidden'});
+            },
+            textareablur: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'visible'});
+            },
+            textArea: function (e) {
+                this.val = e.value;
+            },
+//            zhuyiclick: function (e) {
+//                var _this = this;
+//                api.log(this);
+//                api.call("factory/fetchSuggest", {id: _this.id}, function (ret) {
+////                    api.log(ret.data);
+//                    _this.zhuyi= ret.data.mpInfo;
+//                    _this.zhuyitxt = ret.data.mpInfo.describeMess;
+//                    _this.isC = !_this.isC;
+////                    ret.data.mpInfo.isChecked=!ret.data.mpInfo.isChecked;
+//                });
+//            }
+        },
+        created: function () {
+            var _this = this;
+            _this.fanhuiurl = api.getData(_this).fanhuiurl;
+            this.$on('jisuan', function (e) {
+                _this.suanjia();
+            });
+            _this.$on('cunchu', function (e) {
+                var _this = this;
+                api.get("orderinfo", function (e) {
+                    var orderinfo=JSON.parse(e.data);
+                    orderinfo.wentiTxt = _this.val.replace(/(^\s*)|(\s*$)/g, "");
+                    orderinfo.huiqian = _this.huiqian;
+                    orderinfo.redqian = _this.redqian;
+                    orderinfo.chajia = _this.chajia;
+                    orderinfo.nelist = item2;
+                    orderinfo.unlist = item3;
+                    api.save("orderinfo",orderinfo);
+                    var bb = 0;
+                    var aa = 0;
+                    var nlist = item2.concat(item3);
+                    if (nlist.length == 0) {
+                        api.push("yuyuequeren.js", {shangjiaid: this.factoryId, dd: this.dd}, function (e) {
+                            orderinfo.isSendCar = false;
+                            orderinfo.quche = "";
+                            orderinfo.songche = "";
+                            orderinfo.quchelng1 = "";
+                            orderinfo.quchelat1 = "";
+                            orderinfo.songchelng1 = "";
+                            orderinfo.songchelat1 = "";
+                            orderinfo.songchejine = "";
+                            orderinfo.quchejine = "";
+                            orderinfo.jinqian = "";
+                            api.save("orderinfo",orderinfo);
+                        });
+                    } else {
+                        for (var a = 0; a < nlist.length; a++) {
+                            if(nlist[a].MaintainName=="机油"){
+                                aa=1;
+                            }
+                            if(nlist[a].MaintainName=="机油滤清"){
+                                bb=1;
+                            }
+                        }
+                        if(aa==1 && bb==1){
+                            api.log("都有");
+                            api.push("yuyuequeren.js",{redqian:this.redqian}, function (e) {
+                                orderinfo.isSendCar = false;
+                                orderinfo.quche = "";
+                                orderinfo.songche = "";
+                                orderinfo.quchelng1 = "";
+                                orderinfo.quchelat1 = "";
+                                orderinfo.songchelng1 = "";
+                                orderinfo.songchelat1 = "";
+                                orderinfo.songchejine = "";
+                                orderinfo.quchejine = "";
+                                orderinfo.jinqian = "";
+                                api.save("orderinfo",orderinfo);
+                            });
+                        }else if(aa!=1 && bb!=1){
+                            api.log("都没有");
+                            api.push("yuyuequeren.js",{redqian:this.redqian}, function (e) {
+                                orderinfo.isSendCar = false;
+                                orderinfo.quche = "";
+                                orderinfo.songche = "";
+                                orderinfo.quchelng1 = "";
+                                orderinfo.quchelat1 = "";
+                                orderinfo.songchelng1 = "";
+                                orderinfo.songchelat1 = "";
+                                orderinfo.songchejine = "";
+                                orderinfo.quchejine = "";
+                                orderinfo.jinqian = "";
+                                api.save("orderinfo",orderinfo);
+                            });
+                        }else if(aa==1 && bb!=1){
+                            api.tost("机油和机油滤清更配哦，请添加机油滤清");
+                        }else if(aa!=1 && bb==1){
+                            api.tost("机油和机油滤清更配哦，请添加机油");
+                        }
+                    }
+                });
+            });
+            api.get("orderinfo", function (e) {
+                _this.carid = JSON.parse(e.data).carId;
+//            -----------------------商家信息-----------------------------------
+                api.call("user/repairFactory", {factoryId: JSON.parse(e.data).shangjiaid}, function (ret) {
+                    api.log(ret.data);
+                    _this.info = ret.data.factoryInfo;
+                });
+//            -----------------------商家信息-----------------------------------
+                api.call("car/maintain", {
+                    factoryId: JSON.parse(e.data).shangjiaid,
+                    carId: JSON.parse(e.data).carId,
+                    mileage: JSON.parse(e.data).mileage
+                }, function (ret) {
+                    _this.sdata = ret.data;
+                    for (var i = 0; i < ret.data.nelist.length; i++) {
+                        ret.data.nelist[i].selectIndex = 0;
+                    }
+                    for (var i = 0; i < ret.data.unlist.length; i++) {
+                        ret.data.unlist[i].selectIndex = 0;
+                    }
+                    _this.sdata.nelist = ret.data.nelist;
+                    _this.sdata.unlist = ret.data.unlist;
+//                    选中的保养项目
+                    item2 = [];
+                    item3 = [];
+                    var a = 0;
+                    for(var k = 0;k<_this.sdata.nelist.length;k++){
+                        if(_this.sdata.nelist[k].IsNecessary){
+                            item2[a++] = _this.sdata.nelist[k];
+                        }
+                    }
+//                    页面刚加载出来，金额就上来
+                    _this.suanjia();
+                });
+            });
+            _this.$on('naviBar.rightItem.click',function(e){
+                api.call("car/carInfo", {carId: _this.carid}, function (ret) {
+                    api.push("zi-webpage.js", {
+                        title: "保养手册",
+                        url: "http://www.yixiucar.com/yxapi/cycle/car?cid="+ret.data.car.carBrand,
+                        fanhui: "xiangmuqueren.js"
+                    });
+                });
+            });
+        },
+    }
+</script>

@@ -1,0 +1,225 @@
+<template>
+    <div class="main">
+        <div class="two">
+            <container style="flex:1;borderRightWidth:2px;borderColor: #e6e6e6;">
+                <div style="flex-direction: row;justify-content: center;align-items: center" onclick="yjyy">
+                    <image src="{{dir}}images/yuyue.png"
+                           class="two-img"></image>
+                    <text class="two-txt green">一键预约</text>
+                </div>
+
+            </container>
+            <container style="flex:1;">
+                <div style="flex-direction: row;justify-content: center;align-items: center" onclick="zjzx">
+                    <image src="{{dir}}images/zixun.png"
+                           class="two-img"></image>
+                    <text class="two-txt blue">专家咨询</text>
+                </div>
+            </container>
+        </div>
+        <div class="line"></div>
+        <div class="five">
+            <container style="flex:1;" onclick="xiche">
+                <image src="{{dir}}images/xiche.png"
+                       class="five-img"></image>
+                <text class="five-txt">洗 车</text>
+            </container>
+            <container style="flex:1;" onclick="jiayou">
+                <image src="{{dir}}images/jiayou.png"
+                       class="five-img"></image>
+                <text class="five-txt">加 油</text>
+            </container>
+            <container style="flex:1;position: relative;" onclick="jiuyuan">
+                <image src="{{dir}}images/jiuyuan.png"
+                       class="five-img"></image>
+                <text class="five-txt">救 援</text>
+                <div class="xxdiv" if={{jiaobiao}}>
+                    <xx title="!" class="top-xiaoxi"></xx>
+                </div>
+            </container>
+            <container style="flex:1;" onclick="shiguchuli">
+                <image src="{{dir}}images/sgcl.png"
+                       class="five-img"></image>
+                <text class="five-txt">事故处理</text>
+            </container>
+        </div>
+    </div>
+</template>
+<style>
+    .main {
+        borderBottomWidth: 1px;
+        borderTopWidth: 1px;
+        borderColor: #e6e6e6;
+        margin: 10px 0;
+        background-color: #fff;
+    }
+
+    .line {
+        width: 650px;
+        height: 1px;
+        backgroundColor: #e6e6e6;
+        margin-left: 50px;
+    }
+
+    .two {
+        flex-direction: row;
+        justify-content: center;
+        padding-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .two-img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .two-txt {
+        font-size: 30px;
+        color: #373634;
+        justify-content: center;
+        margin-left: 10px;
+    }
+
+    .green {
+        color: #14AE67;
+    }
+
+    .blue {
+        color: #5C95CF;
+    }
+
+    .five {
+        flex-direction: row;
+        justify-content: center;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .five-img {
+        width: 110px;
+        height: 110px;
+        margin-top: 10px;
+        margin-left: 40px;
+    }
+
+    .five-txt {
+        color: #373634;
+        text-align: center;
+        font-size: 28px;
+    }
+
+    .xxdiv {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background-color: red;
+        position: absolute;
+        top: 20px;
+        right: 40px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            dd: "",
+            len: 0,
+            carMileage: "",
+            jiaobiao:false,
+        },
+        methods: {
+            yjyy: function (e) {
+                var _this = this;
+                api.get("token", function (e) {
+                    if (e.data == undefined || e.data == " " || e.data == "undefined") {
+                        api.push("denglu.js");
+                    } else {
+                        if (_this.len == 0) {
+                            api.tost("请先添加车辆")
+                            api.push("tianjiacheliang.js", {});
+                        } else {
+                            api.push("yijianyuyue.js",{dd:_this.dd});
+                        }
+                    }
+                })
+            },
+            zjzx: function (e) {
+                api.get("token",function(e){
+                    if(e.data == "undefined" || e.data==" "){
+                        api.push("denglu.js", {});
+                    }else{
+                        api.push("zhuanjiazixun.js", {});
+                    }
+                });
+            },
+            xiche: function (e) {
+                api.push("xichemeirong.js", {dd: this.dd});
+            },
+            jiayou: function (e) {
+//                api.push("jiayouzhan.js",{});
+                require('@weex-module/togas').toGas();
+            },
+            jiuyuan: function (e) {
+                var _this = this;
+//                api.log("dd:"+this.dd);
+                api.get("token", function (e) {
+                    if (e.data == undefined || e.data == " " || e.data == "undefined") {
+                        api.push("denglu.js");
+                    } else {
+                        if (_this.len == 0) {
+                            api.tost("请先添加车辆");
+                            api.push("tianjiacheliang.js", {});
+                        } else {
+//            ----------------------------------------------------------
+                            api.call("user/rescue", {}, function (ret) {
+//                                api.log(ret.data);
+                                if (ret.data.type == 0 || ret.data.type == 1) {
+                                    api.push("shishiweizhi.js", {rescueType:ret.data.type,rescueOrderId:ret.data.orderId});
+                                } else {
+                                    api.push("jiuyuan.js", {dd:_this.dd}, function (e) {
+                                        api.refresh();
+                                    });
+                                }
+                            });
+//            ----------------------------------------------------------
+                        }
+                    }
+                })
+
+            },
+            shiguchuli: function (e) {
+                api.push("zi-webpage.js", {
+                    title: "事故处理",
+                    url: "https://wjw.szgaj.cn/szgawx/micro/police?source=szgawx",fanhui:"index.js"
+                });
+            },
+        },
+        created: function () {
+            var _this = this;
+            api.get("token", function (e) {
+                if (e.data == undefined || e.data == " " || e.data == "undefined") {
+
+                } else {
+//            救援角标
+                    api.call("user/rescue", {}, function (ret) {
+                        api.log(ret.data);
+                        if (ret.data.type == 3) {
+                            _this.jiaobiao = false;
+                        }else{
+                            _this.jiaobiao = true;
+                        }
+                    });
+//            救援角标
+                }
+            })
+
+        },
+    }
+
+</script>

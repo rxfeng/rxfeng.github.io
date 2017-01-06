@@ -1,0 +1,155 @@
+<template>
+    <container>
+        <list style="position: absolute;top:0;bottom:0;left:0;right:0;">
+            <cell class="dingdaninfo" onclick="goxq">
+                <div class="info">
+                    <text class="info-txt1">姓名：</text>
+                    <text class="info-txt2">{{realName}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">手机号：</text>
+                    <text class="info-txt2">{{cellphone}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">性别：</text>
+                    <text class="info-txt2">{{gender}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">车牌号：</text>
+                    <text class="info-txt2">{{carLicence}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">车型：</text>
+                    <text class="info-txt2">{{brand}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">保险到期：</text>
+                    <text class="info-txt2">{{insuranceEndDate}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">年检到期：</text>
+                    <text class="info-txt2">{{checkEndDate}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">保养到期：</text>
+                    <text class="info-txt2">{{carNextDate}}</text>
+                </div>
+                <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+            </cell>
+            <!--<loading class="refresh-view" display="{{loading_display}}" onloading="onloading">-->
+            <!--<loading-indicator style="height:60;width:60;color:#3192e1"></loading-indicator>-->
+            <!--</loading>-->
+        </list>
+    </container>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports ={
+        data: {
+            dir:api.dir,
+            refresh_display: 'hide',
+            loading_display: 'hide',
+            height:0,
+            kefu:[
+                {
+                    id:"",
+                    name: "",
+                    phone: "",
+                    sex: "",
+                    chepaihao: "",
+                    car: "",
+                    bxdq1: "",
+                    bxdq2:"",
+                    bxdq3:"",
+                    flag:false,
+                },
+            ]
+        },
+        methods: {
+//            onloading: function (e) {
+//                this.loading_display = true
+//                setTimeout(function () {
+//                    this.loading_display = 'hide'
+//                }.bind(this), 500)
+//            },
+            goxq: function (e) {
+                var vm = this;
+                api.push("kehuxiangqing.js", {
+                    id: vm.id
+                });
+            }
+        },
+        ready: function (e) {
+//            var _this = this;
+//            -----------------------拿到上页面传来的值-----------------------------------
+//            var factoryId = JSON.parse(_this.$getConfig().data).factoryId;
+//            var factoryId = api.getData(_this).factoryId;
+//            -----------------------拿到上页面传来的值-----------------------------------
+//            -----------------------服务中订单-----------------------------------
+//            var ServiceOrderReq = {factoryId: factoryId};
+//            api.call("factory/queryService", ServiceOrderReq, function (ret) {
+//                for (var i = 0; i < ret.data.ServiceOrderInfo.length; i++) {
+//                    _this.dd.$set(i,
+//                            {
+//                                id: ret.data.ServiceOrderInfo[i].id,
+//                                ddlx: ret.data.ServiceOrderInfo[i].orderType,
+//                                clxh: ret.data.ServiceOrderInfo[i].carLicence,
+//                                cphm: ret.data.ServiceOrderInfo[i].carType,
+//                                kkxx: ret.data.ServiceOrderInfo[i].userName,
+//                                kksj: ret.data.ServiceOrderInfo[i].telPhone,
+//                                ddh: ret.data.ServiceOrderInfo[i].orderNumber,
+//                            })
+//                }
+//            });
+//            -----------------------服务中订单-----------------------------------
+
+        }
+    }
+</script>
+<style>
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        margin-bottom: 20px;
+        borderTopWidth:1px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+        backgroundColor:#fff;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 130px;
+        right: 20px;
+    }
+    .refresh-view {
+        height: 120px;
+        width: 750px;
+        display: -ms-flex;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        align-items: center;
+    }
+</style>

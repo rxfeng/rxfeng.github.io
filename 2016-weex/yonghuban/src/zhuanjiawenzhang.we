@@ -1,0 +1,239 @@
+<template>
+    <xx-navpage navtitle="" navrighttitle="" navlefturl="zhuanjiazixun.js" navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1">
+            <div class="sousuo">
+                <div style="justify-content: center;margin-left: 10px">
+                    <image class="sousuo-pic" src="{{dir}}images/sousuo2.png"></image>
+                </div>
+                <input type="text" class="sousuo-inp" value="{{keyWord}}" placeholder="请输入您要搜索的商家" oninput="oninput1"/>
+            </div>
+            <text onclick="sousuoclick" class="sstxt">搜索</text>
+            <div class="zhuangtai">
+                <div class="zt" onclick="pp">
+                    <text class="zt-txt {{red1}}">{{pinpaitxt}}</text>
+                    <image class="jiantoured" if={{pinpaibox}} src="{{dir}}images/xiajiaobiao-red.png"></image>
+                    <image class="jiantou" if={{!pinpaibox}} src="{{dir}}images/gengduo.png"></image>
+                </div>
+                <div class="zt" onclick="xt">
+                    <text class="zt-txt  {{red2}}">{{xitongtxt}}</text>
+                    <image class="jiantoured" if={{xitongbox}} src="{{dir}}images/xiajiaobiao-red.png"></image>
+                    <image class="jiantou" if={{!xitongbox}} src="{{dir}}images/gengduo.png"></image>
+                </div>
+            </div>
+            <!--品牌-->
+            <div if={{pinpaibox}} class="box">
+                <scroller style="border-top-width:2px;border-color: #e6e6e6">
+                    <div class="title" onclick="pinpaiclick">
+                        <text class="title-txt left" haha=0>全部</text>
+                    </div>
+                    <div repeat={{pinpaiList}} class="title" onclick="pinpaiclick">
+                        <text class="title-txt left" haha={{id}}>{{brandName}}</text>
+                    </div>
+                </scroller>
+            </div>
+            <!--系统-->
+            <div if={{xitongbox}} class="box">
+                <scroller style="border-top-width:2px;border-color: #e6e6e6">
+                    <div repeat={{xitongList}} class="title" onclick="xitongclick">
+                        <text class="title-txt left" haha={{id}}>{{typeName}}</text>
+                    </div>
+                </scroller>
+            </div>
+            <zi-wenzhang repeat={{list}}></zi-wenzhang>
+        </scroller>
+
+    </xx-navpage>
+</template>
+<style>
+    .sousuo {
+        width: 525px;
+        height: 60px;
+        background-color: #F8C09B;
+        position: fixed;
+        left: 100px;
+        top: 14px;
+        border-radius: 5px;
+        flex-direction: row;
+    }
+
+    .sstxt {
+        color: #ffffff;
+        font-size: 32px;
+        position: fixed;
+        right: 35px;
+        top: 20px;
+    }
+
+    .sousuo-pic {
+        width: 40px;
+        height: 40px;
+    }
+
+    .sousuo-inp {
+        width: 450px;
+        height: 60px;
+        placeholder-color: #fff;
+        font-size: 28px;
+        color: #fff;
+        margin-left: 10px;
+    }
+
+    .zhuangtai {
+        flex-direction: row;
+        backgroundColor: #fff;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .zt {
+        flex-direction: row;
+        flex: 1;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-right-width: 2px;
+        border-color: #e6e6e6;
+        justify-content: center;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #373634;
+    }
+
+    .red {
+        color: #E95412;
+    }
+    .center{
+        text-align: center;
+    }
+    .left{
+        text-align: left;
+    }
+    .jiantoured {
+        width: 29px;
+        height: 29px;
+        margin-left: 40px;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-left: 40px;
+    }
+
+    .box {
+        width: 750px;
+        position: fixed;
+        top: 173px;
+        background-color: #fff;
+    }
+
+    .title {
+        padding: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor: #fff;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .jiantou {
+        width: 32px;
+        height: 32px;
+    }
+
+    .title-txt {
+        width: 750px;
+        font-size: 32px;
+        /*color: #E95412;*/
+        color: #000000;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir: api.dir,
+            list: [],
+            expertId: 1,
+            typeId: "",
+            keyWord: "",
+            brand: "",
+            pinpaiList: [],
+            xitongList: [],
+            pinpaibox: false,
+            xitongbox: false,
+            pinpaitxt: "全部品牌",
+            xitongtxt: "动力系统",
+            pinpaiid:"",
+            xitongid:"",
+            red1:"red",
+            red2:"",
+        },
+        methods: {
+            oninput1: function (event) {
+                this.keyWord = event.value;
+            },
+            sousuoclick: function (e) {
+                var _this = this;
+                api.call("factory/getExpertType", {typeId:_this.xitongid,keyWord:_this.keyWord,brandId:_this.pinpaiid}, function (ret) {
+                    _this.list = ret.data.issueExpertView;
+                    _this.pinpaiList = ret.data.carBrand;
+                    _this.xitongList = ret.data.issueType;
+                });
+            },
+            pp: function (e) {
+                this.pinpaibox = !this.pinpaibox;
+                this.red1 = "red";
+                this.red2 = "";
+            },
+            xt: function (e) {
+                this.xitongbox = !this.xitongbox;
+                this.red1 = "";
+                this.red2 = "red";
+            },
+            pinpaiclick: function (e) {
+                this.red1 = "red";
+                this.red2 = "";
+                this.pinpaitxt = e.target.children[0].attr.value;
+                this.pinpaiid = e.target.children[0].attr.haha;
+                api.log("pinpaiid:"+e.target.children[0].attr.haha);
+                this.pinpaibox = false;
+                var _this = this;
+                _this.list=[];
+                api.call("factory/getExpertType", {typeId:_this.xitongid,brandId:_this.pinpaiid,keyWord:_this.keyWord}, function (ret) {
+                    api.log(ret.data.issueExpertView);
+                    _this.list = ret.data.issueExpertView;
+                });
+            },
+            xitongclick: function (e) {
+                this.red1 = "";
+                this.red2 = "red";
+                this.xitongtxt = e.target.children[0].attr.value;
+                this.xitongid = e.target.children[0].attr.haha;
+                api.log("xitongid:"+e.target.children[0].attr.haha);
+                this.xitongbox = false;
+                var _this = this;
+                _this.list=[];
+                api.call("factory/getExpertType", {typeId:_this.xitongid,brandId:_this.pinpaiid,keyWord:_this.keyWord}, function (ret) {
+                    _this.list = ret.data.issueExpertView;
+                });
+            }
+        },
+        created: function () {
+            var _this = this;
+//            keyWord 搜索关键字    brandId 品牌 id   typeId 系统类型 id
+//            _this.expertId = api.getData(_this).expertId;
+            _this.xitongid = api.getData(_this).typeId;
+            _this.xitongtxt = api.getData(_this).name;
+            _this.keyWord = api.getData(_this).keyWord;
+            api.call("factory/getExpertType", {typeId:_this.xitongid,keyWord:_this.keyWord,brandId:_this.pinpaiid}, function (ret) {
+//                api.log(ret.data.issueExpertView);
+                _this.list = ret.data.issueExpertView;
+                _this.pinpaiList = ret.data.carBrand;
+                _this.xitongList = ret.data.issueType;
+            });
+        }
+    }
+</script>

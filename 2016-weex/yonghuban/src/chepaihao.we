@@ -1,0 +1,119 @@
+<template>
+    <xx-navpage navtitle="{{carLicence}}" navlefturl="cheliangxiangqing.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="top">
+                <text class="top-txt red">违章{{weizhang}}次</text>
+                <div class="line"></div>
+                <text class="top-txt red">罚款{{fakuan}}元</text>
+                <div class="line"></div>
+                <text class="top-txt red">扣{{koufen}}分</text>
+            </div>
+            <div class="spean"></div>
+            <div class="ddbox" if={{fff}}>
+                <image src="{{dir}}images/dd.png" class="ddimg"></image>
+            </div>
+            <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">没有记录哦</text>
+            <!--<div class="main">-->
+                <!--<div class="cont">-->
+                    <!--<text class="time-txt">2016-6-19 16:40:00</text>-->
+                    <!--<text class="time-txt red">吉东果业,岐银线254KM+130M</text>-->
+                    <!--<text class="time-txt hui">法律上打开积分楼上的会计法律的房间按楼上的开发及案例是对方减肥的拉萨款到即发附近拉屎地方就俺俩是打开附件</text>-->
+                    <!--<text class="time-txt">石家庄市公安交通管理局晋州市交警大队</text>-->
+                    <!--<div style="flex-direction: row">-->
+                        <!--<text class="time-txt">罚款</text>-->
+                        <!--<text class="time-txt red">100</text>-->
+                        <!--<text class="time-txt">扣分</text>-->
+                        <!--<text class="time-txt red">6</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .backgrond {
+        background-color: #F5F3F8;
+    }
+
+    .spean {
+        height: 20px;
+    }
+
+    .top {
+        height: 80px;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        background-color: #fff;
+    }
+
+    .top-txt {
+        text-align: center;
+        font-size: 32px;
+        flex: 1;
+        line-height: 80px;
+    }
+
+    .line {
+        width: 2px;
+        height: 30px;
+        background-color: #E95412;
+        margin-top: 25px;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .hui {
+        color: #373634;
+    }
+
+    .main {
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        background-color: #fff;
+    }
+
+    .cont {
+        padding: 20px;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .time-txt {
+        font-size: 32px;
+        color: #737373;
+        margin-bottom: 10px;
+        margin-right: 5px;
+    }
+</style>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            fff:false,
+            carLicence:"",
+                weizhang: "0",
+                fakuan: "0",
+                koufen: "0",
+        },
+        created: function (e) {
+            this.carLicence = api.getData(this).carLicence;
+            this.fff  = true;
+        },
+    }
+</script>

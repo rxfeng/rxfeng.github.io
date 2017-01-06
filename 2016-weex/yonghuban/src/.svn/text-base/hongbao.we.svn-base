@@ -1,0 +1,146 @@
+<template>
+    <xx-navpage navtitle="我的红包" navrighttitle="使用说明" navlefturl="" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="pthb" style="border-bottom-width: 1px;border-color: #e6e6e6;">
+                <div class="tit title">
+                    <text class="title-txt">可以使用的红包</text>
+                </div>
+                <div repeat={{list}}>
+                    <div class="hongbao" onclick="hongbaoclick">
+                        <div style="background: #FFFCDB;flex-direction: row;">
+                            <div class="hong1">
+                                <div class="hong2"></div>
+                                <text class="jine-txt">￥{{redValue}}</text>
+                            </div>
+                            <div class="wxhb">
+                                <text class="red hb-title-txt">维修保养红包</text>
+                                <!--<text class="hb-txt">使用商家：全场/部分商家</text>-->
+                                <text class="hb-txt">有效期至：{{endTime}}</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .red{
+        color: #E95412;
+    }
+    .pthb{
+        padding-top: 20px;
+        padding-bottom: 30px;
+        background-color: #fff;
+        border-top-width: 1px;
+        border-color: #e6e6e6;
+    }
+    .hongbao{
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .tit{
+        padding:10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .title{
+        margin-bottom: 10px;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+    .title-txt{
+        margin-top: -10px;
+    }
+    .hong1{
+        width: 220px;
+        height: 150px;
+        background-color: #E95412;
+        position: relative;
+        overflow: hidden;
+    }
+    .hong2{
+        width: 300px;
+        height: 300px;
+        background-color: #EE8518;
+        border-radius: 150px;
+        position: absolute;
+        top:-235px;
+        left:-40px;
+    }
+    .jine-txt{
+        font-size: 50px;
+        color: #F4D723;
+        line-height: 180px;
+        text-align: center;
+    }
+    .wxhb{
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    .hb-title-txt{
+        font-size: 34px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    .hb-txt{
+        font-size: 28px;
+        color: #898989;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports={
+        data:{
+            dir:api.dir,
+            ddid:"",
+            onered:"red",
+            twored:"",
+            threered:"",
+            list:[],
+        },
+        methods:{
+            one: function (e) {
+                if(this.onered == ""){
+                    this.onered = "red"
+                    this.twored="";
+                    this.threered="";
+                }
+            },
+            two: function (e) {
+                if(this.twored == ""){
+                    this.twored = "red"
+                    this.onered="";
+                    this.threered="";
+                }
+            },
+            three: function (e) {
+                if(this.threered == ""){
+                    this.threered = "red"
+                    this.twored="";
+                    this.onered="";
+                }
+            },
+            hongbaoclick: function (e) {
+                api.push("dingdanzhifu.js",{redbao:this.redValue,id:this.ddid});
+//                api.push("dingdanzhifu.js",{redbao:this.redValue});
+            }
+        },
+        ready: function () {
+            var _this = this;
+            _this.ddid = api.getData(_this).ddid;
+            api.log("ddid:"+_this.ddid);
+            api.call("order/payOrder", {orderId:this.ddid}, function (ret) {
+//                api.log(ret.data);
+                _this.list = ret.data.redList;
+            }, function (ret) {});
+        }
+    }
+</script>

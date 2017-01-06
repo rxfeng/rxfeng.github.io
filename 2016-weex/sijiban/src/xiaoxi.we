@@ -1,0 +1,246 @@
+<template>
+    <xx-navpage navtitle="消息中心" navrighttitle="" navlefturl="" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="ddbox" if={{fff}}>
+            <image src="{{dir}}images/dd.png" class="ddimg"></image>
+        </div>
+        <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">你暂时还没有消息哦</text>
+        <scroller style="flex:1;">
+            <div class="main">
+                <div class="spean"></div>
+                <div class="c" repeat={{unreadList}}>
+                    <div class="cont" onclick="xiangqing">
+                        <text class="one">{{title}}</text>
+                        <text class="two">{{content}}</text>
+                        <text class="time">{{addTime}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle2">
+                        <image src="{{dir}}images/xiche1.png" class="tixingimg"></image>
+                    </div>
+                </div>
+                <div class="history-div" if={{xianshi}}>
+                    <div class="history">
+                        <text class="history-txt">查看历史消息</text>
+                    </div>
+                </div>
+                <div class="c" repeat={{readedList}}>
+                    <div class="cont" onclick="xiangqing">
+                        <text class="one">{{title}}</text>
+                        <text class="two">{{content}}</text>
+                        <text class="time">{{addTime}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle2">
+                        <image  src="{{dir}}images/xiche2.png"
+                               class="tixingimg"></image>
+                    </div>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .zhuangtai {
+        background-color: #fff;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .line1 {
+        width: 1px;
+        height: 50px;
+        background-color: #ccc;
+    }
+
+    .zt {
+        flex: 1;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #373634;
+        position: relative;
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .xx {
+        position: absolute;
+        left: 240px;
+        top: 10px;
+    }
+
+    .main {
+        padding-right: 20px;
+        padding-bottom: 100px;
+    }
+
+    .spean {
+        height: 20px;
+    }
+
+    .line {
+        width: 5px;
+        height: 300px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+        /*left: 60px;*/
+    }
+
+    .c {
+        sposition: relative;
+        width: 100%;
+        padding-bottom: 20px;
+        margin-right: 20px;
+    }
+
+    .circle {
+        position: absolute;
+        bottom: -15px;
+        left: 18px;
+    }
+
+    .circle2 {
+        position: absolute;
+        top: 10px;
+        left: 18px;
+    }
+
+    .tixingimg {
+        width: 130px;
+        height: 130px;
+    }
+
+    .cont {
+        borderWidth: 1px;
+        borderColor: #DCDDDD;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        padding-right: 5px;
+        margin-left: 170px;
+    }
+
+    .jiao {
+        width: 93px;
+        height: 93px;
+        position: absolute;
+        top: 30px;
+        left: 120px;
+    }
+
+    .one {
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .two {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 6px;
+        lines: 2;
+        text-overflow: ellipsis;
+        width: 500px;
+    }
+
+    .time {
+        font-size: 30px;
+        text-align: right;
+        color: #a0a0a0;
+        margin-right: 15px;
+    }
+
+    .history-div {
+
+    }
+
+    .history {
+        width: 350px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderWidth: 1px;
+        borderColor: #888;
+        border-radius: 10px;
+        margin-left: 240px;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    .line2 {
+        width: 5px;
+        height: 120px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+    }
+
+    .history-txt {
+        text-align: center;
+        color: #737373;
+    }
+
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            unreadList: [],
+            readedList: [],
+            fff: false,
+            xianshi: true,
+        },
+        ready: function (e) {
+            var _this = this;
+            api.call("driver/queryMessage", {}, function (ret) {
+
+                _this.unreadList = ret.data.driverMessInfo1;          //未读
+                _this.readedList = ret.data.driverMessInfo;        //已读
+                if(_this.unreadList.length==0 && _this.readedList.length==0){
+                    _this.fff = true;
+                }else{
+                    _this.fff = false;
+                }
+                if(_this.readedList.length>0){
+                    _this.xianshi = true;
+                }else{
+                    _this.xianshi = false;
+                }
+            });
+            _this.$on('naviBar.leftItem.click',function(e){
+                api.pop({len:_this.unreadList.length});
+            });
+//            -----------------------消息-----------------------------------
+        },
+        methods: {
+            xiangqing: function (e) {
+                var _this = this;
+                api.push("xiaoxixiangqing.js",{xxid:this.id}, function (e) {
+                    api.log("refresh");
+                    api.refresh();   //刷新是否可以
+                });
+            }
+        }
+    }
+</script>

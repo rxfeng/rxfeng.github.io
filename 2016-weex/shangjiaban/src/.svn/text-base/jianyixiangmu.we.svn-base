@@ -1,0 +1,134 @@
+<template>
+    <xx-navpage navtitle="建议项目" navrighttitle="" navrighturl="" navrightsrc="" navlefturl="addxiangmu.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="span"></div>
+            <input type="text" class="inp" oninput="oninput1" value="{{title}}" placeholder="项目名称"/>
+            <input type="tel" class="inp" oninput="oninput2" value="{{jiage1}}" placeholder="原价"/>
+            <input type="tel" class="inp" oninput="oninput3" value="{{jiage2}}" placeholder="折扣价"/>
+
+            <div class="btn-yanzheng">
+                <div class="yzbtn" onclick="shanchuclick">
+                    <text class="btn-txt">删除</text>
+                </div>
+                <div class="yzbtn" onclick="querenclick">
+                    <text class="btn-txt yz-txt">确认</text>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .span {
+        height: 20px;
+    }
+
+    .inp {
+        height: 70px;
+        padding: 10px;
+        padding-left: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .btn-yanzheng {
+        flex-direction: row;
+    }
+
+    .yzbtn {
+        flex: 1;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .btn-txt {
+        borderWidth: 2px;
+        borderColor: #E95412;
+        margin-right: 80px;
+        margin-left: 80px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        border-radius: 30px;
+        color: #E95412;
+        font-size: 36px;
+    }
+
+    .yz-txt {
+        backgroundColor: #E95412;
+        color: #fff;
+    }
+</style>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            title: "",
+            jiage1: "",
+            jiage2: "",
+            itemId: "",
+            orderId: "",
+        },
+        created: function () {
+            this.orderId = api.getData(this).orderId;
+            this.itemId = api.getData(this).itemId;
+            api.log(api.getData(this).orderId);
+            var _this = this;
+            api.call("factory/fetchSuggest", {id: this.itemId}, function (ret) {
+//                _this.title = ret.data.suggestInfo.programName + "(" + ret.data.suggestInfo.programParts + ")"
+                _this.title = ret.data.suggestInfo.programName;
+                _this.jiage1 = ret.data.suggestInfo.cost;
+                _this.jiage2 = ret.data.suggestInfo.bargain;
+            });
+        },
+        methods: {
+            oninput1: function (e) {
+                this.title = e.value;
+            },
+            oninput2: function (e) {
+                this.jiage1 = e.value;
+            },
+            oninput3: function (e) {
+                this.jiage2 = e.value;
+            },
+            querenclick: function (e) {
+                var _this = this;
+                if (this.title == "") {
+                    api.tost("请输入项目名称")
+                } else if (this.jiage1 == "") {
+                    api.tost("请输入原价")
+                } else if (this.jiage2 == "") {
+                    api.tost("请输入优惠价")
+                } else {
+                    api.call("factory/updateSuggest", {
+                        id: this.itemId,
+                        programName: this.title,
+                        cost: this.jiage1,
+                        bargain: this.jiage2,
+                        orderId: this.orderId,
+                    }, function (ret) {
+                        api.push("addxiangmu.js", {orderId:_this.orderId});
+                    });
+                }
+            },
+            shanchuclick: function (e) {
+                var _this = this;
+                api.call("factory/delSuggest", {
+                    id: this.itemId,
+                }, function (ret) {
+                    api.push("addxiangmu.js", {orderId:_this.orderId});
+                });
+            }
+        }
+    }
+
+</script>

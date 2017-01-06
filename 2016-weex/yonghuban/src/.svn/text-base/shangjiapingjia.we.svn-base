@@ -1,0 +1,169 @@
+<template>
+    <xx-navpage navtitle="商家评价" navrighturl="" navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <text class="tijiaotxt" onclick="tijiaoclick">提交</text>
+            <zi-jiuyuan2 repeat={{severData}}></zi-jiuyuan2>
+            <div class="spean"></div>
+            <div class="main border">
+                <div class="title border">
+                    <text class="title-txt">商家服务评价</text>
+                    <text class="txt" style="margin-top: 6px">亲~满意请给5分</text>
+                </div>
+                <div class="title">
+                    <text class="title-txt">维修质量</text>
+                    <xingxingpingjia id="t1" haha="66666666666666" star="{{star1}}"></xingxingpingjia>
+                </div>
+                <div class="title">
+                    <text class="title-txt">维修价格</text>
+                    <xingxingpingjia id="t2" star="{{star2}}"></xingxingpingjia>
+                </div>
+                <div class="title">
+                    <text class="title-txt">维修品质</text>
+                    <xingxingpingjia id="t3" star="{{star3}}"></xingxingpingjia>
+                </div>
+            </div>
+            <div class="main border">
+                <div class="title border">
+                    <text class="title-txt">代驾匿名评价</text>
+                </div>
+                <div class="title">
+                    <text class="title-txt">取车司机</text>
+                    <xingxingpingjia id="t4"  star="{{star4}}"></xingxingpingjia>
+                </div>
+                <div class="title">
+                    <text class="title-txt">送车司机</text>
+                    <xingxingpingjia id="t5"  star="{{star5}}"></xingxingpingjia>
+                </div>
+            </div>
+            <div style="position: relative">
+                <textarea name="" id="" cols="30" rows="5" value="{{val}}" oninput="oninput1" onfocus="textareaclick" onblur="textareablur" style="color:#373634;border-width: 1px;border-color: #ccc;margin: 20px;padding: 10px;"></textarea>
+                <div class="pla" id="pla">
+                    <text class="txt xiao">留下您在维修保养过程中的体会和感受来帮助其他小伙伴～</text>
+                    <text class="txt xiao">评价大于15字就有机会获得一修积分～</text>
+                </div>
+            </div>
+            <text class="txt txt1">您的评价是我们前进的动力</text>
+            <div style="height: {{h}}"></div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .tijiaotxt{
+        color: #fff;
+        position: fixed;
+        top:15;
+        right:30;
+        font-size: 32px;
+    }
+    .pla{
+        position: absolute;
+        top:30;
+        left: 30;
+    }
+    .spean {
+        height: 20px;
+        backgroundColor: #f5f3f8;
+    }
+
+    .border {
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .title {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .title-txt {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .txt {
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+
+    .box {
+        border: 2px solid #e6e6e6;
+        height: 200px;
+        width: 710px;
+        margin-left: 20px;
+        padding: 10px;
+        margin-top: 30px;
+    }
+    .xiao{
+        font-size: 26px;
+    }
+    .txt1{
+        color: #737373;
+        margin-left: 20px;
+        margin-top: 30px;
+    }
+</style>
+
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data:{
+            dir:api.dir,
+            star1:4,
+            star2:4,
+            star3:4,
+            star4:4,
+            star5:4,
+            val:"",
+            h:100,
+            severData:[],
+            dingdanid:"",
+        },
+        methods:{
+            textareaclick: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'hidden'});
+                this.h = 600;
+            },
+            textareablur: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'visible'});
+            },
+            oninput1: function (event) {
+                this.val = event.value;
+            },
+            tijiaoclick: function (e) {
+                var _this = this;
+//                获取星星的值   this.$el('t1').attr.haha
+//                api.log("a:"+this.$el('t1').attr.haha+" b:"+this.$el('t2').attr.haha+" c:"+this.$el('t3').attr.haha+" d:"+this.$el('t4').attr.haha+" e:"+this.$el('t5').attr.haha);
+                var MyFacCommentReq={orderId:_this.dingdanid,start1:this.$el('t1').attr.haha,start2:this.$el('t2').attr.haha,start3:this.$el('t3').attr.haha,comment: this.val,orderType:1,driver1:this.$el('t4').attr.haha,driver2:this.$el('t5').attr.haha}
+                api.log(MyFacCommentReq)
+                api.call("user/repairComment", MyFacCommentReq , function (ret) {
+                    api.tost("评论成功")
+                    api.push("wodedingdan.js",{isFirst:1});
+                }, function (ret) {
+                    api.log(123)
+                });
+            }
+        },
+        ready: function () {
+
+        },
+        created: function () {
+            var _this = this;
+            _this.dingdanid = api.getData(_this).dingdanid;
+            api.log("dingdanid:"+ _this.dingdanid);
+//            -----------------------商家信息-----------------------------------
+            api.call("user/repairList", {orderId:_this.dingdanid}, function (ret){
+                api.log(ret.data);
+                _this.severData = ret.data.factoryInfo;
+            }, function (ret) {
+                api.log(123)
+            });
+//            -----------------------商家信息-----------------------------------
+        }
+    }
+</script>

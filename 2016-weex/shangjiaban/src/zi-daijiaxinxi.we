@@ -1,0 +1,148 @@
+<template>
+    <div style="width: 750px;height: 338px;flex-direction: row;justify-content: center;align-content: center;backgroundColor:rgba(0,0,0,0)">
+        <div class="box">
+            <div class="zhifu">
+                <div class="car">
+                    <div class="infobox">
+                        <image class="carpic" src="{{info.imageUrl}}"></image>
+                        <div class="txt">
+                            <div style="flex-direction: row">
+                                <text class="car-txt1">{{info.driverName}}</text>
+                                <xingxing star={{info.star}} style="width: 200px;height: 40px;margin-top: 5px"></xingxing>
+                            </div>
+                            <text class="car-txt2">代驾：{{info.designatedCount}} 驾龄：{{info.experienceYear}}</text>
+                            <text class="car-txt2">电话：{{info.cellphone}}</text>
+                            <text class="car-txt2">身份证：{{info.numID}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex-direction: row">
+                <text class="zhifu-txt btnboda border red" onclick="boda">拨打</text>
+                <text class="zhifu-txt btnboda" onclick="guanbi">关闭</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .box{
+        width: 607px;
+        height: 338px;
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #ffffff;
+        border-radius: 10px;
+    }
+    .zhifu{
+        flex-direction: row;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderBottomWidth:2px;
+        borderColor:#ccc;
+    }
+    .zhifu-txt{
+        flex: 1;
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+    .btnboda{
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .border{
+        borderRightWidth:3px;
+        borderColor:#e6e6e6;
+    }
+    .car {
+        width: 607px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+
+    .infobox {
+        flex-direction: row;
+        padding: 30px;
+        padding-right: 0;
+    }
+
+    .carpic {
+        width: 130px;
+        height: 160px;
+    }
+
+    .txt {
+        margin-left: 20px;
+    }
+
+
+    .car-txt1 {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .car-txt2 {
+        font-size: 28px;
+        color: #a0a0a0;
+        margin-top: 5px;
+    }
+    .red{
+        color: #E95412;
+    }
+
+    .by-txt{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 28px;
+        borderWidth:2px;
+        borderColor:#E95412;
+    }
+    .hui{
+        color: #737373;
+        borderWidth:2px;
+        borderColor:#737373;
+        margin-top: 20px;
+    }
+    .boda{
+        margin-right: 20px;
+        margin-top: 60px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            info:{},
+            b:"",
+            b2:""
+        },
+        created: function (){
+
+        },
+        methods: {
+            guanbi: function (e) {
+                api.hidden();
+            },
+            biaoyang: function (e) {
+                var _this = this;
+                api.call("factory/Praise", {adviserId: this.info.id,num:1}, function (ret) {
+                    _this.b = "b";
+                });
+            },
+            tousu: function (e) {
+                var _this = this;
+                api.call("factory/Praise", {adviserId: this.info.id,num:0}, function (ret) {
+                    _this.b2 = "b";
+                });
+            },
+            boda: function (e) {
+                api.hidden();
+                require('@weex-module/utils').callPhone(this.info.cellphone);
+            }
+        }
+    }
+</script>

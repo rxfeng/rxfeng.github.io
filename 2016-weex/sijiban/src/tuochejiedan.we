@@ -1,0 +1,352 @@
+<template>
+    <xx-navpage navtitle="{{title}}" navrighttitle=""
+                navlefturl="" navrighturl="" navrightsrc=""
+                navleftsrc="" bg="">
+        <!--拖车接单-->
+        <div style="position: relative;flex:1;" if={{ifxs}}>
+            <div style="position: relative">
+                <!--<qiangdan qd={{qd}}></qiangdan>-->
+                <div class="dingdaninfo">
+                    <div class="info">
+                        <text class="info-txt1">车牌号：</text>
+                        <text class="info-txt2">{{qd.carLicence}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">车辆型号：</text>
+                        <text class="info-txt2">{{qd.carFullTypeName}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客户姓名：</text>
+                        <text class="info-txt2">{{qd.senderName}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客户手机：</text>
+                        <text class="info-txt2">{{qd.senderCell}}</text>
+                    </div>
+                    <div class="info">
+                        <text class="info-txt1">客人地址：</text>
+                        <text class="info-txt2">{{qd.start}}</text>
+                    </div>
+                </div>
+                <image class="img dianhua" onclick="telclick" src="{{dir}}images/dianhua.png"></image>
+                <image class="img mdd" onclick="daohangclick" src="{{dir}}images/mdd.png"></image>
+            </div>
+            <div style="flex: 1">
+                <amap zoom="{{zoom}}" style="flex:1" position="{{position}}" markers="{{markers}}"></amap>
+            </div>
+            <div style="width: 400px;height: 100px;position: absolute;bottom: 100px;left: 175px;flex-direction: row;justify-content: center">
+                <sliding onmove="huadongclick1" style="width: 400px;height: 100px;" info="到达客户位置"></sliding>
+                <text style="width: 400px;height: 100px;background-color: pink;text-align: center" onclick="anniu1">按钮</text>
+            </div>
+        </div>
+        <div style="position: relative;flex:1;" if={{!ifxs}}>
+            <div class="mdd1">
+                <div class="md">
+                    <text class="md-txt1">目的地</text>
+                    <text class="md-txt2" style="width: 550px;height: 90px;padding-riht:20px">{{mdd}}</text>
+                </div>
+                <div class="xgmd" onclick="weizhiclick">
+                    <text class="xgmd-txt">修改目的地</text>
+                    <image src="{{dir}}images/right-jiao.fw.png" class="gomdd"></image>
+                </div>
+                <div class="mdimg">
+                    <image onclick="daohangclick" src="{{dir}}images/mdd.png" class="mddmig"></image>
+                </div>
+            </div>
+            <div class="main">
+                <div class="sscf">
+                    <text class="sscf-txt1">{{jine}}</text>
+                    <text class="sscf-txt2">实时车费（元）</text>
+                </div>
+                <div class="xsjl">
+                    <text class="sscf-txt1">{{juli}}</text>
+                    <text class="sscf-txt2">行驶距离（公里）</text>
+                </div>
+            </div>
+            <div style="width: 400px;height: 100px;position: absolute;bottom: 100px;left: 175px;flex-direction: row;justify-content: center">
+                <sliding onmove="huadongclick2" style="width: 400px;height: 100px;" info="滑动结束服务"></sliding>
+                <text style="padding: 20px;background-color: pink" onclick="anniu2">按钮</text>
+            </div>
+        </div>
+    </xx-navpage>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    var timer;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            title:"",
+            ifxs:false,
+            zoom: 12,
+            position: [],
+            icon: "",
+            info: "",
+            qd: [
+                {
+                    chepaihaotitle: "车牌号：",
+                    cartitle: "车辆型号：",
+                    nametitle: "客户姓名：",
+                    phonetitle: "客户手机：",
+                    addresstitle: "客人地址：",
+                    chepaihao: "",
+                    car: "",
+                    name: "",
+                    phone: "",
+                    address: "",
+                },
+            ],
+            end: "",
+            markers: [],
+            lat: "",
+            lon: "",
+            mdd:"",
+            jine:"",
+            juli:"",
+            orderId:"",
+        },
+        created: function () {
+            var _this = this;
+//            地图初始位置  bixu
+            api.get("lnglat", function (e) {
+                _this.position = [JSON.parse(e.data).lat, JSON.parse(e.data).lon];
+            });
+            _this.orderId = api.getData(_this).orderId;
+            _this.ifxs = api.getData(_this).ifxs;
+            _this.title = api.getData(_this).title;
+            api.call("driver/queryOrderO", {orderId: _this.orderId}, function (ret) {
+                _this.orderId = ret.data.orderInfo.id;
+                _this.qd = ret.data.orderInfo;
+                _this.mdd = ret.data.orderInfo.end;
+                _this.lat = ret.data.orderInfo.startLat;
+                _this.lon = ret.data.orderInfo.startLng;
+                if(_this.title=="拖车服务中"){
+//                api.tost(_this.orderId)
+                    _this.jie();
+                    timer = setInterval(function (e) {
+                        _this.jie();
+                    }, 3000);
+                }
+                var globalEvent = require('@weex-module/globalEvent');
+                globalEvent.addEventListener("geolocation", function (e) {
+                    _this.markers = [{position: [_this.lat, _this.lon]}, {position: [e.data.latitude, e.data.longitude]}];  //                    前面是对方,后面是本人
+                    api.call("driver/getDriverAdd", {longitude: e.longitude, latitude: e.latitude,orderId:_this.orderId}, function (ret) {});
+                });
+                var geolocation = require('@weex-module/geolocation');
+                geolocation.watchPosition({}, "geolocation");
+            });
+
+
+        },
+        methods: {
+            jie: function (e) {
+                var _this = this;
+                api.log("order"+_this.orderId);
+                api.call("driver/trailerRecord", {id:_this.orderId}, function (ret) {
+                    _this.jine = ret.data.cost;
+                    _this.juli = ret.data.distance;
+                });
+            },
+            daohangclick: function (e) {
+                api.get("lnglat", function (e) {
+                    require('@weex-module/utils').navTo(JSON.parse(e.data).lat, JSON.parse(e.data).lon);
+                });
+            },
+            telclick: function (e) {
+                require('@weex-module/utils').callPhone(this.qd.senderCell);
+            },
+            huadongclick1: function (e) {
+                var _this = this;
+                if (e.str == "确定") {
+                    api.call("driver/tuoche", {orderId: _this.orderId}, function (ret) {
+                        _this.ifxs = false;
+                        _this.title="拖车服务中";
+                        _this.jie();
+                        timer = setInterval(function (e) {
+                            _this.jie();
+                        }, 30000);
+                    })
+                }
+            },
+            huadongclick2: function (e) {
+                var _this = this;
+                if (e.str == "确定") {
+                    api.call("driver/jsFinish", {orderId:this.orderId}, function (ret) {
+                        api.log(ret.data)
+                        clearInterval(timer);
+                        api.push("yixiusiji.js",{page:"top"});
+                        api.pop();
+                    });
+                }
+            },
+            anniu1: function (e) {
+                var _this = this;
+                api.call("driver/tuoche", {orderId: _this.orderId}, function (ret) {
+                    _this.ifxs = false;
+                    _this.title="拖车服务中";
+                    _this.jie();
+                    timer = setInterval(function (e) {
+                        _this.jie();
+                    }, 30000);
+                });
+            },
+            anniu2: function (e) {
+                api.call("driver/jsFinish", {orderId:this.orderId}, function (ret) {
+                    api.log(ret.data);
+                    clearInterval(timer);
+                    api.push("yixiusiji.js",{page:"top"});
+                    api.pop();
+                });
+            },
+            weizhiclick: function (e) {
+                var _this = this;
+                api.push("weizhi.js", {},function (e) {
+//                    api.log(e.position);
+                    api.log(JSON.parse(e.position)[0].position[0]);
+                    api.call("driver/UpdateAdd", {orderId:_this.orderId,address: e.weizhi,lat:JSON.parse(e.position)[0].position[0],lon:JSON.parse(e.position)[0].position[1]}, function (ret) {
+                        _this.mdd = e.weizhi;
+                    });
+                });
+            },
+        }
+    }
+
+</script>
+<style>
+    .map {
+        flex: 1;
+        borderWidth: 1px;
+        borderColor: red;
+    }
+
+    .img {
+        width: 80px;
+        height: 80px;
+        position: absolute;
+        bottom: 50px;
+    }
+
+    .dianhua {
+        right: 130px;
+    }
+
+    .mdd {
+        right: 30px;
+    }
+
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #ccc;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .mdd1 {
+        flex-direction: row;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        backgroundColor: #fff;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+
+    .md {
+        margin-left: 50px;
+        borderRightWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .md-txt1 {
+        font-size: 40px;
+        color: #373634;
+    }
+
+    .md-txt2 {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 10px;
+    }
+
+    .xgmd {
+        flex-direction: row;
+        position: absolute;
+        top: 30px;
+        right: 150px;
+        padding-right: 15px;
+    }
+
+    .xgmd-txt {
+        color: #373634;
+        font-size: 30px;
+        margin-top: -5px;
+    }
+
+    .gomdd {
+        width: 37px;
+        height: 37px;
+        margin-top: 3px;
+        margin-top: -5px;
+    }
+
+    .mdimg {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+    }
+
+    .mddmig {
+        width: 80px;
+        height: 80px;
+    }
+    .main {
+        flex-direction: row;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor: #fff;
+        margin-top: 20px;
+        borderTopWidth: 1px;
+        borderBottomWidth:1px;
+        borderColor: #e6e6e6;
+    }
+
+    .sscf {
+        flex: 1;
+        borderRightWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .xsjl {
+        flex: 1;
+    }
+
+    .sscf-txt1 {
+        color: #E95412;
+        font-size: 60px;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .sscf-txt2 {
+        color: #a0a0a0;
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+</style>

@@ -1,0 +1,87 @@
+<template>
+    <div class="quan">
+        <div class="mengban" repeat="{{data in meng}}">
+            <text class="txt big center red">{{data.jie}}</text>
+            <text class="txt center">出发地：{{data.chufadi}}</text>
+            <text class="txt center">目的地：{{data.mudidi}}</text>
+            <div class="btn" onclick="queding">
+                <text class="txt btn-txt">确定</text>
+            </div>
+            <image src="{{src}}"></image>
+        </div>
+    </div>
+</template>
+<script>
+    var api=require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            meng: [
+                {
+                    jie: "",
+                    chufadi: "",
+                    mudidi: "",
+                }
+            ],
+        },
+        methods:{
+            queding: function (e) {
+                api.push(this.dir + this.src);
+            }
+        }
+    }
+
+</script>
+<style>
+    .quan {
+        backgroundColor: rgba(0, 0, 0, 0.7);
+        flex: 1;
+    }
+
+    .mengban {
+        height: 330px;
+        margin-right: 50px;
+        margin-left: 50px;
+        backgroundColor: #fff;
+        margin-top: 400px;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .big {
+        font-size: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .txt {
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .btn {
+        width: 750px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        borderWidth: 2px;
+        borderColor: #e6e6e6;
+        position: absolute;
+        bottom: -2;
+        left: -40px;
+        border-radius: 20px;
+    }
+
+    .btn-txt {
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+</style>

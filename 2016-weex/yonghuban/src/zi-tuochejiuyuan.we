@@ -1,0 +1,83 @@
+<template>
+    <div class="top">
+        <div class="title border">
+            <div style="flex-direction: row">
+                <text class="title-left-txt">{{factoryName}}</text>
+                <xingxing star={{starCount}}></xingxing>
+            </div>
+            <text class="title-right-txt">{{type}}</text>
+        </div>
+        <div class="title1 border">
+            <text class="dianhu-text">电话：{{telPhone}}</text>
+            <image class="boda" src="{{dir}}images/dianhua.png" onclick="shangjiadianhua"></image>
+        </div>
+        <div class="title1" style="padding-left: 30px;padding-right: 30px">
+            <text class="dianhu-text">救援人员电话：{{cellphone}}</text>
+            <image class="boda" src="{{dir}}images/dianhua.png" onclick="jiuyuandianhua"></image>
+        </div>
+
+    </div>
+</template>
+<style>
+    .top{
+        borderBottomWidth:2px;
+        borderColor:#e6e6e6;
+    }
+    .border{
+        borderBottomWidth:2px;
+        borderColor:#e6e6e6;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .title{
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .title1{
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .title-left-txt{
+        font-size: 36px;
+        color: #373634;
+    }
+    .title-right-txt{
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 10px;
+    }
+    .dianhu-text{
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 30px;
+    }
+    .boda{
+        width: 80px;
+        height: 80px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+            cellphone:"",
+        },
+        methods:{
+            shangjiadianhua: function (e) {
+                require('@weex-module/dialanumber').boHao(this.telPhone);
+            },
+            jiuyuandianhua: function (e) {
+                require('@weex-module/dialanumber').boHao(this.cellphone);
+            }
+        }
+    }
+</script>

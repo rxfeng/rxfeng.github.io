@@ -1,0 +1,171 @@
+<template>
+    <xx-navpage navtitle="维修保养项目" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="http://192.168.1.105:63344/2016/weixiubaoyang.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="info">
+                <text class="title-left small2">保养项目</text>
+            </div>
+            <div class="main">
+                <div repeat="jilu1">
+                    <div class="one">
+                        <div class="left">
+                            <image if="{{!flag}}" class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <image if="{{flag}}" class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px;margin-left: 10px;">
+                                <text class="xiangmu-txt">{{xiangmu}}</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+            <div class="info">
+                <text class="title-left small2">维修项目</text>
+            </div>
+
+            <div class="main">
+                <div repeat="jilu2">
+                    <div class="one">
+                        <div class="left">
+                            <image if="{{!flag}}" class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <image if="{{flag}}" class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px;margin-left: 10px;">
+                                <text class="xiangmu-txt">{{xiangmu}}</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                </div>
+            </div>
+
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .info {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .main{
+        /*border-bottom-width: 1px;*/
+        /*border-color: #e6e6e6;*/
+        /*border-color: red;*/
+    }
+
+    .title-left {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .one {
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .line {
+        margin-right: 20px;
+        margin-left: 70px;
+        height: 1px;
+        backgroundColor: #e6e6e6;
+    }
+
+    .line3{
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .left {
+        flex-direction: row;
+    }
+
+
+    .img1 {
+        width: 50px;
+        height: 50px;
+        margin-top: 7px;
+    }
+
+    .img2 {
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+
+    .xiangmu-txt {
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            jilu1:[
+                {
+                    flag:true,
+                    xiangmu:"机油8.0L",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+            ],
+            jilu2:[
+                {
+                    flag:true,
+                    xiangmu:"机油8.0L",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+                {
+                    flag:true,
+                    xiangmu:"机油机滤器 原厂家",
+                },
+            ]
+        },
+        created: function () {
+
+        },
+        methods: {
+
+        }
+    }
+</script>

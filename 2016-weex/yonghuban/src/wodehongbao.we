@@ -1,0 +1,405 @@
+<template>
+    <xx-navpage navtitle="我的红包" navrighttitle="使用说明" navlefturl="wode.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="zhuangtai">
+                <div class="zt" onclick="one">
+                    <text class="zt-txt {{onered}}">未使用</text>
+                </div>
+                <div class="zt" onclick="two">
+                    <text class="zt-txt {{twored}}">已使用</text>
+                </div>
+                <div class="zt" onclick="three">
+                    <text class="zt-txt {{threered}}">已过期</text>
+                </div>
+            </div>
+
+            <div class="spean"></div>
+            <div class="ddbox" if={{fff}}>
+                <image src="{{dir}}images/dd.png" class="ddimg"></image>
+            </div>
+            <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">没有红包哦</text>
+            <div class="pthb" style="border-bottom-width: 1px;border-color: #e6e6e6;" if={{pingtaihongbao}}>
+                <div class="tit title">
+                    <text class="title-txt">平台活动红包</text>
+                    <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                </div>
+                <div class="hongbao" repeat={{ptlist}}>
+                    <div  if={{!yiguoqi}} style="backgroundColor: #FFFCDB;flex-direction: row;">
+                        <div class="hong1">
+                            <div class="hong2"></div>
+                            <div>
+                                <!--<text class="jine-txt">￥{{redValue}}</text>-->
+                                <div style="flex-direction: row;justify-content: center;align-content: center">
+                                    <text style="font-size: 30px;color: #F4D723;margin-top: 75px;">￥</text>
+                                    <text style="font-size: 50px;color: #F4D723;margin-top: 55px;">{{redValue}}</text>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="wxhb">
+                            <text class="red hb-title-txt">维修保养红包</text>
+                            <text class="hb-txt">适用商家：全场/部分商家</text>
+                            <text class="hb-txt">有效期至：{{endTime}}</text>
+                        </div>
+                    </div>
+                    <div if={{yiguoqi}}  style="backgroundColor: #eee;flex-direction: row;">
+                        <div class="hong1 hui1">
+                            <div class="hong2 hui2"></div>
+                            <!--<text class="jine-txt bai">￥{{redValue}}</text>-->
+                            <div style="flex-direction: row;justify-content: center;align-content: center">
+                                <text class="bai" style="font-size: 30px;margin-top: 75px;">￥</text>
+                                <text class="bai" style="font-size: 50px;margin-top: 55px;">{{redValue}}</text>
+                            </div>
+                        </div>
+                        <div class="wxhb">
+                            <text class="hb-title-txt">维修保养红包</text>
+                            <text class="hb-txt">适用商家：全场/部分商家</text>
+                            <text class="hb-txt">有效期至：{{endTime}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div if={{pingtaihongbao2}}>
+                <div class="pthb" repeat={{frList}}>
+                    <div class="tit">
+                        <text class="title-txt">{{facName}}</text>
+                        <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                    </div>
+                    <div class="hongbao" onclick="goshangjia" repeat={{rfList}}>
+                        <div if={{!huise}} style="backgroundColor: #FFFCDB;flex-direction: row;">
+                            <div class="hong1">
+                                <div class="hong2"></div>
+                                <div style="flex-direction: row;justify-content: center;align-content: center">
+                                    <text  style="font-size: 30px;color: #F4D723;margin-top: 75px;">￥</text>
+                                    <text style="font-size: 50px;color: #F4D723;margin-top: 55px;">{{redValue}}</text>
+                                </div>
+                            </div>
+                            <div class="wxhb top">
+                                <text class="red hb-title-txt">维修保养红包</text>
+                                <text class="hb-txt">有效期至：{{endTime}}</text>
+                            </div>
+                        </div>
+                        <div if={{huise}} style="backgroundColor: #eee;flex-direction: row;">
+                            <div class="hong1 hui1">
+                                <div class="hong2 hui2"></div>
+                                <div style="flex-direction: row;justify-content: center;align-content: center">
+                                    <text class="bai" style="font-size: 30px;margin-top: 75px;">￥</text>
+                                    <text class="bai" style="font-size: 50px;margin-top: 55px;">{{redValue}}</text>
+                                </div>
+                            </div>
+                            <div class="wxhb top">
+                                <text class="hb-title-txt">维修保养红包</text>
+                                <text class="hb-txt">有效期至：{{endTime}}</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .spean {
+        height: 20px;
+        background-color: #F5F3F8;
+    }
+    .top{
+        margin-top: 20px;
+    }
+    .zhuangtai {
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+
+    }
+
+    .zt {
+        flex: 1;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-right-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #898989;
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .bai {
+        color: #fff;
+    }
+
+    .pthb {
+        padding-top: 20px;
+        padding-bottom: 30px;
+        background-color: #fff;
+        border-top-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .hongbao {
+        /*padding: 20px;*/
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .tit {
+        padding: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .title {
+        margin-bottom: 10px;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .title-txt {
+        font-size: 32px;
+        color:#373634;
+        margin-top: -10px;
+    }
+
+    .hong1 {
+        width: 220px;
+        height: 150px;
+        background-color: #E95412;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hong2 {
+        width: 300px;
+        height: 300px;
+        background-color: #EE8518;
+        border-radius: 150px;
+        position: absolute;
+        top: -235px;
+        left: -40px;
+    }
+
+    .hui1 {
+        background-color: #B4B4B4;
+    }
+
+    .hui2 {
+        background-color: #C5C5C5;
+    }
+
+    .jine-txt {
+        font-size: 50px;
+        color: #F4D723;
+        line-height: 180px;
+        text-align: center;
+    }
+
+    .wxhb {
+        margin-left: 40px;
+    }
+
+    .hb-title-txt {
+        font-size: 34px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
+    .hb-txt {
+        font-size: 26px;
+        color: #898989;
+    }
+
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        margin-top: -6px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            onered: "red",
+            twored: "",
+            threered: "",
+            ptlist: [],
+            frList: [
+                {
+                    rfList: [],
+                }
+            ],
+            pingtaihongbao: false,
+            pingtaihongbao2: false,
+            huise: false,
+            yiguoqi:false,
+            fff:true,
+        },
+        methods: {
+            one: function (e) {
+                if (this.onered == "") {
+                    this.onered = "red"
+                    this.twored = "";
+                    this.threered = "";
+                }
+                var _this = this;
+                _this.ptlist = [];
+                _this.frList = [];
+                _this.yiguoqi = false;
+                _this.huise = false;
+                api.call("user/getMyRed", {redState: 2}, function (ret) {
+                    api.log(ret.data);
+                    if (ret.data.ptlist.length >= 1) {
+                        _this.pingtaihongbao = true;
+                    } else {
+                        _this.pingtaihongbao = false;
+                    }
+                    if (ret.data.frList.length >= 1) {
+                        _this.pingtaihongbao2 = true;
+                    } else {
+                        _this.pingtaihongbao2 = false;
+                    }
+                    if(ret.data.ptlist.length==0 && ret.data.frList.length==0){
+                        _this.fff = true;
+                    }else if(ret.data.ptlist.length>0 || ret.data.frList.length>0){
+                        _this.fff = false;
+                    }
+                    _this.ptlist = ret.data.ptlist;
+                    _this.frList = ret.data.frList;
+                    _this.shijian();
+                });
+            },
+            two: function (e) {
+                if (this.twored == "") {
+                    this.twored = "red"
+                    this.onered = "";
+                    this.threered = "";
+                }
+                this.yiguoqi = true;
+                var _this = this;
+                _this.ptlist = [];
+                _this.frList = [];
+                api.call("user/getMyRed", {redState: 1}, function (ret) {
+                    api.log(ret.data);
+                    _this.huise = true;
+                    if (ret.data.ptlist.length >= 1) {
+                        _this.pingtaihongbao = true;
+                    } else {
+                        _this.pingtaihongbao = false;
+                    }
+                    if (ret.data.frList.length >= 1) {
+                        _this.pingtaihongbao2 = true;
+                    } else {
+                        _this.pingtaihongbao2 = false;
+                    }
+                    if(ret.data.ptlist.length==0 && ret.data.frList.length==0){
+                        _this.fff = true;
+                    }else if(ret.data.ptlist.length>0 || ret.data.frList.length>0){
+                        _this.fff = false;
+                    }
+                    _this.ptlist = ret.data.ptlist;
+                    _this.frList = ret.data.frList;
+                    _this.shijian();
+                });
+            },
+            three: function (e) {
+                if (this.threered == "") {
+                    this.threered = "red"
+                    this.twored = "";
+                    this.onered = "";
+                }
+                this.yiguoqi = true;
+                var _this = this;
+                _this.ptlist = [];
+                _this.frList = [];
+                api.call("user/getMyRed", {redState: 3}, function (ret) {
+                    api.log(ret.data);
+                    _this.huise = true;
+                    if (ret.data.ptlist.length >= 1) {
+                        _this.pingtaihongbao = true;
+                    } else {
+                        _this.pingtaihongbao = false;
+                    }
+                    if (ret.data.frList.length >= 1) {
+                        _this.pingtaihongbao2 = true;
+                    } else {
+                        _this.pingtaihongbao2 = false;
+                    }
+                    if(ret.data.ptlist.length==0 && ret.data.frList.length==0){
+                        _this.fff = true;
+                    }else if(ret.data.ptlist.length>0 || ret.data.frList.length>0){
+                        _this.fff = false;
+                    }
+                    _this.ptlist = ret.data.ptlist;
+                    _this.frList = ret.data.frList;
+                    _this.shijian();
+                });
+            },
+            goshangjia: function (e) {
+                api.log(this.facId);
+                api.push("shangjiaxiangqing4.js",{factoryId:this.facId,fanhuiurl:"wodehongbao.js"});
+            },
+            shijian: function (e) {
+                var _this = this;
+                for(var i= 0;i<_this.ptlist.length;i++){
+                    _this.ptlist[i].endTime = _this.ptlist[i].endTime.slice(0,10);
+                }
+                for(var i= 0;i<_this.frList.length;i++){
+                    for(var j = 0;j<_this.frList[i].rfList.length;j++){
+                        _this.frList[i].rfList[j].endTime = _this.frList[i].rfList[j].endTime.slice(0,10);
+                    }
+                }
+            }
+        },
+        created: function () {
+            var _this = this;
+            api.call("user/getMyRed", {redState: 2}, function (ret) {
+                api.log(ret.data);
+                if (ret.data.ptlist.length >= 1) {
+                    _this.pingtaihongbao = true;
+                }else{
+                    _this.pingtaihongbao = false;
+                }
+                if (ret.data.frList.length >= 1) {
+                    _this.pingtaihongbao2 = true;
+                } else {
+                    _this.pingtaihongbao2 = false;
+                }
+                if(ret.data.ptlist.length==0 && ret.data.frList.length==0){
+                    _this.fff = true;
+                }else if(ret.data.ptlist.length>0 || ret.data.frList.length>0){
+                    _this.fff = false;
+                }
+                _this.ptlist = ret.data.ptlist;
+                _this.frList = ret.data.frList;
+                _this.shijian();
+            });
+            this.$on('naviBar.rightItem.click',function(e){
+                var time = new Date();
+                api.push("zi-webpage.js",{title:"使用说明" , fanhui:"wodehongbao.js",url:this.dir+"html/yx-hbsy.html?v="+time});
+            });
+        }
+    }
+</script>

@@ -1,0 +1,277 @@
+<template>
+    <xx-navpage navtitle="订单支付" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="shangjiaxiangqing.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <div class="title">
+                <text class="title-txt big">{{name}}</text>
+                <text class="title-txt small hui">订单号：{{ddh}}</text>
+            </div>
+            <div class="spean"></div>
+            <div class="title row" style="border-top-width:1px;border-color:#e6e6e6;">
+                <text class="title-txt">订单合计</text>
+                <text class="title-txt red">￥{{jinqian}}</text>
+            </div>
+            <div class="title row" style="border-bottom-width:1px;border-color:#e6e6e6;" onclick="jifenclick">
+                <div style="flex-direction: row;">
+                    <text class="title-txt">可用{{jfnum}}积分抵</text>
+                    <text class="title-txt red small2">￥{{jifenQian}}元</text>
+                </div>
+                <image if={{jifen}} class="danxuanbtn2" src="{{dir}}images/danxuan2.png"></image>
+                <image if={{!jifen}} class="danxuanbtn2" src="{{dir}}images/danxuan1.png"></image>
+            </div>
+            <div class="title row" style="border-bottom-width:1px;border-color:#e6e6e6;" onclick="redbaoclick">
+                <div style="flex-direction: row;">
+                    <text class="title-txt">使用红包</text>
+                    <text class="title-txt red small2">可抵￥{{redbao}}元</text>
+                </div>
+                <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <div class="spean"></div>
+            <div class="title">
+                <text class="title-txt">支付方式</text>
+            </div>
+            <div class="zhifu">
+                <div class="row mt10" onclick="weixinclick">
+                    <div class="row">
+                        <image class="danxuanbtn"
+                               src="{{dir}}images/weixin.jpg"></image>
+                        <text class="title-txt txt">微信支付</text>
+                    </div>
+                    <image if={{!weixin}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan1.png"></image>
+                    <image if={{weixin}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan2.png"></image>
+                </div>
+                <div class="row mt10" onclick="zhifubaoclick">
+                    <div class="row">
+                        <image class="danxuanbtn"
+                               src="{{dir}}images/zhifubao.jpg"></image>
+                        <text class="title-txt txt">支付宝支付</text>
+                    </div>
+                    <image if={{zhifubao}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan1.png"></image>
+                    <image if={{!zhifubao}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan2.png"></image>
+                </div>
+                <div class="row mt10" onclick="yinhangkaclick">
+                    <div class="row">
+                        <image class="danxuanbtn" src="{{dir}}images/qq.jpg"></image>
+                        <text class="title-txt txt">银行卡支付</text>
+                    </div>
+                    <image if={{yinhangka}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan1.png"></image>
+                    <image if={{!yinhangka}} class="danxuanbtn2"
+                           src="{{dir}}images/danxuan2.png"></image>
+                </div>
+            </div>
+            <btn title="确认支付￥{{zhifujine}}元" class="btn" onclick="querenzhifuclick"></btn>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .spean {
+        height: 20px;
+        background-color: #F5F3F8;
+    }
+
+    .big {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .title {
+        padding-bottom: 20px;
+        padding-top: 20px;
+        padding-left: 20px;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .row {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: 20px;
+    }
+
+    .title-txt {
+        font-size: 30px;
+        color: #737373;
+    }
+
+    .txt {
+        margin-left: 20px;
+    }
+
+    .small {
+        font-size: 26px;
+    }
+
+    .small2 {
+        font-size: 28px;
+        margin-left: 20px;
+    }
+
+    .hui {
+        color: #A0A0A0;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .danxuanbtn {
+        width: 40px;
+        height: 40px;
+        /*background-color: #E95412;*/
+    }
+
+    .danxuanbtn2 {
+        width: 50px;
+        height: 50px;
+    }
+
+    .jiantou {
+        width: 42px;
+        height: 42px;
+    }
+
+    .zhifu {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-left: 20px;
+        border-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .mt10 {
+        margin-top: 10px;
+    }
+
+    .btn {
+        width: 750px;
+        position: absolute;
+        bottom: 100px;
+    }
+</style>
+
+<script>
+    require('weex-components');
+    var wee = require('@weex-module/modal');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            name: "",
+            ddh: "",
+            jfnum: "",
+            jifenQian: "",
+            jinqian: "",
+            zhifujine: "",
+            weixin: true,
+            zhifubao: true,
+            yinhangka: true,
+            jifen: true,
+            ddid: "",
+            zhifufangshi: "1",
+            orderType: "",
+            redbao: 0,
+        },
+        methods: {
+            weixinclick: function (e) {
+                var slef = this;
+                api.log(1);
+                slef.weixin = !slef.weixin;
+                if (slef.weixin == true) {
+                    slef.zhifubao = true;
+                    slef.yinhangka = true;
+                } else {
+                    slef.weixin = true;
+                }
+                slef.zhifufangshi = "1"
+            },
+            zhifubaoclick: function (e) {
+                var slef = this;
+                api.log(2);
+                slef.zhifubao = !slef.zhifubao;
+                if (slef.zhifubao == false) {
+                    slef.weixin = false;
+                    slef.yinhangka = true;
+                } else {
+                    slef.zhifubao = false;
+                }
+                slef.zhifufangshi = "2"
+            },
+            yinhangkaclick: function (e) {
+                api.log(3);
+                var slef = this;
+                slef.yinhangka = !slef.yinhangka;
+                if (slef.yinhangka == false) {
+                    slef.zhifubao = true;
+                    slef.weixin = false;
+                } else {
+                    slef.yinhangka = false;
+                }
+                slef.zhifufangshi = "3"
+            },
+            jifenclick: function (e) {
+                this.jifen = !this.jifen;
+                api.log(this.jifen);
+                if (this.jifen) {
+                    this.zhifujine = this.jinqian - this.jifenQian - this.redbao;
+                    if (this.zhifujine < 0) {
+                        this.zhifujine = 0;
+                    }
+                } else {
+                    this.zhifujine = this.jinqian - this.redbao;
+                    if (this.zhifujine < 0) {
+                        this.zhifujine = 0;
+                    }
+                }
+            },
+            redbaoclick: function (e) {
+                api.push("hongbao.js", {ddid: this.ddid});
+            },
+            querenzhifuclick: function (e) {
+//                判断跳转洗车还是修车的评价
+                api.log("支付方式：" + this.zhifufangshi);
+//               1、支付金额传给他 this.zhifujine  2、支付方式传给他
+//                订单类型 1代驾单 修车单 2拖车单 3救援单 4洗车单5送车单
+//                api.save("infoxinxi", " ");
+//                支付
+                var _this = this;
+//                api.call("order/", {orderId: _this.ddid}, function (ret) {
+//
+//                });
+                require('@weex-module/alipay').alipay(this.zhifujine);
+                if (this.orderType == 4) {
+                    api.push("shangjiapingjia2.js", {order: this.ddid});   //不包括取送车评价
+                } else {
+                    api.push("shangjiapingjia.js", {order: this.ddid});   // 包括取送车评价
+                }
+            }
+        },
+        created: function () {
+            var _this = this;
+//            -----------------------订单支付-----------------------------------
+            _this.ddid = api.getData(_this).id;
+            api.call("order/payOrder", {orderId: _this.ddid}, function (ret) {
+                _this.name = ret.data.factoryName;
+                _this.ddh = ret.data.order.orderNumber;
+                _this.jfnum = ret.data.point;  //积分
+                _this.jinqian = ret.data.order.totalCost;  //订单合计
+                _this.jifenQian = ret.data.pointToCash;  //可以滴多少钱
+                _this.redbao = ret.data.redList[0].redValue;
+                _this.zhifujine = ret.data.order.totalCost - ret.data.pointToCash - _this.redbao;  //按钮上的支付金额
+                _this.orderType = ret.data.order.orderType;
+                if(api.getData(_this).redbao != undefined){
+                    _this.redbao = api.getData(_this).redbao;
+                    _this.zhifujine = ret.data.order.totalCost - ret.data.pointToCash - _this.redbao;
+                }
+                if (_this.zhifujine < 0) {
+                    _this.zhifujine = 0;
+                }
+            });
+        }
+    }
+</script>

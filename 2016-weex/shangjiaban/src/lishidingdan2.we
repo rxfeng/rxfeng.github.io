@@ -1,0 +1,179 @@
+<template>
+    <xx-navpage navtitle="历史订单" navrighttitle="" navlefturl="wode.js" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png">
+        <div class="ddbox" if={{fff}}>
+            <image src="{{dir}}images/dd.png" class="ddimg"></image>
+        </div>
+        <text  if={{fff}} style="font-size: 30px;color: #a0a0a0;text-align: center;margin-top: 20px">没有历史订单哦</text>
+        <list if={{!fff}} onscrolled="onseclled">
+            <refresh class="refresh-view" display="{{refresh_display}}" onrefresh="datarefresh">
+                <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+            </refresh>
+            <cell index="{{$index}}" append="tree">
+                <scroller>
+                    <div class="dingdaninfo" repeat={{list}}>
+                        <div onclick="goxiangqing">
+                            <div class="info">
+                                <text class="info-txt1">订单类型：</text>
+                                <text class="info-txt2" if={{orderType==1}}>维修保养</text>
+                                <text class="info-txt2" if={{orderType==3}}>现场救援</text>
+                            </div>
+                            <div class="info">
+                                <text class="info-txt1">车辆型号：</text>
+                                <text class="info-txt2"  style="width: 500px;lines: 1;text-overflow: ellipsis;">{{carFullTypeName}}</text>
+                            </div>
+                            <div class="info">
+                                <text class="info-txt1">车牌号码：</text>
+                                <text class="info-txt2">{{carLicence}}</text>
+                            </div>
+                            <div class="info">
+                                <text class="info-txt1">客户姓名：</text>
+                                <text class="info-txt2">{{senderName}}</text>
+                            </div>
+                            <div class="info">
+                                <text class="info-txt1">客户手机：</text>
+                                <text class="info-txt2">{{senderCell}}</text>
+                            </div>
+                            <div class="info">
+                                <text class="info-txt1">订单号：</text>
+                                <text class="info-txt2">{{orderNumber}}</text>
+                            </div>
+                            <image class="jiantou" src="{{dir}}images/right-jiao.fw.png"></image>
+                        </div>
+                    </div>
+                </scroller>
+            </cell>
+            <loading class="refresh-view" display="{{loading_display}}" onloading="onloading">
+                <text class="refresh-arrow" style="text-align: center; color:rgb(238, 162, 54)" if="{{(refresh_display==='hide')}}">更多</text>
+                <loading-indicator style="height:60;width:60;color:red"></loading-indicator>
+            </loading>
+        </list>
+
+    </xx-navpage>
+</template>
+<style>
+    .ddbox{
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 200px;
+    }
+    .ddimg{
+        width: 336px;
+        height: 373px;
+    }
+    .refresh-view {
+        align-items: center;
+    }
+    .dingdaninfo {
+        padding: 20px;
+        borderBottomWidth:1px;
+        borderColor:#e6e6e6;
+    }
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737172;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+        position: absolute;
+        top: 130px;
+        right: 20px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            refresh_display: "hide",
+            loading_display:"hide",
+            list: [],
+            page: 1,
+            factoryId: "",
+            fff:false,
+        },
+        created: function () {
+            var _this = this;
+            _this.factoryId = api.getData(_this).factoryId;
+            api.log("factoryId:"+_this.factoryId);
+            api.call("factory/queryHistory", {factoryId: _this.factoryId, pageNum: _this.page}, function (ret) {
+                api.log(ret.data);
+                if(ret.data.historyOrderInfo.length==0){
+                    _this.fff = true;
+                }else if(ret.data.historyOrderInfo.length>=1){
+                    _this.fff = false;
+                }
+                _this.list = ret.data.historyOrderInfo;
+            })
+        },
+        methods: {
+            goxiangqing: function (e) {
+                var _this = this;
+                api.push("dingdanxinxi.js", {
+                    id: _this.id,
+                });
+            },
+            onloading: function (e) {
+                this.loading_display = "show";
+                setTimeout(function () {
+                    this.loading_display = 'hide'
+                }.bind(this), 1000)
+            },
+            onseclled: function (e) {
+                var sx = e.data.rangeHeight - e.data.height - e.data.offsetY;
+                if (sx < 50) {
+                    this.loadMore();
+                }
+            },
+            datarefresh: function (e) {
+                this.refresh_display = "show";
+                this.page = 1;
+                this.loaddata();
+            },
+            loadMore: function (e) {
+                api.log(this.page);
+                var _this = this;
+                this.page++;
+                this.loaddata();
+            },
+            loaddata: function (e) {
+                var _this = this;
+                api.call("factory/queryHistory", {factoryId: _this.factoryId, pageNum: _this.page}, function (ret) {
+                    if (_this.page == 1) {
+                        if (ret.data.requestCode != 0) {
+                            _this.list = [];
+                        } else {
+                            _this.list = [];
+                            _this.list = ret.data.historyOrderInfo;
+                        }
+                    } else {
+                        if (ret.data.requestCode == 0) {
+                            if(ret.data.historyOrderInfo.length==0){
+                              api.tost('亲，没有更多数据啦~');
+                            }else{
+                                _this.list = _this.list
+                                        .concat(ret.data.historyOrderInfo);
+                            }
+                        }
+                    }
+                    _this.refresh_display = 'hide';
+                }, function (e) {
+                    _this.refresh_display = 'hide';
+                });
+            },
+        }
+    }
+</script>

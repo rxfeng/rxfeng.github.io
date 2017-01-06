@@ -1,0 +1,311 @@
+<template>
+    <xx-navpage navtitle="智能保养" navrighttitle="" navlefturl="" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="">
+        <scroller style="flex:1;">
+            <zi-jiuyuan></zi-jiuyuan>
+            <div class="spean"></div>
+            <div>
+                <div class="info info2">
+                    <text class="title-left small">智能保养方案</text>
+                </div>
+                <div class="info info2">
+                    <text class="title-left small2">5项零件需要保养（均含工时费）</text>
+                </div>
+                <div class="main">
+                    <div class="one" onclick="jiyou1click">
+                        <div class="left">
+                            <image if={{danxuan.jiyou1}} class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <image if={{!danxuan.jiyou1}} class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px;margin-left: 10px">
+                                <text class="xiangmu-txt">机油8.0L</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <text class="yuanjia">￥97</text>
+                            <text class="tejia red">￥93</text>
+                        </div>
+                    </div>
+                    <div class="zixuanxiang">
+                        <div class="two {{bor1}}" onclick="borred1">
+                            <text class="zi-txt">原厂专用5W-40 SM级合成</text>
+                            <text class="zi-txt red">精选</text>
+                        </div>
+                        <div class="two {{bor2}}" onclick="borred2">
+                            <text class="zi-txt">原厂嘉实多0W-30 SN级全合成</text>
+                            <text class="zi-txt red">热销 +663</text>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="one" onclick="jiyou2click">
+                        <div class="left">
+                            <image if={{danxuan.jiyou2}} class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <image if={{!danxuan.jiyou2}} class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px;margin-left: 10px">
+                                <text class="xiangmu-txt">机油机滤器 原厂家</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <text class="yuanjia">￥97</text>
+                            <text class="tejia red">￥93</text>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="one" onclick="jiyou3click">
+                        <div class="left">
+                            <image if={{danxuan.jiyou3}} class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <image if={{!danxuan.jiyou3}} class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px">
+                                <text class="xiangmu-txt">空调滤清器 原厂家</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <text class="yuanjia">￥97</text>
+                            <text class="tejia red">￥93</text>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="one" onclick="jiyou4click">
+                        <div class="left">
+                            <image if={{danxuan.jiyou4}} class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <image if={{!danxuan.jiyou4}} class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 15px">
+                                <text class="xiangmu-txt">刹车油 原厂家</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <text class="yuanjia">￥97</text>
+                            <text class="tejia red">￥93</text>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+                    <div class="one" onclick="jiyou5click">
+                        <div class="left">
+                            <image if={{danxuan.jiyou5}} class="img1" src="{{dir}}images/danxuan2.png"></image>
+                            <image if={{!danxuan.jiyou5}} class="img1" src="{{dir}}images/danxuan3.png"></image>
+                            <div style="flex-direction: row;margin-top: 10px">
+                                <text class="xiangmu-txt">防冻液 原厂家</text>
+                                <image class="img2" src="{{dir}}images/zhuyi.png"></image>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <text class="yuanjia">￥97</text>
+                            <text class="tejia red">￥93</text>
+                        </div>
+                    </div>
+                    <div class="line line2"></div>
+                </div>
+                <div class="info info2">
+                    <text class="title-left small2">12项零件可选保养</text>
+                    <image class="jiantou" src="{{dir}}images/xiajiaobiao.png"></image>
+                </div>
+                <div class="info info2">
+                    <text class="title-left small">维修问题描述</text>
+                </div>
+                <div style="position: relative">
+                    <textarea name="" id="" cols="30" rows="5" value="{{val}}" onfocus="textareaclick" onblur="textareablur" style="border-width: 1px;border-color: #ccc;margin: 20px;padding: 10px;"></textarea>
+                    <div class="pla" id="pla">
+                        <text class="txt xiao">请输入文字内容...</text>
+                    </div>
+                </div>
+                <div style="height: {{h}}"></div>
+            </div>
+            <zi-zongji></zi-zongji>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .info{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        borderBottomWidth: 2px;
+        borderColor: #e6e6e6;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .info2{
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 0px;
+    }
+    .jiantou {
+        width: 37px;
+        height: 37px;
+    }
+
+    .title-left{
+        font-size: 36px;
+        color: #373634;
+    }
+    .small{
+        font-size: 32px;
+    }
+    .small2{
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+    .spean{
+        height: 20px;
+        backgroundColor: #F5F3F8;
+    }
+    .one{
+        flex-direction: row;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .line{
+        margin-right: 20px;
+        margin-left: 70px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+    }
+    .line2{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .left{
+        flex-direction: row;
+    }
+    .img1{
+        width: 50px;
+        height: 50px;
+        margin-top: 7px;
+    }
+    .img2{
+        width: 47px;
+        height: 47px;
+        margin-top: -5px;
+    }
+    .xiangmu-txt{
+        font-size: 30px;
+        color: #a0a0a0;
+    }
+    .right{
+        flex-direction: row;
+        margin-top: 10px;
+    }
+    .yuanjia{
+        font-size: 30px;
+        color: #a0a0a0;
+        text-decoration: line-through;
+    }
+    .tejia{
+        font-size: 30px;
+        margin-left: 20px;
+    }
+    .red{
+        color: #E95412;
+    }
+    .zixuanxiang{
+        flex-direction: row;
+        margin-left: 80px;
+        margin-bottom: 20px;
+    }
+    .two{
+        flex: 1;
+        border-width: 1px;
+        border-color: #e6e6e6;
+        border-style: dashed;
+        justify-content: center;
+        overflow: hidden;
+        margin-right: 50px;
+        padding: 10px;
+
+    }
+    .border-red{
+        border-color: #E95412;
+    }
+    .zi-txt{
+        text-align: center;
+        color: #a0a0a0;
+        font-size: 28px;
+        line-height: 36px;
+    }
+    .pla{
+        position: absolute;
+        top:30;
+        left: 30;
+    }
+    .txt {
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+    .xiao{
+        font-size: 26px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    module.exports ={
+        data:{
+            dir:api.dir,
+            val:"",
+            bor1:"border-red",
+            bor2:"",
+            h:100,
+            danxuan:{
+                jiyou1:true,
+                jiyou2:true,
+                jiyou3:true,
+                jiyou4:true,
+                jiyou5:true,
+            },
+        },
+        methods:{
+            textareaclick: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'hidden'});
+                this.h = 600;
+            },
+            textareablur: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'visible'});
+            },
+            borred1: function (e) {
+                if(this.bor2 == "border-red"){
+                    this.bor2 ="";
+                    this.bor1 = "border-red";
+                }
+            },
+            borred2: function (e) {
+                if(this.bor1 == "border-red"){
+                    this.bor1 = "";
+                    this.bor2 = "border-red";
+                }
+            },
+            jiyou1click:function(e){
+                var self = this;
+                self.danxuan.jiyou1 = !self.danxuan.jiyou1;
+//                选中的话，self.flag为true，不选中的话，self.flag为false
+//                测试
+//                wee.toast({
+//                    message: "2:"+self.flag,
+//                    duration: 2
+//                });
+            },
+            jiyou2click:function(e){
+                var self = this;
+                self.danxuan.jiyou2 = !self.danxuan.jiyou2;
+            },
+            jiyou3click:function(e){
+                var self = this;
+                self.danxuan.jiyou3 = !self.danxuan.jiyou3;
+            },
+            jiyou4click:function(e){
+                var self = this;
+                self.danxuan.jiyou4 = !self.danxuan.jiyou4;
+            },
+            jiyou5click:function(e){
+                var self = this;
+                self.danxuan.jiyou5 = !self.danxuan.jiyou5;
+            },
+        },
+    }
+</script>

@@ -1,0 +1,51 @@
+<template>
+    <div class="wt">
+        <text class="txt title">问题一：我怎么在一修车管家APP上做汽车保养？</text>
+        <text class="txt ol">1.添加您的爱车基础信息，进入“一键预约”输入当前行驶里程，预约日期时间；</text>
+        <text class="txt ol">2.选择您想要保养的4S店或品牌维修店；</text>
+        <text class="txt ol">3.一修车管家根据您的车型、当前行驶里程、厂家保养手册结合历史维修档案智能推荐保养方案；</text>
+        <text class="txt ol">4.选择是否需要上门取送车；</text>
+        <text class="txt ol">5.确认预约信息并到4S店或品牌维修店进行维修保养。</text>
+        <text class="txt ol">6.到店维修可以手机实时查看维修状态及视频。</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题二：一修车管家提供到店保养还是上门保养？</text>
+        <text class="txt shsj"> 一修车管家推荐“人车分离”保养方式，即免费或者有偿叫代驾上门接车、送车服务。您也可以自主驾车去门店保养。</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题三：没有我的车辆品牌，怎么办？</text>
+        <text class="txt shsj">很遗憾，当前可能会存在部分品牌没有合作4S店或品牌维修店而无法提供保养服务的情况，一修车管家会加快4S或品牌维修店的合作推广，争取早日为您提供服务。</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题四：我不太清楚车辆的具体型号及配置，如何能快速找到车型？</text>
+        <text class="txt shsj">使用扫描行驶证车辆识别代码(VIN)自动识别车型的功能。只要您身边带有行驶证，通过此功能，可以快速增加您的车型。</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题五：保养的项目是如何确定的，4S店或品牌维修店都认可吗？</text>
+        <text class="txt shsj">智能保养方案是根据您的车型、当前行驶里程、厂家保养手册结合历史维修档案智能推荐保养方案，完全符合厂家4S店的规范要求</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题六：给我推荐的保养项目不合适，我能自己调整吗？</text>
+        <text class="txt shsj">您可以通过在智能保养方案页面选择或者取消推荐保养项目。但需要注意的是，自行选择的保养套餐项目可能违背厂家维修索赔政策，建议谨慎选择。</text>
+        <div style="height: 30px;"></div>
+        <text class="txt title">问题七：我能预约当天的保养吗？</text>
+        <text class="txt shsj">可以，您需要选择该店营业时间范围内进行预约。</text>
+    </div>
+</template>
+<style>
+    .wt{
+        margin-left: 40px;
+        margin-right: 40px;
+    }
+    .title{
+        font-size: 30px;
+        font-weight: bold;
+    }
+    .txt{
+        font-size: 29px;
+        color: #a0a0a0;
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+    .ol{
+        margin-left: 25px;
+    }
+    .shsj{
+        margin-left: 10px;
+    }
+</style>

@@ -1,0 +1,44 @@
+{
+  "selEntity": {
+    "issueLogs": [
+      {
+        "issueId": 36,
+        "logTime": "2016-10-20 09:12:07",
+        "userId": 8080,
+        "expertId": 9090,
+        "logContent": "发动机坏了",
+        "logType": 0,
+        "id": 196,
+        "createTime": "2016-10-19 20:30:24",
+        "updateTime": "2016-10-19 20:30:24"
+      },
+      {
+        "issueId": 36,
+        "logTime": "2016-10-20 09:12:05",
+        "userId": 9090,
+        "expertId": 8080,
+        "logContent": "我要修理",
+        "logType": 1,
+        "id": 215,
+        "createTime": "2016-10-20 09:12:40",
+        "updateTime": "2016-10-20 09:12:44"
+      }
+    ],
+    "expert": {
+      "repairId": 1,
+      "userId": 1,
+      "skilledBrand": "大众",
+      "aptitude": "高级诊断技师",
+      "years": "1",
+      "qNumber": 118,
+      "online": true,
+      "expertName": "张先生",
+      "photo": "http://img0.imgtn.bdimg.com/it/u=929618411,1976273221&fm=21&gp=0.jpg",
+      "expertIntroduce": "工作经验丰富，操作能力强",
+      "expertCount": 931,
+      "onceIntegral": 20,
+      "id": 1
+    }
+  },
+  "requestCode": 0
+}

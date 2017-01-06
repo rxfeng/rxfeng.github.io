@@ -1,0 +1,95 @@
+<template>
+    <div style="position: relative;" onclick="adclick">
+        <div class="line"></div>
+        <div class="khlogo">
+            <div class="picdiv1">
+                <image class="pic1" src="{{dir}}images/car.png"></image>
+            </div>
+            <text class="cheph"></text>
+        </div>
+        <div class="weather-two">
+            <div class="qingkuang">
+                <image class="add" src="{{dir}}images/app.png"></image>
+                <text class="add-txt">请增加车辆信息</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .line{
+        width: 750px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+        position: absolute;
+        top: 70;
+    }
+
+    .add{
+        width: 50px;
+        height: 50px;
+        margin-left: 50px;
+        margin-top: 50px;
+        margin-right: 20px;
+    }
+    .add-txt{
+        font-size: 36px;
+        color: #373634;
+        margin-top: 50px;
+    }
+    .pic1{
+        width: 125px;
+        height: 125px;
+    }
+    .picdiv1{
+        width: 146px;
+        height: 146px;
+        backgroundColor: #fff;
+        border-radius: 73px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        borderWidth:2px;
+        borderColor:#ccc;
+    }
+
+
+
+    .weather-two{
+        height: 150px;
+        position: relative;
+        /*backgroundColor: red;*/
+        margin-top: -120;
+
+    }
+    .qingkuang{
+        width: 550px;
+        height: 150px;
+        flex-direction: row;
+        position: absolute;
+        right: 0;
+    }
+
+    .khlogo{
+        margin-left: 20px;
+    }
+    .cheph{
+        fontSize:28px;
+        color: #000;
+        margin-top: 10px;
+        margin-left: 14px;;
+
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports ={
+        data:{
+            dir:api.dir,
+        },
+        methods:{
+            adclick:function(){
+                api.push("xuanpinpai.js");
+            }
+        }
+    }
+</script>

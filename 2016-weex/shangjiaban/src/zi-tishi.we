@@ -1,0 +1,66 @@
+<template>
+    <div style="width: 750px;flex-direction: row;justify-content: center;align-content: center;backgroundColor:rgba(0,0,0,0)">
+        <div class="box">
+            <div class="zhifu">
+                <text class="zhifu-txt">{{zhuyitxt}}</text>
+            </div>
+            <div onclick="wanchengclick">
+                <text class="btn red">确 认</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .box{
+        width: 607px;
+        /*height: 338px;*/
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #ffffff;
+        border-radius: 10px;
+    }
+    .zhifu{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderBottomWidth:2px;
+        borderColor:#ccc;
+    }
+    .zhifu{
+        padding-top: 75px;
+        padding-bottom: 75px;
+        borderBottomWidth:2px;
+        borderColor:#ccc;
+    }
+    .zhifu-txt{
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .btn{
+        font-size: 30px;
+        color: #373634;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .red{
+        color: #E95412;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            zhuyitxt:"没有提示信息哦~"
+        },
+        methods: {
+            wanchengclick: function (e) {
+                api.hidden();
+            }
+        }
+    }
+</script>

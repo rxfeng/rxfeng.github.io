@@ -1,0 +1,113 @@
+<template>
+    <xx-navpage navtitle="技师" navrighturl="" navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="dingdaninfo">
+                <div class="info">
+                    <text class="info-txt1">订单类型：</text>
+                    <text class="info-txt2">{{type}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客户姓名：</text>
+                    <text class="info-txt2">{{name}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客户电话：</text>
+                    <text class="info-txt2">{{tel}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">客户位置：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+            </div>
+            <div style="height: 20px;"></div>
+            <div class="title">
+                <text class="title-txt">分配技师列表</text>
+            </div>
+            <div class="dingdaninfo">
+                <div class="info">
+                    <text class="info-txt1">姓名：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">手机号：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">工龄：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <jiedan txt="分配" class="jiedanbtn"></jiedan>
+            </div>
+            <div class="dingdaninfo">
+                <div class="info">
+                    <text class="info-txt1">姓名：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">手机号：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <div class="info">
+                    <text class="info-txt1">工龄：</text>
+                    <text class="info-txt2">{{loc}}</text>
+                </div>
+                <jiedan txt="分配" class="jiedanbtn"></jiedan>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .dingdaninfo {
+        padding: 20px;
+        position: relative;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .title{
+        padding: 20px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        border-width: 1px;
+        border-color: #e6e6e6;
+        background-color: #fff;
+    }
+    .title-txt{
+        color: #373634;
+        font-size: 34px;
+    }
+    .jiedanbtn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            type: 3213,
+            name: 3213,
+            tel: 3213,
+            loc: 3213,
+        }
+    }
+</script>

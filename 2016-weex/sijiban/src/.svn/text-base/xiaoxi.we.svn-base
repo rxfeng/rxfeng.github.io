@@ -1,0 +1,308 @@
+<template>
+    <xx-navpage navtitle="消息中心" navrighttitle="" navlefturl="" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <!--<two title1="我的消息" title2="系统消息" style="background-color:#fff;"></two>-->
+        <div class="zhuangtai">
+            <div class="zt" onclick="left">
+                <text class="zt-txt {{leftred}}">我的消息</text>
+                <xx title="{{len1}}" if={{!(len1==0)}} class="xx"></xx>
+            </div>
+            <div class="line1"></div>
+            <div class="zt" onclick="right">
+                <text class="zt-txt {{rightred}}">系统消息</text>
+                <xx title="{{len2}}" if={{!(len2==0)}} class="xx"></xx>
+            </div>
+        </div>
+        <scroller  style="flex:1;">
+            <div class="main">
+                <div class="line" if={{ff}}></div>
+                <div class="spean"></div>
+                <div class="c" repeat={{unreadList}}>
+                    <div class="line"></div>
+                    <div class="cont">
+                        <text class="one">{{title}}</text>
+                        <text class="two">{{content}}</text>
+                        <text class="time">{{addTime}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle2">
+                        <image src="{{driverId}}" class="tixingimg"></image>
+                    </div>
+                </div>
+
+                <div class="history-div" if={{xianshi}}>
+                    <div class="line2"></div>
+                    <div class="history">
+                        <text class="history-txt">查看历史消息</text>
+                    </div>
+                </div>
+
+                <div class="c" repeat={{readedList}}>
+                    <div class="line"></div>
+                    <div class="cont">
+                        <text class="one">{{title}}</text>
+                        <text class="two">{{content}}</text>
+                        <text class="time">{{addTime}}</text>
+                    </div>
+                    <image src="{{dir}}images/jiantou2.png" class="jiao"></image>
+                    <div class="circle2">
+                        <image src="{{driverId}}"
+                               class="tixingimg"></image>
+                    </div>
+                </div>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .zhuangtai {
+        background-color: #fff;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .line1 {
+        width: 1px;
+        height: 50px;
+        background-color: #ccc;
+    }
+
+    .zt {
+        flex: 1;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #373634;
+        position: relative;
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .xx {
+        position: absolute;
+        left: 240px;
+        top: 10px;
+    }
+
+    .main {
+        padding-right: 20px;
+        padding-bottom: 100px;
+    }
+
+    .spean {
+        height: 20px;
+    }
+
+    .line {
+        width: 5px;
+        height: 300px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+        /*left: 60px;*/
+    }
+
+    .c {
+        sposition: relative;
+        width: 100%;
+        padding-bottom: 20px;
+        margin-right: 20px;
+    }
+
+    .circle {
+        position: absolute;
+        bottom: -15px;
+        left: 18px;
+    }
+
+    .circle2 {
+        position: absolute;
+        top: 10px;
+        left: 18px;
+    }
+
+    .tixingimg {
+        width: 130px;
+        height: 130px;
+    }
+
+    .cont {
+        borderWidth: 1px;
+        borderColor: #DCDDDD;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        padding-right: 5px;
+        margin-left: 170px;
+    }
+
+    .jiao {
+        width: 93px;
+        height: 93px;
+        position: absolute;
+        top: 30px;
+        left: 120px;
+    }
+
+    .one {
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .two {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 6px;
+    }
+
+    .time {
+        font-size: 30px;
+        text-align: right;
+        color: #a0a0a0;
+        margin-right: 15px;
+    }
+
+    .history-div {
+
+    }
+
+    .history {
+        width: 350px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderWidth: 1px;
+        borderColor: #888;
+        border-radius: 10px;
+        margin-left: 240px;
+        margin-bottom: 40px;
+        margin-top: 20px;
+    }
+
+    .line2 {
+        width: 5px;
+        height: 120px;
+        backgroundColor: #DCDEDD;
+        position: absolute;
+        top: 0px;
+        left: 80px;
+    }
+
+    .history-txt {
+        text-align: center;
+        color: #737373;
+    }
+
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            leftred: "red",
+            rightred: "",
+            unreadList: [],
+            readedList: [],
+            img1: "",
+            img2: "",
+            len1:0,
+            len2:0,
+            ff:false,
+            xianshi: false,
+        },
+        ready: function (e) {
+            var _this = this;
+//            -----------------------消息(我的消息1  系统消息2)-----------------------------------
+            api.call("message/insMessage", {type: 1}, function (ret) {
+                api.log(ret.data);
+                _this.unreadList = ret.data.unreadList;
+                _this.readedList = ret.data.readedList;
+                if( ret.data.unreadList.length==0){
+                    _this.ff = false;
+                }else{
+                    _this.ff = true;
+                }
+                _this.xiaoxi();
+                _this.len1 = ret.data.unreadList.length - ret.data.readedList.length >0?( ret.data.unreadList.length - ret.data.readedList.length):0;
+            });
+            api.call("message/insMessage", {type: 2}, function (ret) {
+                _this.len2 = ret.data.unreadList.length - ret.data.readedList.length >0?( ret.data.unreadList.length - ret.data.readedList.length):0;
+            });
+//            -----------------------消息-----------------------------------
+        },
+        methods: {
+            left: function (e) {
+                if (this.leftred != "red") {
+                    this.leftred = "red";
+                    this.rightred = "";
+                }
+                var _this = this;
+                _this.unreadList = [];
+                _this.readedList = [];
+                api.call("message/insMessage", {type: 1}, function (ret) {
+                    _this.unreadList = ret.data.unreadList;
+                    _this.readedList = ret.data.readedList;
+                    _this.xiaoxi();
+                    _this.len1 = ret.data.unreadList.length - ret.data.readedList.length >0?( ret.data.unreadList.length - ret.data.readedList.length):0;
+                });
+            },
+            right: function (e) {
+                if (this.rightred != "red") {
+                    this.rightred = "red";
+                    this.leftred = "";
+                }
+                var _this = this;
+                _this.unreadList = [];
+                _this.readedList = [];
+                api.call("message/insMessage", {type: 2}, function (ret) {
+                    _this.unreadList = ret.data.unreadList;
+                    _this.readedList = ret.data.readedList;
+                    _this.xiaoxi();
+                    _this.len2 = ret.data.unreadList.length - ret.data.readedList.length >0?( ret.data.unreadList.length - ret.data.readedList.length):0;
+                });
+            },
+            xiaoxi: function () {
+                var _this = this;
+                if (_this.readedList.length >= 1) {
+                    _this.xianshi = true;
+                }
+
+                for (var j = 0; j < _this.readedList.length; j++) {
+                    if (_this.readedList[j].factoryType == 1) {
+                        _this.readedList[j].driverId = _this.dir + "images/xi2.png";
+                    } else if (_this.readedList[j].factoryType == 2 || _this.readedList[j].factoryType == 3) {
+                        _this.readedList[j].driverId = _this.dir + "images/4S2.png";
+                    } else if (_this.readedList[j].factoryType == 4) {
+                        _this.readedList[j].driverId = _this.dir + "images/zhuan2.png";
+                    } else  if(_this.readedList[i].factoryType == 0) {
+                        _this.readedList[j].driverId = _this.dir + "images/tixing2.png";
+                    } else{
+                        _this.readedList[j].driverId = _this.dir + "images/tixing2.png";
+                    }
+                }
+                for (var i = 0; i < _this.unreadList.length; i++) {
+                    if (_this.unreadList[i].factoryType == 1) {
+                        _this.unreadList[i].driverId = _this.dir + "images/xi1.png";
+                    } else if (_this.unreadList[i].factoryType == 2 || _this.unreadList[i].factoryType == 3) {
+                        _this.unreadList[i].driverId = _this.dir + "images/4S1.png";
+                    } else if (_this.unreadList[i].factoryType == 4) {
+                        _this.unreadList[i].driverId = _this.dir + "images/zhuan1.png";
+                    } else if(_this.unreadList[i].factoryType == 0) {
+                        _this.unreadList[i].driverId = _this.dir + "images/tixing1.png";
+                    } else{
+                        _this.unreadList[i].driverId = _this.dir + "images/tixing1.png";
+                    }
+                }
+            }
+        }
+    }
+</script>

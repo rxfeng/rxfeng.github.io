@@ -1,0 +1,30 @@
+<template>
+    <xx-navpage navtitle="历史订单" navrighttitle=""navlefturl="" navrightsrc="" navrighturl=""
+                navleftsrc="{{dir}}images/fanhui.png">
+        <dd-info3 dd={{dd}} style="flex:1;"></dd-info3>
+    </xx-navpage>
+</template>
+
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            dd: [
+//                {
+//                    ddlx: "现场救援/维修保养/洗车美容/拖车订单",
+//                    clxh: "大众POLO 2014款 豪华型",
+//                    cphm: "苏N12345",
+//                    kkxx: "张鸿飞1",
+//                    kksj: "1891222262",
+//                    ddh: "1234567489123",
+//                    flag: true,
+//                },
+            ],
+        },
+        ready: function () {
+
+        },
+    }
+</script>

@@ -1,0 +1,61 @@
+<template>
+    <container>
+        <div class="main">
+            <div class="sscf">
+                <text class="sscf-txt1">{{juli}}</text>
+                <text class="sscf-txt2">实时车费（元）</text>
+            </div>
+            <div class="xsjl">
+                <text class="sscf-txt1">{{juli}}</text>
+                <text class="sscf-txt2">行驶距离（公里）</text>
+            </div>
+        </div>
+    </container>
+</template>
+<script>
+    var api=require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir:api.dir,
+            chefei: "",
+            juli:""
+        }
+    }
+</script>
+<style>
+
+    .main {
+        flex-direction: row;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        backgroundColor: #fff;
+        margin-top: 20px;
+        borderTopWidth: 1px;
+        borderBottomWidth:1px;
+        borderColor: #e6e6e6;
+    }
+
+    .sscf {
+        flex: 1;
+        borderRightWidth: 2px;
+        borderColor: #e6e6e6;
+    }
+
+    .xsjl {
+        flex: 1;
+    }
+
+    .sscf-txt1 {
+        color: #E95412;
+        font-size: 60px;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .sscf-txt2 {
+        color: #a0a0a0;
+        font-size: 30px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+</style>

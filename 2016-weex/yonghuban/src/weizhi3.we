@@ -1,0 +1,62 @@
+<template>
+    <xx-navpage navtitle="地图选点" navrighttitle="" navrightsrc="" navrighturl=""
+                navlefturl="jindugenzong.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div style="flex: 1;">
+            <maploc info="{{zom}}" onmapmoveclick="aa" ongoshop="goshangjia" style="flex: 1;"></maploc>
+        </div>
+    </xx-navpage>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    var storage = require('@weex-module/storage');
+    module.exports = {
+        data: {
+            dir: api.dir,
+            leftdata: "",
+            zom: "",
+        },
+        methods: {
+            aa: function (ret) {
+                var _this = this;
+                var info = {
+                    keyword: _this.keyword,
+                    type: _this.type,
+                    area: _this.area,
+                    northlat: ret.nlat,
+                    northlng: ret.nlon,
+                    southlat: ret.slat,
+                    southlng: ret.slon,
+                    zoomLevel: ret.zoom
+                }
+                api.call("factory/list", info, function (ret) {
+                    _this.zom = {type: 1, list1: ret.data.datas};
+                }, function (e) {
+                });
+            },
+            goshangjia: function (e) {
+                if (e.sptype == 1) {
+                    api.push("shangjiaxiangqing.js", {factoryId: e.data});
+                } else {
+                    api.push("shangjiaxiangqing4.js", {factoryId: e.data});
+                }
+//                api.push("jiuyuan2.js", {id: e.data, rescueType: 0,carId: this.dd});
+            },
+        },
+        ready: function () {
+            var _this = this;
+            _this.leftdata = api.getData(_this).leftdata;
+            api.log( _this.leftdata)
+            var info = {
+                keyword: _this.leftdata.keyword,
+                type: 1,
+                area: _this.leftdata.city,
+                zoomLevel: 13
+            }
+            api.call("factory/list", info, function (ret) {
+                api.log(ret.data.datas)
+                _this.zom = {type: 1, list: ret.data.datas};
+            });
+        }
+    }
+</script>

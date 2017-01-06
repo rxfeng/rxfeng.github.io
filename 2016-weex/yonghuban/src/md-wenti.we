@@ -1,0 +1,148 @@
+<template>
+    <div class="quan">
+        <div class="box">
+            <div class="zhifu">
+                <text class="txt1 red center">生成成功</text>
+                <text class="txt2 center">发布问题，赚取积分规则</text>
+                <div class="address">
+                    <input type="text" class="inp" placeholder="请选择你的问题系统"/>
+                    <div class="xiala">
+                        <image class="addressimg"
+                               src="{{dir}}images/xiala.png"></image>
+                    </div>
+                </div>
+                <div style="position: relative; margin-right: 50px;margin-left: 50px;">
+                    <textarea name="" id="" cols="30" rows="5" value="{{val}}" onfocus="textareaclick" onblur="textareablur" style="border-width: 1px;border-color: #ccc;margin-top:20px;padding: 10px;"></textarea>
+                    <div class="pla" id="pla">
+                        <text class="txt xiao">请输入文字内容...</text>
+                    </div>
+                </div>
+            </div>
+            <div style="flex-direction: row">
+                <text class="zhifu-txt btn border red">发布</text>
+                <text class="zhifu-txt btn">关闭</text>
+            </div>
+        </div>
+    </div>
+</template>
+<style>
+    .quan {
+        flex: 1;
+        backgroundColor: rgba(0, 0, 0, 0.4);
+    }
+
+    .box {
+        width: 607px;
+        margin-right: 70px;
+        margin-left: 70px;
+        backgroundColor: #fff;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 400px;
+    }
+
+    .zhifu {
+        padding-top: 80px;
+        padding-bottom: 20px;
+        borderBottomWidth: 1px;
+        borderColor: #ccc;
+    }
+
+    .zhifu-txt {
+        flex: 1;
+        text-align: center;
+        font-size: 30px;
+        color: #373634;
+    }
+
+    .btn {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .border {
+        borderRightWidth: 3px;
+        borderColor: #e6e6e6;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .txt1 {
+        font-size: 34px;
+    }
+
+    .txt2 {
+        font-size: 32px;
+        color: #373634;
+        text-decoration: underline;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+
+
+    .address {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-right: 50px;
+        margin-left: 50px;
+        borderWidth: 1px;
+        borderColor: #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .inp {
+        width: 430px;
+        height: 70px;
+        padding: 10px;
+        padding-left: 20px;
+        font-size: 30px;
+    }
+    .xiala {
+        width: 70px;
+        height: 70px;
+        backgroundColor: #DDDDDD;
+        flex-direction: row;
+        justify-content: center;
+        align-content: center;
+    }
+
+    .addressimg {
+        width: 37px;
+        height: 37px;
+    }
+    .pla{
+        position: absolute;
+        top:30;
+        left: 30;
+    }
+    .txt {
+        font-size: 28px;
+        color: #a0a0a0;
+    }
+    .xiao{
+        font-size: 26px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    module.exports ={
+        data:{
+            dir:api.dir,
+            val:"",
+        },
+        methods:{
+            textareaclick: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'hidden'});
+            },
+            textareablur: function (e) {
+                this.$el('pla').setClassStyle({visibility: 'visible'});
+            }
+        },
+    }
+</script>

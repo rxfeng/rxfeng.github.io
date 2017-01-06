@@ -1,0 +1,86 @@
+<template>
+    <xx-navpage navtitle="常见问题" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="wode.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <div class="box">
+            <text class="box-txt">预定问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">代驾问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">支付问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">订单问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">优惠问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">违章问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="box">
+            <text class="box-txt">其他问题</text>
+            <image class="jiao" src="{{dir}}images/xiajiaobiao.png"></image>
+        </div>
+        <div class="bottom">
+            <image class="dianhua" src="{{dir}}images/wode-kefu.png"></image>
+            <text>客服电话：4006-300-111</text>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .box{
+        border-width: 1px;
+        border-color: #ccc;
+        background-color: #fff;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+        margin-left: 30px;
+        margin-right: 30px;
+        border-radius:10px;
+        margin-top: 20px;
+    }
+    .box-txt{
+        font-size: 32px;
+        color: #373634;
+    }
+    .jiao{
+        width: 37px;
+        height: 37px;
+    }
+    .bottom{
+        width: 750px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        border-top-width: 1px;
+        border-color: #e6e6e6;
+    }
+    .dianhua{
+        width: 50px;
+        height:50px;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports={
+        data:{
+            dir:api.dir,
+        }
+    }
+</script>

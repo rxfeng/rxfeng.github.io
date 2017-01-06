@@ -1,0 +1,73 @@
+<template>
+    <div class="zhuangtai">
+        <div class="zt" onclick="left">
+            <text class="zt-txt {{leftred}}">{{title1}}</text>
+            <xx title="1" class="xx"></xx>
+        </div>
+        <div class="line"></div>
+        <div class="zt" onclick="right">
+            <text class="zt-txt {{rightred}}">{{title2}}</text>
+            <xx title="2" class="xx"></xx>
+        </div>
+    </div>
+</template>
+<script>
+    module.exports = {
+        data: {
+            title1: "",
+            title2: "",
+            leftred: "red",
+            rightred: "",
+        },
+        methods:{
+            left: function (e) {
+                if(this.leftred !="red"){
+                    this.leftred = "red";
+                    this.rightred ="";
+                }
+            },
+            right: function (e) {
+                if(this.rightred !="red"){
+                    this.rightred = "red";
+                    this.leftred ="";
+                }
+            }
+        },
+    }
+</script>
+<style>
+    .zhuangtai {
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-color: #e6e6e6;
+        justify-content: center;
+        align-items: center;
+    }
+    .line{
+        width: 1px;
+        height: 50px;
+        background-color: #ccc;
+    }
+    .zt {
+        flex: 1;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    .zt-txt {
+        font-size: 34px;
+        color: #373634;
+        position: relative;
+        text-align: center;
+    }
+
+    .red {
+        color: #E95412;
+    }
+
+    .xx {
+        position: absolute;
+        left: 240px;
+        top: 10px;
+    }
+</style>

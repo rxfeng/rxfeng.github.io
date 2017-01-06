@@ -1,0 +1,352 @@
+<template>
+    <xx-navpage navtitle="常见问题" navrighttitle="" navrighturl="" navrightsrc=""
+                navlefturl="wode.js"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller>
+            <div class="box" onclick="ydwt">
+                <text class="box-txt">预约问题</text>
+                <image class="jiao" if={{yudingflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!yudingflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-yuding if={{yudingflag}}></zi-cjwt-yuding>
+            <div class="box" onclick="djwt">
+                <text class="box-txt">代驾问题</text>
+                <image class="jiao" if={{daijiaflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!daijiaflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-daijia if={{daijiaflag}}></zi-cjwt-daijia>
+            <div class="box" onclick="zxwt">
+                <text class="box-txt">咨询问题</text>
+                <image class="jiao" if={{zixunflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!zixunflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-zixun if={{zixunflag}}></zi-cjwt-zixun>
+            <div class="box" onclick="xcwt">
+                <text class="box-txt">洗车问题</text>
+                <image class="jiao" if={{xicheflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!xicheflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-xiche if={{xicheflag}}></zi-cjwt-xiche>
+            <div class="box" onclick="jywt">
+                <text class="box-txt">加油问题</text>
+                <image class="jiao" if={{jiayouflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!jiayouflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-jiayou if={{jiayouflag}}></zi-cjwt-jiayou>
+            <div class="box" onclick="jy1wt">
+                <text class="box-txt">救援问题</text>
+                <image class="jiao" if={{jiuyuanflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!jiuyuanflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-jiuyuan if={{jiuyuanflag}}></zi-cjwt-jiuyuan>
+            <div class="box" onclick="zfwt">
+                <text class="box-txt">支付问题</text>
+                <image class="jiao" if={{zhifuflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!zhifuflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-zhifu if={{zhifuflag}}></zi-cjwt-zhifu>
+            <div class="box" onclick="ddwt">
+                <text class="box-txt">订单问题</text>
+                <image class="jiao" if={{dingdanflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!dingdanflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-dingdan if={{dingdanflag}}></zi-cjwt-dingdan>
+            <div class="box" onclick="jfhbwt">
+                <text class="box-txt">积分红包问题</text>
+                <image class="jiao" if={{jifenhongbaoflag}} src="{{dir}}images/xiajiaobiao.png"></image>
+                <image class="jiao" if={{!jifenhongbaoflag}} src="{{dir}}images/right-jiao.fw.png"></image>
+            </div>
+            <zi-cjwt-jifenhongbao if={{jifenhongbaoflag}}></zi-cjwt-jifenhongbao>
+            <!--<div class="box" onclick="yhwt">-->
+            <!--<text class="box-txt">优惠问题</text>-->
+            <!--<image class="jiao" if={{youhuiflag}} src="{{dir}}images/xiajiaobiao.png"></image>-->
+            <!--<image class="jiao" if={{!youhuiflag}} src="{{dir}}images/right-jiao.fw.png"></image>-->
+            <!--</div>-->
+            <!--<zi-cjwt-youhui if={{youhuiflag}}></zi-cjwt-youhui>-->
+            <!--<div class="box" onclick="wzwt">-->
+            <!--<text class="box-txt">违章问题</text>-->
+            <!--<image class="jiao" if={{weizhangflag}} src="{{dir}}images/xiajiaobiao.png"></image>-->
+            <!--<image class="jiao" if={{!weizhangflag}} src="{{dir}}images/right-jiao.fw.png"></image>-->
+            <!--</div>-->
+            <!--<zi-cjwt-weizhang if={{weizhangflag}}></zi-cjwt-weizhang>-->
+            <!--<div class="box" onclick="qtwt">-->
+            <!--<text class="box-txt">其他问题</text>-->
+            <!--<image class="jiao" if={{qitaflag}} src="{{dir}}images/xiajiaobiao.png"></image>-->
+            <!--<image class="jiao" if={{!qitaflag}} src="{{dir}}images/right-jiao.fw.png"></image>-->
+            <!--</div>-->
+            <!--<zi-cjwt-qita if={{qitaflag}}></zi-cjwt-qita>-->
+            <div style="height: 100px;"></div>
+        </scroller>
+
+        <div class="bottom" onclick="lianxikefu">
+            <!--<image class="dianhua" src="{{dir}}images/wode-kefu.png"></image>-->
+            <!--<text style="font-size: 30px">客服电话：{{telPhone}}</text>-->
+            <text style="font-size: 30px">咨询客服</text>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .box {
+        width: 690px;
+        border-width: 1px;
+        border-color: #ccc;
+        background-color: #fff;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+        margin-left: 30px;
+        margin-right: 30px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .box-txt {
+        font-size: 32px;
+        color: #373634;
+    }
+
+    .jiao {
+        width: 37px;
+        height: 37px;
+    }
+
+    .bottom {
+        width: 750px;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        border-top-width: 1px;
+        border-color: #e6e6e6;
+    }
+
+    .dianhua {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            yudingflag: false,
+            daijiaflag: false,
+            zixunflag: false,
+            xicheflag: false,
+            jiayouflag: false,
+            jiuyuanflag: false,
+            zhifuflag: false,
+            dingdanflag: false,
+            jifenhongbaoflag:false,
+            youhuiflag: false,
+            weizhangflag: false,
+            qitaflag: false,
+            telPhone: "4006-655-679",
+        },
+        methods: {
+            bohao: function (e) {
+                require('@weex-module/dialanumber').boHao(this.telPhone);
+            },
+            lianxikefu: function (e) {
+              api.tost("敬请稍后");
+            },
+            ydwt: function (e) {
+                this.yudingflag = this.yudingflag?false:true;
+                if(this.yudingflag){
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            djwt: function (e) {
+                this.daijiaflag = this.daijiaflag?false:true;
+                if(this.daijiaflag){
+                    this.yudingflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            zxwt: function (e) {
+                this.zixunflag = this.zixunflag?false:true;
+                if(this.zixunflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            xcwt: function (e) {
+                this.xicheflag = this.xicheflag?false:true;
+                if(this.xicheflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            jywt: function (e) {
+                this.jiayouflag = this.jiayouflag?false:true;
+                if(this.jiayouflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            jy1wt: function (e) {
+                this.jiuyuanflag = this.jiuyuanflag?false:true;
+                if(this.jiuyuanflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            zfwt: function (e) {
+                this.zhifuflag = this.zhifuflag?false:true;
+                if(this.zhifuflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            ddwt: function (e) {
+                this.dingdanflag = this.dingdanflag?false:true;
+                if(this.dingdanflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            jfhbwt: function (e) {
+                this.jifenhongbaoflag = this.jifenhongbaoflag?false:true;
+                if(this.jifenhongbaoflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            yhwt: function (e) {
+                this.youhuiflag = this.youhuiflag?false:true;
+                if(this.youhuiflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.weizhangflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            wzwt: function (e) {
+                this.weizhangflag = this.weizhangflag?false:true;
+                if(this.weizhangflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.qitaflag=false;
+                }
+            },
+            qtwt: function (e) {
+                this.qitaflag = this.qitaflag?false:true;
+                if(this.qitaflag){
+                    this.yudingflag=false;
+                    this.daijiaflag=false;
+                    this.zixunflag=false;
+                    this.xicheflag=false;
+                    this.jiayouflag=false;
+                    this.jiuyuanflag=false;
+                    this.zhifuflag=false;
+                    this.dingdanflag=false;
+                    this.jifenhongbaoflag=false;
+                    this.youhuiflag=false;
+                    this.weizhangflag=false;
+                }
+            },
+        }
+    }
+</script>

@@ -1,0 +1,61 @@
+<template>
+    <div class="two">
+        <div class="d" onclick="title1url">
+            <text class="txt">{{title1}}</text>
+            <!--<image src="{{title1src}}"></image>-->
+        </div>
+        <div class="d current" onclick="title2url">
+            <text class="txt current-txt">{{title2}}</text>
+            <!--<image src="{{title2src}}"></image>-->
+        </div>
+    </div>
+</template>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            orderId: "",
+            title1: "",
+            title2: "",
+            title1src: "",
+            title2src: "",
+        },
+        methods: {
+            title1url: function (e) {
+                this.$dispatch('dianji2');
+            },
+            title2url: function (e) {
+                this.$dispatch('dianji');
+            }
+        }
+    }
+</script>
+<style>
+    .two {
+        flex-direction: row;
+        width: 750px;
+        borderTopWidth: 1px;
+        borderColor: #ccc;
+        backgroundColor: #fff;
+    }
+
+    .d {
+        flex: 1;
+    }
+
+    .txt {
+        text-align: center;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        color: #E95412;
+        font-size: 34px;
+    }
+
+    .current {
+        backgroundColor: #E95412;
+    }
+
+    .current-txt {
+        color: #fff;
+    }
+</style>

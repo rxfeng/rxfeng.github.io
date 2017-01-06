@@ -1,0 +1,157 @@
+<template>
+    <xx-navpage navtitle="修改手机号" navleftsrc="{{dir}}images/fanhui.png" bg="" navlefturl="gerenxinxi.js">
+        <div class="{{pos}}">
+            <div style="height: 50px;"></div>
+            <input id="tel" class="inp" type="tel" placeholder="手机号"
+                   oninput="oninput1" value="{{tel}}"/>
+
+            <div style="height: 20px;"></div>
+            <div style="position: relative;">
+                <input id="yangzheng" class="inp" type="tel" placeholder="验证码"
+                       oninput="oninput2" value="{{yanzheng}}"/>
+                <text if={{yzm}} class="yanzhengma" onclick="getclick">获取验证码</text>
+                <text if={{!yzm}} class="yanzhengma">{{date.s}}秒后重试</text>
+            </div>
+            <div style="height: 40px;"></div>
+            <div class="row" onclick="duanxuan">
+                <text class="txt">使用验证码修改手机号码</text>
+            </div>
+            <div style="height: 40px;"></div>
+            <zi-login-btn title="修 改" onclick="xiugai"
+                          style="background-color: #E95412;margin-right: 30px;margin-left: 30px;border-radius: 10px"></zi-login-btn>
+            <div style="height: 150px;"></div>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .row {
+        flex-direction: row;
+        padding-left: 60px;
+    }
+
+    .txt {
+        font-size: 30px;
+        color: #737373;
+    }
+
+    .inp {
+        margin-right: 50px;
+        margin-left: 50px;
+        height: 80px;
+        borderWidth: 2px;
+        borderColor: #e6e6e6;
+        padding-left: 20px;
+        font-size: 34px;
+        color: #373634;
+        border-radius: 10px;
+    }
+
+    .yanzhengma {
+        width: 200px;
+        height: 80px;
+        padding-top: 20px;
+        text-align: center;
+        position: absolute;
+        top: 0px;
+        right: 50px;
+        backgroundColor: #E95412;
+        color: #fff;
+        font-size: 28px;
+    }
+
+    .center {
+        justify-content: center;
+    }
+
+    .line {
+        width: 250px;
+        height: 2px;
+        backgroundColor: #e6e6e6;
+        margin: 20px;
+    }
+</style>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var timer;
+    module.exports = {
+        data: {
+            dir: api.dir,
+            zhifu: false,
+            yzm: true,
+            date: {
+                s: 60,
+            },
+            flag: true,
+            tel: "",
+            yanzheng: "",
+            fanhuiurl: "",
+        },
+        created: function (e) {
+            this.fanhuirul = api.getData(this).fanhuiurl;
+            api.log("fanhuirul:" + this.fanhuirul);
+        },
+        methods: {
+            oninput1: function (event) {
+                this.tel = event.value;
+            },
+            oninput2: function (event) {
+                this.yanzheng = event.value;
+            },
+
+            duanxuan: function (e) {
+                var self = this;
+                self.flag = !self.flag;
+            },
+            getclick: function (e) {
+                var _this = this;
+                if (this.tel.length == 11) {
+                    this.yzm = false;
+                    this.djsfunc();
+                    api.call("user/reSendSMS", {cellphone: this.tel}, function (e) {
+
+                    });
+//                 -----------------------获取验证码-----------------------------------
+                } else {
+                    api.tost("请输入正确的手机号")  //判断是否是11位手机号
+                }
+            },
+            djsfunc: function (e) {
+                var self = this;
+                var s = self.date.s;
+                timer = setInterval(function (e) {
+                    if (s <= 0) {
+                        clearInterval(timer);
+                        self.date.s = 60;
+                        self.yzm = true;
+                        return;
+                    } else {
+                        s--;
+                    }
+                    self.date.s = s;
+                }, 1000);
+            },
+            xiugai: function (e) {
+                var _this = this;
+//              _this.tel;
+//               _this.yanzheng;
+//            -----------------------修改手机号-----------------------------------
+                api.call("user/anotherLogin", {cellphone : _this.tel,vcode:_this.yanzheng}, function (ret) {
+//                    _this.tel = ret.data.user.cellphone;
+                    api.log(ret.data);
+                    api.get("userinfo", function (e) {
+                        var userinfo = JSON.parse(e.data);
+                        api.save("userinfo", {
+                            usertel: ret.data.user.cellphone,
+                            userSex: userinfo.userSex,
+                            username: userinfo.username,
+                            userid: userinfo.userid,
+                            isZhuanjia: userinfo.isZhuanjia
+                        });
+                    });
+                    api.pop({tel:ret.data.user.cellphone});
+                });
+            }
+        }
+    }
+</script>

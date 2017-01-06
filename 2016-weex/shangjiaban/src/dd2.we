@@ -1,0 +1,92 @@
+<template>
+    <div class="two">
+        <div class="d" onclick="title1url">
+            <text class="txt">{{title1}}</text>
+            <!--<image src="{{title1src}}"></image>-->
+        </div>
+        <div class="d current" onclick="toggle">
+            <text class="txt current-txt" if="{{f}}">开始听单</text>
+            <text class="txt current-txt" if="{{!f}}">结束听单</text>
+        </div>
+    </div>
+</template>
+<script>
+    require('weex-components');
+    var api = require("../../common/api.we");
+    var wee = require('@weex-module/modal');
+    module.exports = {
+        data: {
+            f: false,
+            title1: "",
+            title1src: "",
+            kehudangan:"",
+            state:""
+        },
+        methods: {
+            title1url: function (e) {
+//                api.push(this.title1src, {
+//                    factoryId: this.kehudangan.factoryId,
+//                });
+                this.$dispatch('notifyleft')
+            },
+            toggle: function (e) {
+                var self = this;
+//            -----------------------上班下班状态-----------------------------------
+                api.call("factory/updateAdviser", {}, function (ret) {
+                    if(ret.data.state == 0){
+                        self.f = true;
+//                        显示未接单的数据
+                        self.$dispatch('notify2', {})
+                    }else if(ret.data.state == 1){
+                        self.f = false;
+                        self.$dispatch('notify1', {})
+                    }
+                });
+//                this.$dispatch('notify2')
+//            -----------------------上班下班状态-----------------------------------
+            }
+        },
+        created: function () {
+//            var state = api.getData(this).state;
+            api.log("state"+this.state)
+//            -----------------------打开这个页面就得知道上班下班的状态,不用接口，从登陆页面传来的值-----------------------------------
+            if(state == 0){
+                api.log(state);
+                this.f = true;
+            }else if(state == 1){
+                api.log(state);
+                this.f = false;
+            }
+//            -----------------------打开这个页面就得知道上班下班的状态,不用接口，从登陆页面传来的值-----------------------------------
+        }
+    }
+</script>
+<style>
+    .two {
+        flex-direction: row;
+        width: 750px;
+        borderTopWidth: 1px;
+        borderColor: #ccc;
+        backgroundColor: #fff;
+    }
+
+    .d {
+        flex: 1;
+    }
+
+    .txt {
+        text-align: center;
+        padding-top: 32px;
+        padding-bottom: 32px;
+        color: #E95412;
+        font-size: 34px;
+    }
+
+    .current {
+        backgroundColor: #E95412;
+    }
+
+    .current-txt {
+        color: #fff;
+    }
+</style>

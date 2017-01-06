@@ -1,0 +1,65 @@
+<template>
+    <xx-navpage navtitle="消息详情" navrighttitle="" navlefturl="index.js" navrighturl="" navrightsrc=""
+                navleftsrc="{{dir}}images/fanhui.png">
+        <div class="main">
+            <div class="cont">
+                <text class="time-txt red da center">{{info.title}}</text>
+                <text class="time-txt hui">{{info.content}}</text>
+                <text class="time-txt right">{{info.addTime}}</text>
+            </div>
+        </div>
+    </xx-navpage>
+</template>
+<style>
+    .red {
+        color: #E95412;
+    }
+
+    .hui {
+        color: #373634;
+    }
+
+    .main {
+        /*border-bottom-width: 1px;*/
+        /*border-color: #e6e6e6;*/
+        /*background-color: #fff;*/
+    }
+
+    .cont {
+        padding: 20px;
+        /*border-bottom-width: 1px;*/
+        /*border-color: #e6e6e6;*/
+    }
+
+    .time-txt {
+        font-size: 32px;
+        color: #737373;
+        margin-bottom: 10px;
+        margin-right: 5px;
+    }
+    .da{
+        font-size: 34px;
+    }
+    .center{
+        text-align: center;
+    }
+    .right{
+        text-align: right;
+    }
+</style>
+<script>
+    var api = require("../../common/api.we");
+    module.exports = {
+        data: {
+            dir: api.dir,
+            info:{},
+        },
+        created: function () {
+            api.log("xxid:"+api.getData(this).xxid);
+            var _this = this;
+            api.call("message/insMess", {id: api.getData(this).xxid}, function (ret) {
+                _this.info = ret.data.messInfo;
+            });
+        }
+    }
+</script>

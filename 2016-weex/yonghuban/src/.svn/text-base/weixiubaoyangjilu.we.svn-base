@@ -1,0 +1,87 @@
+<template>
+    <xx-navpage navtitle="维修保养记录" navrighttitle="" navrighturl=""
+                navlefturl="cheliangxiangqing.js"
+                navrightsrc="{{dir}}images/add.png"
+                navleftsrc="{{dir}}images/fanhui.png" bg="#F5F3F8">
+        <scroller style="flex:1;">
+            <div class="info">
+                <image class="carpic" src="{{car.carIcon}}"></image>
+                <div class="txt">
+                    <text class="car-txt1">{{car.carLicence}}</text>
+                    <text class="car-txt2">{{chexing}}</text>
+                </div>
+            </div>
+            <div class="spean"></div>
+            <div>
+                <weixiutime repeat="{{orderinfo}}"></weixiutime>
+            </div>
+        </scroller>
+    </xx-navpage>
+</template>
+<style>
+    .spean {
+        height: 20px;
+        backgroundColor: #F5F3F8;
+    }
+
+    .info {
+        flex-direction: row;
+        backgroundColor: #fff;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+    }
+
+    .carpic {
+        width: 180px;
+        height: 180px;
+        margin: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .txt {
+        margin-top: 50px;
+        width: 470px;
+    }
+
+    .car-txt1 {
+        font-size: 36px;
+        color: #373634;
+    }
+
+    .car-txt2 {
+        font-size: 30px;
+        color: #a0a0a0;
+        margin-top: 10px;
+        width: 10000px;
+    }
+
+</style>
+<script>
+    var api = require("../../common/api.we");
+    require('weex-components');
+    module.exports = {
+        data: {
+            dir: api.dir,
+            car: {},
+            orderinfo: [],
+            chexing: "",
+        },
+        ready: function () {
+            var _this = this;
+            _this.carId = api.getData(_this).carid;
+//            -----------------------维修保养记录-----------------------------------
+            api.call("car/orderlist", {carId: _this.carId}, function (ret) {
+//                api.log(ret.data);
+                _this.chexing = ret.data.carFullTypeName;
+                _this.car = ret.data.car;
+                _this.orderinfo = ret.data.orderList;
+            });
+//            -----------------------维修保养记录-----------------------------------
+            _this.$on('naviBar.rightItem.click',function(e){
+               api.push("weixiubaoyangjilu2.js",{})
+            });
+        },
+        methods: {}
+    }
+</script>

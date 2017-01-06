@@ -1,0 +1,105 @@
+<template>
+    <div class="main">
+        <div class="title pr20 pl20">
+            <text class="title-txt">{{title}}</text>
+        </div>
+        <div class="dingdaninfo" repeat="{{data in zhifu}}">
+        <div class="info">
+            <text class="info-txt1">支付金额：</text>
+            <text class="info-txt2 red">￥{{data.zfje}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">支付方式：</text>
+            <text class="info-txt2">{{data.zffs}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">红包抵扣：</text>
+            <text class="info-txt2 red">{{data.hbdk}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">积分抵扣：</text>
+            <text class="info-txt2 red">￥{{data.jfdk}}</text>
+        </div>
+        <div class="info">
+            <text class="info-txt1">支付时间：</text>
+            <text class="info-txt2">￥{{data.zfsj}}</text>
+        </div>
+    </div>
+    </div>
+</template>
+<script>
+    module.exports ={
+        data: {
+            title:"",
+            zhifu:[
+                {
+                    zfje: "",
+                    zffs: "",
+                    hbdk: "",
+                    jfdk: "",
+                    zfsj: "",
+                },
+            ],
+        },
+    }
+</script>
+<style>
+    .main{
+        backgroundColor:#fff;
+        margin-top: 20px;
+        borderWidth:1px;
+        borderColor:#e6e6e6;
+    }
+
+    .pr20 {
+        padding-right: 20px;
+    }
+
+    .pl20 {
+        padding-left: 20px;
+    }
+
+    .title {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        borderBottomWidth: 1px;
+        borderColor: #e6e6e6;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .title-txt {
+        font-size: 32px;
+        color:#373634;
+    }
+    .dingdaninfo {
+        padding: 20px;
+        borderWidth:1px;
+        borderColor:#e6e6e6;
+    }
+
+    .info {
+        flex-direction: row;
+        padding-bottom: 3px;
+        padding-top: 3px;
+    }
+
+    .info-txt1 {
+        color: #737373;
+        font-size: 30px;
+    }
+
+    .info-txt2 {
+        color: #A0A0A0;
+        font-size: 28px;
+    }
+    .jiantou {
+        width: 47px;
+        height: 47px;
+        position: absolute;
+        top: 130px;
+        right: 20px;
+    }
+    .red{
+        color: #E95412;
+    }
+</style>

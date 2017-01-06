@@ -1,0 +1,9 @@
+<template>
+    <div style="height: 750px;width: 750px;background-color: pink" onclick="aa">
+        <text>{{info}}</text>
+        <video class="video" auto-play="true" play-status="play" src="rtmp://zb.free10.cn/yixiucar/ts" style="width:750;height:500;"></video>
+    </div>
+</template>
+<script>
+
+</script>
